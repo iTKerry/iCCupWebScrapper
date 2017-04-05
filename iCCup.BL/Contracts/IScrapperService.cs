@@ -4,7 +4,7 @@ namespace iCCup.BL.Contracts
 {
     public interface IScrapperService
     {
-        UserSearch[] SearchUser(string url);
+        UserSearch[] SearchPlayer(string url);
 
         UserGameProfile GetUserGameProfile(string url);
 

@@ -13,7 +13,7 @@ namespace iCCup.BL.Service
             _scrapper = new ScrapperBase();
         }
 
-        public UserSearch[] SearchUser(string url)
+        public UserSearch[] SearchPlayer(string url)
         {
             throw new System.NotImplementedException();
         }

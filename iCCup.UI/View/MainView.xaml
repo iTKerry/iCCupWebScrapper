@@ -3,10 +3,35 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:iCCup.UI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="350" Width="525"
+        ResizeMode="CanResizeWithGrip"
+        DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
     <Grid>
-        
+        <StackPanel Orientation="Horizontal">
+            <StackPanel 
+                Orientation="Vertical"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top">
+                <TextBox 
+                    Margin="10"
+                    Text="{Binding PlayerName}"
+                    Width="80"
+                    Height="20" />
+                <Button 
+                    Margin="10"
+                    Command="{Binding SearchPlayerCommand}"
+                    Width="80"
+                    Height="40"
+                    Content="Search" />
+            </StackPanel>
+            <ListView ItemsSource="{Binding Players}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Path=Nickname}"></TextBlock>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListView>
+        </StackPanel>
     </Grid>
 </Window>
