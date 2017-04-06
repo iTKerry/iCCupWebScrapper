@@ -1,43 +1,63 @@
+using System;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using iCCup.BL.Scrapper;
+using iCCup.BL.Contracts;
 using iCCup.DATA.Models;
 
 namespace iCCup.UI.ViewModel
 {
-    public class MainViewModel : ViewModelBase
+    public partial class MainViewModel : ViewModelBase
     {
+        private readonly IScrapperService _scrapper;
+
         public RelayCommand SearchPlayerCommand =>
             new RelayCommand(async () =>
             {
                 Players.Clear();
-                var test = new ScrapperBase();
-                var searchResults = await test.SearchPlayer(PlayerName ?? "");
 
-                foreach (var player in searchResults)
+                var searchResults = await _scrapper.SearchPlayer(PlayerName ?? "");
+                NextPage = searchResults.Item2;
+                PrevPage = searchResults.Item3;
+
+                foreach (var player in searchResults.Item1)
                 {
                     Players.Add(player);
                 }
             });
 
-        public MainViewModel()
+        public RelayCommand NextPageCommand =>
+            new RelayCommand(async () =>
+            {
+                await SearchNavigate(true);
+            });
+
+        public RelayCommand PrevPageCommand => 
+            new RelayCommand(async () =>
+            {
+                await SearchNavigate(false);
+            });
+
+        public MainViewModel(IScrapperService scrapper)
         {
+            _scrapper = scrapper;
             Players = new ObservableCollection<UserSearch>();
         }
 
-        private string _playerName;
-        public string PlayerName
+        private async Task SearchNavigate(bool ahead)
         {
-            get {return _playerName;}
-            set { _playerName = value; RaisePropertyChanged(() => PlayerName); }
-        }
+            Players.Clear();
+            var searchResults = await _scrapper.SearchPlayer(ahead
+                ? new Uri(NextPage)
+                : new Uri(PrevPage));
+            NextPage = searchResults.Item2;
+            PrevPage = searchResults.Item3;
 
-        private ObservableCollection<UserSearch> _players;
-        public ObservableCollection<UserSearch> Players
-        {
-            get { return _players; }
-            set { _players = value; RaisePropertyChanged(() => Players); }
+            foreach (var player in searchResults.Item1)
+            {
+                Players.Add(player);
+            }
         }
     }
 }

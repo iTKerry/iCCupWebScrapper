@@ -25,13 +25,28 @@
                     Height="40"
                     Content="Search" />
             </StackPanel>
-            <ListView ItemsSource="{Binding Players}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Path=Nickname}"></TextBlock>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListView>
+            <StackPanel Orientation="Vertical">
+                <ListView ItemsSource="{Binding Players}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Path=Nickname}"></TextBlock>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListView>
+                <StackPanel Orientation="Horizontal">
+                    <Button
+                        Width="80"
+                        Height="40"
+                        IsEnabled="{Binding ShowPrevPage}"
+                        Command="{Binding PrevPageCommand}">Prev</Button>
+                    <Button
+                        Width="80"
+                        Height="40"
+                        IsEnabled="{Binding ShowNextPage}"
+                        Command="{Binding NextPageCommand}">Next</Button>
+                </StackPanel>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Window>
+

@@ -1,4 +1,7 @@
-﻿using iCCup.BL.Contracts;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using iCCup.BL.Contracts;
 using iCCup.BL.Scrapper;
 using iCCup.DATA.Models;
 
@@ -13,9 +16,14 @@ namespace iCCup.BL.Service
             _scrapper = new ScrapperBase();
         }
 
-        public UserSearch[] SearchPlayer(string url)
+        public Task<Tuple<List<UserSearch>, string, string>> SearchPlayer(string url)
         {
-            throw new System.NotImplementedException();
+            return _scrapper.SearchPlayer(url);
+        }
+
+        public Task<Tuple<List<UserSearch>, string, string>> SearchPlayer(Uri url)
+        {
+            return _scrapper.SearchPlayer(url);
         }
 
         public UserGameProfile GetUserGameProfile(string url)
@@ -23,9 +31,9 @@ namespace iCCup.BL.Service
             throw new System.NotImplementedException();
         }
 
-        public UserGame[] GetUserGameList(string url)
+        public List<UserGame> GetUserGameList(string url)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public GameDetails GetGameDetails(string url)

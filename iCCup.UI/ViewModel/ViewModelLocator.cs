@@ -1,4 +1,6 @@
 using GalaSoft.MvvmLight.Ioc;
+using iCCup.BL.Contracts;
+using iCCup.BL.Service;
 using Microsoft.Practices.ServiceLocation;
 
 namespace iCCup.UI.ViewModel
@@ -9,6 +11,7 @@ namespace iCCup.UI.ViewModel
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
+            SimpleIoc.Default.Register<IScrapperService, ScrapperService>();
             SimpleIoc.Default.Register<MainViewModel>();
         }
 

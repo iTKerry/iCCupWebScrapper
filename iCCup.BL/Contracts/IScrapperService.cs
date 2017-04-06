@@ -1,14 +1,18 @@
-﻿using iCCup.DATA.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using iCCup.DATA.Models;
 
 namespace iCCup.BL.Contracts
 {
     public interface IScrapperService
     {
-        UserSearch[] SearchPlayer(string url);
+        Task<Tuple<List<UserSearch>, string, string>> SearchPlayer(string nickname);
+        Task<Tuple<List<UserSearch>, string, string>> SearchPlayer(Uri url);
 
         UserGameProfile GetUserGameProfile(string url);
 
-        UserGame[] GetUserGameList(string url);
+        List<UserGame> GetUserGameList(string url);
 
         GameDetails GetGameDetails(string url);
     }

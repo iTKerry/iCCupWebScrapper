@@ -1,7 +1,22 @@
-<Application x:Class="iCCup.UI.App" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" StartupUri="View/MainView.xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" d1p1:Ignorable="d" xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006">
-  <Application.Resources>
-    <ResourceDictionary>
-      <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" xmlns:vm="clr-namespace:iCCup.UI.ViewModel" />
-    </ResourceDictionary>
-  </Application.Resources>
+<Application 
+    x:Class="iCCup.UI.App" 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    StartupUri="View/MainView.xaml" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    d1P1:Ignorable="d" 
+    xmlns:d1P1="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:converters="clr-namespace:iCCup.UI.Converters">
+    <Application.Resources>
+        <ResourceDictionary>
+            <vm:ViewModelLocator 
+                x:Key="Locator"
+                d:IsDataSource="True"
+                xmlns:vm="clr-namespace:iCCup.UI.ViewModel" />
+            <converters:BooleanToVisibilityConverter 
+                x:Key="BooleanToVisibilityConverter" 
+                True="Collapsed" 
+                False="Visible" />
+        </ResourceDictionary>
+    </Application.Resources>
 </Application>
