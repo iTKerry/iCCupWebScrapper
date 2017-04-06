@@ -22,6 +22,8 @@ namespace iCCup.BL.Scrapper
             };
         }
 
+        #region SearchPlayer
+
         public async Task<Tuple<List<UserSearch>, string, string>> SearchPlayer(string nickname)
         {
             var url = string.Format(Globals.iCCupUrl + Globals.Search, nickname);
@@ -59,5 +61,7 @@ namespace iCCup.BL.Scrapper
 
             return Tuple.Create(result, nextPageUrl, prevPageUrl);
         }
+
+        #endregion
     }
 }

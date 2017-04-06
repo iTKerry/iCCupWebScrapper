@@ -28,16 +28,10 @@ namespace iCCup.UI.ViewModel
             });
 
         public RelayCommand NextPageCommand =>
-            new RelayCommand(async () =>
-            {
-                await SearchNavigate(true);
-            });
+            new RelayCommand(async () => await SearchNavigate(true));
 
-        public RelayCommand PrevPageCommand => 
-            new RelayCommand(async () =>
-            {
-                await SearchNavigate(false);
-            });
+        public RelayCommand PrevPageCommand =>
+            new RelayCommand(async () => await SearchNavigate(false));
 
         public MainViewModel(IScrapperService scrapper)
         {
