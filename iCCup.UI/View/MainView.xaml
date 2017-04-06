@@ -37,12 +37,12 @@
                     <Button
                         Width="80"
                         Height="40"
-                        IsEnabled="{Binding ShowPrevPage}"
+                        IsEnabled="{Binding AllowPrevPage}"
                         Command="{Binding PrevPageCommand}">Prev</Button>
                     <Button
                         Width="80"
                         Height="40"
-                        IsEnabled="{Binding ShowNextPage}"
+                        IsEnabled="{Binding AllowNextPage}"
                         Command="{Binding NextPageCommand}">Next</Button>
                 </StackPanel>
             </StackPanel>

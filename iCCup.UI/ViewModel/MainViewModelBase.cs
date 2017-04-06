@@ -26,18 +26,19 @@ namespace iCCup.UI.ViewModel
             get { return _nextPage; }
             set
             {
-                ShowNextPage = !Equals(value, string.Empty);
+                AllowNextPage = !Equals(value, string.Empty);
 
                 _nextPage = value;
                 RaisePropertyChanged(() => NextPage);
             }
         }
 
-        private Boolean _showNextPage;
-        public Boolean ShowNextPage
+        // Currently used for disable button.
+        private Boolean _allowNextPage;
+        public Boolean AllowNextPage
         {
-            get { return _showNextPage; }
-            set { _showNextPage = value; RaisePropertyChanged(() => ShowNextPage); }
+            get { return _allowNextPage; }
+            set { _allowNextPage = value; RaisePropertyChanged(() => AllowNextPage); }
         }
 
         private string _prevPage;
@@ -46,18 +47,19 @@ namespace iCCup.UI.ViewModel
             get { return _prevPage; }
             set
             {
-                ShowPrevPage = !Equals(value, string.Empty);
+                AllowPrevPage = !Equals(value, string.Empty);
 
                 _prevPage = value;
                 RaisePropertyChanged(() => PrevPage);
             }
         }
 
-        private Boolean _showPrevPage;
-        public Boolean ShowPrevPage
+        // Currently used for disable button.
+        private Boolean _allowPrevPage;
+        public Boolean AllowPrevPage
         {
-            get { return _showPrevPage; }
-            set { _showPrevPage = value; RaisePropertyChanged(() => ShowPrevPage); }
+            get { return _allowPrevPage; }
+            set { _allowPrevPage = value; RaisePropertyChanged(() => AllowPrevPage); }
         }
     }
 }
