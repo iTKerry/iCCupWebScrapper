@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using iCCup.BL.Contracts;
+using iCCup.BL.Utils;
 using iCCup.DATA.Models;
 
 namespace iCCup.UI.ViewModel
@@ -32,6 +33,12 @@ namespace iCCup.UI.ViewModel
 
         public RelayCommand PrevPageCommand =>
             new RelayCommand(async () => await SearchNavigate(false));
+
+        public RelayCommand GetPlayerProfileCommand =>
+            new RelayCommand(() =>
+            { 
+                var profile = _scrapper.GetUserGameProfile(SelectedUserSearch.Url);
+            });
 
         public MainViewModel(IScrapperService scrapper)
         {

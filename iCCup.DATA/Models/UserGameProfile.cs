@@ -7,11 +7,5 @@
         public string Nickname { get; set; }
 
         public string GamesListUrl { get; set; }
-
-        public UserGameProfile(string url, string nickname)
-        {
-            this.Url = url;
-            this.Nickname = nickname;
-        }
     }
 }

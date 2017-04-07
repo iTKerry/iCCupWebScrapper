@@ -63,5 +63,16 @@ namespace iCCup.BL.Scrapper
         }
 
         #endregion
+
+        #region GameProfile
+
+        public async Task<UserGameProfile> GetPlayerProfile(Uri url)
+        {
+            var page = await _browser.NavigateToPageAsync(url);
+
+            return new UserGameProfile();
+        }
+
+        #endregion
     }
 }

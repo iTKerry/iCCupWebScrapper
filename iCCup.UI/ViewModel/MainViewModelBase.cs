@@ -10,7 +10,20 @@ namespace iCCup.UI.ViewModel
         public string PlayerName
         {
             get { return _playerName; }
-            set { _playerName = value; RaisePropertyChanged(() => PlayerName); }
+            set
+            {
+                _playerName = value;
+                if (!string.Equals(_playerName, string.Empty))
+                    SearchPlayerCommand.Execute(true);
+                RaisePropertyChanged(() => PlayerName);
+            }
+        }
+
+        private UserSearch _selectedUserSearch = new UserSearch {Nickname = "Search"};
+        public UserSearch SelectedUserSearch
+        {
+            get { return _selectedUserSearch; }
+            set { _selectedUserSearch = value; RaisePropertyChanged(() => SelectedUserSearch); }
         }
 
         private ObservableCollection<UserSearch> _players;

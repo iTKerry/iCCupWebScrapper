@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using iCCup.BL.Contracts;
 using iCCup.BL.Scrapper;
+using iCCup.BL.Utils;
 using iCCup.DATA.Models;
 
 namespace iCCup.BL.Service
@@ -26,9 +27,9 @@ namespace iCCup.BL.Service
             return _scrapper.SearchPlayer(url);
         }
 
-        public UserGameProfile GetUserGameProfile(string url)
+        public Task<UserGameProfile> GetUserGameProfile(string url)
         {
-            throw new System.NotImplementedException();
+            return _scrapper.GetPlayerProfile(new Uri($"{Globals.iCCupUrl}{url}"));
         }
 
         public List<UserGame> GetUserGameList(string url)

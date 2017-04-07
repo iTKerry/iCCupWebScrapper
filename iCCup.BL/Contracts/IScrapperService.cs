@@ -10,7 +10,7 @@ namespace iCCup.BL.Contracts
         Task<Tuple<List<UserSearch>, string, string>> SearchPlayer(string nickname);
         Task<Tuple<List<UserSearch>, string, string>> SearchPlayer(Uri url);
 
-        UserGameProfile GetUserGameProfile(string url);
+        Task<UserGameProfile> GetUserGameProfile(string url);
 
         List<UserGame> GetUserGameList(string url);
 

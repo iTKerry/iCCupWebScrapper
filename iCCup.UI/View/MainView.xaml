@@ -1,52 +1,58 @@
-﻿<Window x:Class="iCCup.UI.View.MainView"
+﻿<controls:MetroWindow x:Class="iCCup.UI.View.MainView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:dragablz="http://dragablz.net/winfx/xaml/dragablz"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525"
+        Title="iCCup Scrapper" Height="500" Width="700"
         ResizeMode="CanResizeWithGrip"
         DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
     <Grid>
-        <StackPanel Orientation="Horizontal">
-            <StackPanel 
-                Orientation="Vertical"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top">
-                <TextBox 
-                    Margin="10"
-                    Text="{Binding PlayerName}"
-                    Width="80"
-                    Height="20" />
-                <Button 
-                    Margin="10"
-                    Command="{Binding SearchPlayerCommand}"
-                    Width="80"
-                    Height="40"
-                    Content="Search" />
-            </StackPanel>
-            <StackPanel Orientation="Vertical">
-                <ListView ItemsSource="{Binding Players}">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Path=Nickname}"></TextBlock>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListView>
-                <StackPanel Orientation="Horizontal">
-                    <Button
-                        Width="80"
-                        Height="40"
-                        IsEnabled="{Binding AllowPrevPage}"
-                        Command="{Binding PrevPageCommand}">Prev</Button>
-                    <Button
-                        Width="80"
-                        Height="40"
-                        IsEnabled="{Binding AllowNextPage}"
-                        Command="{Binding NextPageCommand}">Next</Button>
-                </StackPanel>
-            </StackPanel>
-        </StackPanel>
+        <dragablz:TabablzControl>
+            <dragablz:TabablzControl.InterTabController>
+                <dragablz:InterTabController />
+            </dragablz:TabablzControl.InterTabController>
+            <TabItem Header="{Binding SelectedUserSearch.Nickname}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="70"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10">
+                        <TextBox materialDesign:HintAssist.Hint="Search" Margin="10" Width="100" VerticalAlignment="Stretch" Text="{Binding PlayerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <Button VerticalAlignment="Stretch" Width="80" IsEnabled="{Binding AllowPrevPage}" Command="{Binding PrevPageCommand}">Prev</Button>
+                        <Button VerticalAlignment="Stretch" Width="80" IsEnabled="{Binding AllowNextPage}" Command="{Binding NextPageCommand}">Next</Button>
+                    </StackPanel>
+                    <Grid Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" CanContentScroll="True">
+                            <ItemsControl ItemsSource="{Binding Players}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <materialDesign:Card Width="150" Margin="10">
+                                            <Grid>
+                                                <TextBlock Margin="10" Text="{Binding Nickname}" VerticalAlignment="Center" />
+                                                <Button VerticalAlignment="Stretch" HorizontalAlignment="Right"></Button>
+                                            </Grid>
+                                        </materialDesign:Card>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel Orientation="Horizontal" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </Grid>
+                </Grid>
+            </TabItem>
+        </dragablz:TabablzControl>
     </Grid>
-</Window>
+</controls:MetroWindow>
 
