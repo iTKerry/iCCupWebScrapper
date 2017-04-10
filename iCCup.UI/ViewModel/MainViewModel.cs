@@ -1,64 +1,33 @@
-using System;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
+using Dragablz;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using iCCup.BL.Contracts;
-using iCCup.BL.Utils;
-using iCCup.DATA.Models;
+using iCCup.UI.Tabablz;
 
 namespace iCCup.UI.ViewModel
 {
-    public partial class MainViewModel : ViewModelBase
+    public class MainViewModel : ViewModelBase
     {
-        private readonly IScrapperService _scrapper;
-
-        public RelayCommand SearchPlayerCommand =>
-            new RelayCommand(async () =>
-            {
-                Players.Clear();
-
-                var searchResults = await _scrapper.SearchPlayer(PlayerName ?? "");
-                NextPage = searchResults.Item2;
-                PrevPage = searchResults.Item3;
-
-                foreach (var player in searchResults.Item1)
-                {
-                    Players.Add(player);
-                }
-            });
-
-        public RelayCommand NextPageCommand =>
-            new RelayCommand(async () => await SearchNavigate(true));
-
-        public RelayCommand PrevPageCommand =>
-            new RelayCommand(async () => await SearchNavigate(false));
-
-        public RelayCommand GetPlayerProfileCommand =>
-            new RelayCommand(() =>
-            { 
-                var profile = _scrapper.GetUserGameProfile(SelectedUserSearch.Url);
-            });
-
-        public MainViewModel(IScrapperService scrapper)
+        public RelayCommand AddTabItemCommand => new RelayCommand(() =>
         {
-            _scrapper = scrapper;
-            Players = new ObservableCollection<UserSearch>();
+            var item = TabFactory.Factory.Invoke();
+            Items.Add(item);
+            SelectedIndx = Items.IndexOf(item);
+        });
+
+        public MainViewModel()
+        {
+            SelectedIndx = 0;
+            Items = new ObservableCollection<HeaderedItemViewModel> {TabFactory.Factory.Invoke()};
         }
 
-        private async Task SearchNavigate(bool ahead)
-        {
-            Players.Clear();
-            var searchResults = await _scrapper.SearchPlayer(ahead
-                ? new Uri(NextPage)
-                : new Uri(PrevPage));
-            NextPage = searchResults.Item2;
-            PrevPage = searchResults.Item3;
+        public ObservableCollection<HeaderedItemViewModel> Items { get; }
 
-            foreach (var player in searchResults.Item1)
-            {
-                Players.Add(player);
-            }
+        private int _selectedIndx;
+        public int SelectedIndx
+        {
+            get { return _selectedIndx; }
+            set { _selectedIndx = value; RaisePropertyChanged(() => SelectedIndx); }
         }
     }
 }

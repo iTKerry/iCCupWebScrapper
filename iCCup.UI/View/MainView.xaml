@@ -4,55 +4,42 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:dragablz="http://dragablz.net/winfx/xaml/dragablz"
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d"
-        Title="iCCup Scrapper" Height="500" Width="700"
+        xmlns:tabablz="clr-namespace:iCCup.UI.Tabablz"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="iCCup Scrapper" Height="800" Width="1000"
         ResizeMode="CanResizeWithGrip"
+        
         DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
+    <controls:MetroWindow.Resources>
+        <ResourceDictionary>
+            <DataTemplate DataType="{x:Type dragablz:HeaderedItemViewModel}">
+                <ContentControl Content="{Binding Content}" />
+            </DataTemplate>
+        </ResourceDictionary>
+    </controls:MetroWindow.Resources>
     <Grid>
-        <dragablz:TabablzControl>
-            <dragablz:TabablzControl.InterTabController>
-                <dragablz:InterTabController />
-            </dragablz:TabablzControl.InterTabController>
-            <TabItem Header="{Binding SelectedUserSearch.Nickname}">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="70"></RowDefinition>
-                        <RowDefinition Height="*"></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10">
-                        <TextBox materialDesign:HintAssist.Hint="Search" Margin="10" Width="100" VerticalAlignment="Stretch" Text="{Binding PlayerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        <Button VerticalAlignment="Stretch" Width="80" IsEnabled="{Binding AllowPrevPage}" Command="{Binding PrevPageCommand}">Prev</Button>
-                        <Button VerticalAlignment="Stretch" Width="80" IsEnabled="{Binding AllowNextPage}" Command="{Binding NextPageCommand}">Next</Button>
-                    </StackPanel>
-                    <Grid Grid.Row="1">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"></RowDefinition>
-                        </Grid.RowDefinitions>
-                        <ScrollViewer VerticalScrollBarVisibility="Auto" CanContentScroll="True">
-                            <ItemsControl ItemsSource="{Binding Players}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <materialDesign:Card Width="150" Margin="10">
-                                            <Grid>
-                                                <TextBlock Margin="10" Text="{Binding Nickname}" VerticalAlignment="Center" />
-                                                <Button VerticalAlignment="Stretch" HorizontalAlignment="Right"></Button>
-                                            </Grid>
-                                        </materialDesign:Card>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <WrapPanel Orientation="Horizontal" />
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                            </ItemsControl>
-                        </ScrollViewer>
-                    </Grid>
-                </Grid>
-            </TabItem>
+        <dragablz:TabablzControl 
+            x:Name="InitialTabablzControl"
+            AddLocationHint="After"
+            ItemsSource="{Binding Items}"
+            NewItemFactory="{x:Static tabablz:TabFactory.Factory}"
+            ShowDefaultCloseButton="True"
+            HeaderMemberPath="Header"
+            SelectedIndex="{Binding SelectedIndx}">
+            <dragablz:TabablzControl.HeaderPrefixContent>
+                <Image Source="../Assets/logotype.png" Width="30" Height="40"></Image>
+            </dragablz:TabablzControl.HeaderPrefixContent>
         </dragablz:TabablzControl>
+        <Button
+            Style="{StaticResource MaterialDesignFloatingActionAccentButton}"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Command="{Binding AddTabItemCommand}"
+            Margin="10">
+            <materialDesign:PackIcon Kind="Plus" Height="24" Width="24" />
+        </Button>
     </Grid>
 </controls:MetroWindow>
 
