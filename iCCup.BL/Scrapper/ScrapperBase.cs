@@ -37,21 +37,37 @@ namespace iCCup.BL.Scrapper
 
         private async Task<Tuple<List<UserSearch>, string, string>> Search(Uri url)
         {
-            List<UserSearch> result = new List<UserSearch>();
             var nextPageUrl = "";
             var prevPageUrl = "";
 
             var page = await _browser.NavigateToPageAsync(url);
-            var table = page.Html.CssSelect(".search-user h2 a.profile-view-link");
-            var links = table.Select(i => i.GetAttributeValue("href"));
-
-            result.AddRange(links.Select(l => new UserSearch
-            {
-                Url = l,
-                Nickname = l
-                    .Replace("gamingprofile/", "")
-                    .Replace(".html", "")
-            }));
+            var playerTabs = page.Html.CssSelect(".search-user");
+            List<UserSearch> result = (from playerTab in playerTabs
+                let parsedUrl = playerTab.CssSelect("h2 a.profile-view-link").First().GetAttributeValue("href")
+                let parsedNickname = parsedUrl.Replace("gamingprofile/", "").Replace(".html", "")
+                let ranks =
+                playerTab.CssSelect("div")
+                    .Where(div => Globals.Ranks.ContainsKey(div.GetAttributeValue("class")))
+                    .ToArray()
+                let stats =
+                playerTab.CssSelect(".search-info .left")
+                    .Select(node => node.InnerText)
+                    .Where(t => t.Contains('-'))
+                    .Select(s => s.Split('-').Select(str => str.ToInteger()).ToArray())
+                    .ToArray()
+                select new UserSearch
+                {
+                    Url = parsedUrl,
+                    Nickname = parsedNickname,
+                    Pts5V5 = int.Parse(ranks[0].GetAttributeValue("title")),
+                    Rank5V5 = Globals.Ranks[ranks[0].GetAttributeValue("class")],
+                    Win5V5 = stats[0][0],
+                    Lose5V5 = stats[0][1],
+                    Pts3V3 = int.Parse(ranks[1].GetAttributeValue("title")),
+                    Rank3V3 = Globals.Ranks[ranks[1].GetAttributeValue("class")],
+                    Win3V3 = stats[1][0],
+                    Lose3V3 = stats[1][1]
+                }).ToList();
 
             if (page.Html.CssSelect(".next a").Any())
                 nextPageUrl = Globals.iCCupUrl + page.Html.CssSelect(".next a").First().GetAttributeValue("href");

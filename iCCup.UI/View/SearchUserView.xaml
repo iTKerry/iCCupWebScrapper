@@ -7,6 +7,11 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     mc:Ignorable="d"
     DataContext="{Binding Source={StaticResource Locator}, Path=SearchUser}">
+    <UserControl.Resources>
+        <Style TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignCaptionTextBlock}" x:Key="Caption">
+            <Setter Property="Opacity" Value=".68"></Setter>
+        </Style>
+    </UserControl.Resources>
     <DockPanel>
         <materialDesign:TransitioningContent DockPanel.Dock="Top">
             <materialDesign:TransitioningContent.OpeningEffects>
@@ -33,15 +38,80 @@
                     <DataTemplate>
                         <materialDesign:TransitioningContent>
                             <materialDesign:TransitioningContent.OpeningEffects>
-                                <materialDesign:TransitionEffect Kind="SlideInFromRight" Duration="0:0:0.4" />
-                                <materialDesign:TransitionEffect Kind="FadeIn" Duration="0:0:0.4" />
+                                <materialDesign:TransitionEffect Kind="SlideInFromRight" Duration="0:0:0.5" />
+                                <materialDesign:TransitionEffect Kind="FadeIn" Duration="0:0:0.5" />
                             </materialDesign:TransitioningContent.OpeningEffects>
-                            <materialDesign:Card Width="150" Margin="10">
-                                <Grid>
-                                    <TextBlock Margin="10" Text="{Binding Nickname}" VerticalAlignment="Center" />
-                                    <Button VerticalAlignment="Stretch" HorizontalAlignment="Right"></Button>
-                                </Grid>
-                            </materialDesign:Card>
+                            <materialDesign:Flipper Style="{StaticResource MaterialDesignCardFlipper}" >
+                                <materialDesign:Flipper.FrontContent>
+                                    <Grid Width="200">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Margin="16 16 16 4" Style="{StaticResource MaterialDesignHeadlineTextBlock}" Text="{Binding Nickname}" />
+                                        <Rectangle Grid.Row="1" Width="190" Height="1" Margin="2" Stroke="{StaticResource AccentColorBrush}" />
+                                        <Grid Grid.Row="2">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding Pts5V5}" Margin="10,10,2,10" Style="{StaticResource MaterialDesignTitleTextBlock}" />
+                                                <TextBlock Text="{Binding Rank5V5}" Margin="2,10,10,10" Style="{StaticResource MaterialDesignTitleTextBlock}" />
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding Win5V5}" Margin="10,10,4,10" Foreground="SeaGreen" Style="{StaticResource MaterialDesignTitleTextBlock}" />
+                                                <TextBlock Text="{Binding Lose5V5}" Margin="4,10,10,10" Foreground="DarkRed" Style="{StaticResource MaterialDesignTitleTextBlock}" />
+                                            </StackPanel>
+                                        </Grid>
+                                        <Button 
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Center"
+                                            Grid.Row="3"
+                                            Style="{StaticResource MaterialDesignFlatButton}"
+                                            Command="{x:Static materialDesign:Flipper.FlipCommand}"
+                                            Margin="10">
+                                            View 3x3
+                                        </Button>
+                                        <Button
+                                            HorizontalAlignment="Right"
+                                            VerticalAlignment="Center"
+                                            Grid.Row="3"
+                                            Margin="10">
+                                            Details
+                                        </Button>
+                                    </Grid>
+                                </materialDesign:Flipper.FrontContent>
+                                <materialDesign:Flipper.BackContent>
+                                    <Grid Width="200">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Grid.Row="0" Margin="16 16 16 4" Style="{StaticResource MaterialDesignHeadlineTextBlock}" Text="{Binding Nickname}" />
+                                        <Separator Grid.Row="1" Style="{StaticResource MaterialDesignLightSeparator}" Foreground="{StaticResource AccentColorBrush4}"/>
+                                        <Button 
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Center"
+                                            Grid.Row="2"
+                                            Style="{StaticResource MaterialDesignFlatButton}"
+                                            Command="{x:Static materialDesign:Flipper.FlipCommand}"
+                                            Margin="10">
+                                            View 5x5
+                                        </Button>
+                                        <Button
+                                            HorizontalAlignment="Right"
+                                            VerticalAlignment="Center"
+                                            Grid.Row="2"
+                                            Margin="10">
+                                            Details
+                                        </Button>
+                                    </Grid>
+                                </materialDesign:Flipper.BackContent>
+                            </materialDesign:Flipper>
                         </materialDesign:TransitioningContent>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>

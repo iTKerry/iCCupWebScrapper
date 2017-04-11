@@ -15,7 +15,7 @@ namespace iCCup.UI.ViewModel
         private readonly IScrapperService _scrapper;
 
         public RelayCommand SearchPlayerCommand =>
-            new RelayCommand(() => Task.Factory.StartNew(async () => await SearchPlayerTask()));
+            new RelayCommand(async () => await Task.Factory.StartNew(async () => await SearchPlayerTask()));
 
         public RelayCommand NextPageCommand =>
             new RelayCommand(async () => await SearchNavigate(true));
@@ -51,7 +51,6 @@ namespace iCCup.UI.ViewModel
 
             foreach (var player in searchResults.Item1)
             {
-                await Task.Delay(20);
                 DispatcherHelper.CheckBeginInvokeOnUI(() => Players.Add(player));
             }
         }
@@ -71,7 +70,6 @@ namespace iCCup.UI.ViewModel
 
             foreach (var player in searchResults.Item1)
             {
-                await Task.Delay(20);
                 DispatcherHelper.CheckBeginInvokeOnUI(() => Players.Add(player));
             }
         }
