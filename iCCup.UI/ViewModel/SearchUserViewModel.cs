@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Threading;
 using iCCup.BL.Contracts;
 using iCCup.DATA.Models;
 using iCCup.UI.Tabablz;
@@ -14,19 +15,7 @@ namespace iCCup.UI.ViewModel
         private readonly IScrapperService _scrapper;
 
         public RelayCommand SearchPlayerCommand =>
-            new RelayCommand(async () =>
-            {
-                Players.Clear();
-
-                var searchResults = await _scrapper.SearchPlayer(PlayerName ?? "");
-                NextPage = searchResults.Item2;
-                PrevPage = searchResults.Item3;
-
-                foreach (var player in searchResults.Item1)
-                {
-                    Players.Add(player);
-                }
-            });
+            new RelayCommand(() => Task.Factory.StartNew(async () => await SearchPlayerTask()));
 
         public RelayCommand NextPageCommand =>
             new RelayCommand(async () => await SearchNavigate(true));
@@ -44,23 +33,46 @@ namespace iCCup.UI.ViewModel
         {
             _scrapper = scrapper;
 
-            this.Hvm = hvm;
-            this.Header = PlayerName ?? "Search";
+            Hvm = hvm;
+            Header = PlayerName ?? "Search";
             Players = new ObservableCollection<UserSearch>();
+        }
+
+        private async Task SearchPlayerTask()
+        {
+            var searchResults = await _scrapper.SearchPlayer(PlayerName ?? "");
+
+            DispatcherHelper.CheckBeginInvokeOnUI(() =>
+            {
+                Players.Clear();
+                NextPage = searchResults.Item2;
+                PrevPage = searchResults.Item3;
+            });
+
+            foreach (var player in searchResults.Item1)
+            {
+                await Task.Delay(20);
+                DispatcherHelper.CheckBeginInvokeOnUI(() => Players.Add(player));
+            }
         }
 
         private async Task SearchNavigate(bool ahead)
         {
-            Players.Clear();
             var searchResults = await _scrapper.SearchPlayer(ahead
                 ? new Uri(NextPage)
                 : new Uri(PrevPage));
-            NextPage = searchResults.Item2;
-            PrevPage = searchResults.Item3;
+
+            DispatcherHelper.CheckBeginInvokeOnUI(() =>
+            {
+                Players.Clear();
+                NextPage = searchResults.Item2;
+                PrevPage = searchResults.Item3;
+            });
 
             foreach (var player in searchResults.Item1)
             {
-                Players.Add(player);
+                await Task.Delay(20);
+                DispatcherHelper.CheckBeginInvokeOnUI(() => Players.Add(player));
             }
         }
 
