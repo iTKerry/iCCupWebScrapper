@@ -22,7 +22,11 @@
                 <TextBox 
                     materialDesign:HintAssist.Hint="Search" 
                     Margin="10" Width="100" VerticalAlignment="Stretch" 
-                    Text="{Binding PlayerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    Text="{Binding PlayerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="Enter" Command="{Binding SearchPlayerCommand}" />
+                    </TextBox.InputBindings>
+                </TextBox>
                 <Button 
                     VerticalAlignment="Stretch" Width="80" IsEnabled="{Binding AllowPrevPage}" 
                     Command="{Binding PrevPageCommand}" Style="{StaticResource MaterialDesignFlatButton}">Prev</Button>
@@ -32,14 +36,14 @@
             </StackPanel>
         </materialDesign:TransitioningContent>
 
-        <ScrollViewer Margin="0 12 0 0">
+        <ScrollViewer Margin="10">
             <ItemsControl ItemsSource="{Binding Players}" VerticalAlignment="Top" Margin="0 4 0 0">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <materialDesign:TransitioningContent>
                             <materialDesign:TransitioningContent.OpeningEffects>
-                                <materialDesign:TransitionEffect Kind="SlideInFromRight" Duration="0:0:0.5" />
-                                <materialDesign:TransitionEffect Kind="FadeIn" Duration="0:0:0.5" />
+                                <materialDesign:TransitionEffect Kind="SlideInFromRight" Duration="0:0:1" />
+                                <materialDesign:TransitionEffect Kind="FadeIn" Duration="0:0:1" />
                             </materialDesign:TransitioningContent.OpeningEffects>
                             <materialDesign:Flipper Style="{StaticResource MaterialDesignCardFlipper}" >
                                 <materialDesign:Flipper.FrontContent>
@@ -50,7 +54,7 @@
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
-                                        <TextBlock Margin="16 16 16 4" Style="{StaticResource MaterialDesignHeadlineTextBlock}" Text="{Binding Nickname}" />
+                                        <TextBlock HorizontalAlignment="Center" Margin="16 16 16 4" Style="{StaticResource MaterialDesignHeadlineTextBlock}" Text="{Binding Nickname}" />
                                         <Rectangle Grid.Row="1" Width="190" Height="1" Margin="2" Stroke="{StaticResource AccentColorBrush}" />
                                         <Grid Grid.Row="2">
                                             <Grid.ColumnDefinitions>
@@ -67,19 +71,19 @@
                                             </StackPanel>
                                         </Grid>
                                         <Button 
-                                            HorizontalAlignment="Left"
-                                            VerticalAlignment="Center"
-                                            Grid.Row="3"
-                                            Style="{StaticResource MaterialDesignFlatButton}"
-                                            Command="{x:Static materialDesign:Flipper.FlipCommand}"
-                                            Margin="10">
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Center"
+                                                Grid.Row="3"
+                                                Style="{StaticResource MaterialDesignFlatButton}"
+                                                Command="{x:Static materialDesign:Flipper.FlipCommand}"
+                                                Margin="10">
                                             View 3x3
                                         </Button>
                                         <Button
-                                            HorizontalAlignment="Right"
-                                            VerticalAlignment="Center"
-                                            Grid.Row="3"
-                                            Margin="10">
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Center"
+                                                Grid.Row="3"
+                                                Margin="10">
                                             Details
                                         </Button>
                                     </Grid>
@@ -90,23 +94,38 @@
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
-                                        <TextBlock Grid.Row="0" Margin="16 16 16 4" Style="{StaticResource MaterialDesignHeadlineTextBlock}" Text="{Binding Nickname}" />
-                                        <Separator Grid.Row="1" Style="{StaticResource MaterialDesignLightSeparator}" Foreground="{StaticResource AccentColorBrush4}"/>
+                                        <TextBlock HorizontalAlignment="Center" Margin="16 16 16 4" Style="{StaticResource MaterialDesignHeadlineTextBlock}" Text="{Binding Nickname}" />
+                                        <Rectangle Grid.Row="1" Width="190" Height="1" Margin="2" Stroke="{StaticResource AccentColorBrush}" />
+                                        <Grid Grid.Row="2">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding Pts3V3}" Margin="10,10,2,10" Style="{StaticResource MaterialDesignTitleTextBlock}" />
+                                                <TextBlock Text="{Binding Rank3V3}" Margin="2,10,10,10" Style="{StaticResource MaterialDesignTitleTextBlock}" />
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding Win3V3}" Margin="10,10,4,10" Foreground="SeaGreen" Style="{StaticResource MaterialDesignTitleTextBlock}" />
+                                                <TextBlock Text="{Binding Lose3V3}" Margin="4,10,10,10" Foreground="DarkRed" Style="{StaticResource MaterialDesignTitleTextBlock}" />
+                                            </StackPanel>
+                                        </Grid>
                                         <Button 
-                                            HorizontalAlignment="Left"
-                                            VerticalAlignment="Center"
-                                            Grid.Row="2"
-                                            Style="{StaticResource MaterialDesignFlatButton}"
-                                            Command="{x:Static materialDesign:Flipper.FlipCommand}"
-                                            Margin="10">
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Center"
+                                                Grid.Row="3"
+                                                Style="{StaticResource MaterialDesignFlatButton}"
+                                                Command="{x:Static materialDesign:Flipper.FlipCommand}"
+                                                Margin="10">
                                             View 5x5
                                         </Button>
                                         <Button
-                                            HorizontalAlignment="Right"
-                                            VerticalAlignment="Center"
-                                            Grid.Row="2"
-                                            Margin="10">
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Center"
+                                                Grid.Row="3"
+                                                Margin="10">
                                             Details
                                         </Button>
                                     </Grid>

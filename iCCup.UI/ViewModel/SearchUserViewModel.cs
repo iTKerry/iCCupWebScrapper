@@ -36,6 +36,20 @@ namespace iCCup.UI.ViewModel
             Hvm = hvm;
             Header = PlayerName ?? "Search";
             Players = new ObservableCollection<UserSearch>();
+#if DEBUG
+            Players.Add(new UserSearch
+            {
+                Nickname = "iTKerry",
+                Pts5V5 = 3755,
+                Rank5V5 = "C-",
+                Win5V5 = 33,
+                Lose5V5 = 26,
+                Pts3V3 = 1000,
+                Rank3V3 = "D",
+                Win3V3 = 0,
+                Lose3V3 = 0
+            });
+#endif
         }
 
         private async Task SearchPlayerTask()
@@ -51,6 +65,7 @@ namespace iCCup.UI.ViewModel
 
             foreach (var player in searchResults.Item1)
             {
+                await Task.Delay(70);
                 DispatcherHelper.CheckBeginInvokeOnUI(() => Players.Add(player));
             }
         }
@@ -70,6 +85,7 @@ namespace iCCup.UI.ViewModel
 
             foreach (var player in searchResults.Item1)
             {
+                await Task.Delay(70);
                 DispatcherHelper.CheckBeginInvokeOnUI(() => Players.Add(player));
             }
         }
@@ -98,7 +114,6 @@ namespace iCCup.UI.ViewModel
                 _playerName = value;
                 if (!string.Equals(_playerName, string.Empty))
                 {
-                    SearchPlayerCommand.Execute(true);
                     RaisePropertyChanged(() => Header);
                 }
                 RaisePropertyChanged(() => PlayerName);
