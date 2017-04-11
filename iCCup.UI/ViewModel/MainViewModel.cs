@@ -15,6 +15,8 @@ namespace iCCup.UI.ViewModel
             SelectedIndx = Items.IndexOf(item);
         });
 
+        public RelayCommand ShowFlyoutCommand => new RelayCommand(() => ShowFlyout = true);
+
         public MainViewModel()
         {
             SelectedIndx = 0;
@@ -28,6 +30,13 @@ namespace iCCup.UI.ViewModel
         {
             get { return _selectedIndx; }
             set { _selectedIndx = value; RaisePropertyChanged(() => SelectedIndx); }
+        }
+
+        private bool _showFlyout;
+        public bool ShowFlyout
+        {
+            get { return _showFlyout; }
+            set { _showFlyout = value; RaisePropertyChanged(() => ShowFlyout); }
         }
     }
 }

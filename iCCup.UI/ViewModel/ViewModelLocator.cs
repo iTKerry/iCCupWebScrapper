@@ -17,6 +17,5 @@ namespace iCCup.UI.ViewModel
         }
 
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
-        public SearchUserViewModel SearchUser => ServiceLocator.Current.GetInstance<SearchUserViewModel>();
     }
 }

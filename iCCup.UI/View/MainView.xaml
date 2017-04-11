@@ -8,9 +8,10 @@
         mc:Ignorable="d"
         xmlns:tabablz="clr-namespace:iCCup.UI.Tabablz"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         Title="iCCup Scrapper" Height="800" Width="1000"
         ResizeMode="CanResizeWithGrip"
-        
+        WindowButtonCommandsOverlayBehavior="Never"
         DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
@@ -19,6 +20,32 @@
             </DataTemplate>
         </ResourceDictionary>
     </controls:MetroWindow.Resources>
+    <controls:MetroWindow.LeftWindowCommands>
+        <controls:WindowCommands ShowSeparators="False">
+            <Button Command="{Binding ShowFlyoutCommand}">
+                <Button.Content>
+                    <iconPacks:PackIconFontAwesome
+                        VerticalAlignment="Stretch"
+                        HorizontalAlignment="Stretch"
+                        Kind="Cog"/>
+                </Button.Content>
+            </Button>
+        </controls:WindowCommands>
+    </controls:MetroWindow.LeftWindowCommands>
+    <controls:MetroWindow.Flyouts>
+        <controls:FlyoutsControl>
+            <controls:Flyout
+                x:Name="Flyout"
+                Header="Settings" 
+                Width="250"
+                Position="Left"
+                Theme="Light"
+                IsModal="True"
+                IsOpen="{Binding ShowFlyout}">
+                <!-- Content -->
+            </controls:Flyout>
+        </controls:FlyoutsControl>
+    </controls:MetroWindow.Flyouts>
     <Grid>
         <dragablz:TabablzControl 
             x:Name="InitialTabablzControl"

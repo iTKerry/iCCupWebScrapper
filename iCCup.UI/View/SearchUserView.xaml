@@ -7,41 +7,50 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     mc:Ignorable="d"
     DataContext="{Binding Source={StaticResource Locator}, Path=SearchUser}">
-    <Grid>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="70"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
-            </Grid.RowDefinitions>
-            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10">
-                <TextBox materialDesign:HintAssist.Hint="Search" Margin="10" Width="100" VerticalAlignment="Stretch" Text="{Binding PlayerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                <Button VerticalAlignment="Stretch" Width="80" IsEnabled="{Binding AllowPrevPage}" Command="{Binding PrevPageCommand}" Style="{StaticResource MaterialDesignFlatButton}">Prev</Button>
-                <Button VerticalAlignment="Stretch" Width="80" IsEnabled="{Binding AllowNextPage}" Command="{Binding NextPageCommand}" Style="{StaticResource MaterialDesignFlatButton}">Next</Button>
+    <DockPanel>
+        <materialDesign:TransitioningContent DockPanel.Dock="Top">
+            <materialDesign:TransitioningContent.OpeningEffects>
+                <materialDesign:TransitionEffect Kind="SlideInFromTop" Duration="0:0:0.5" />
+                <materialDesign:TransitionEffect Kind="FadeIn" Duration="0:0:0.5" />
+            </materialDesign:TransitioningContent.OpeningEffects>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10">
+                <TextBox 
+                    materialDesign:HintAssist.Hint="Search" 
+                    Margin="10" Width="100" VerticalAlignment="Stretch" 
+                    Text="{Binding PlayerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <Button 
+                    VerticalAlignment="Stretch" Width="80" IsEnabled="{Binding AllowPrevPage}" 
+                    Command="{Binding PrevPageCommand}" Style="{StaticResource MaterialDesignFlatButton}">Prev</Button>
+                <Button 
+                    VerticalAlignment="Stretch" Width="80" IsEnabled="{Binding AllowNextPage}" 
+                    Command="{Binding NextPageCommand}" Style="{StaticResource MaterialDesignFlatButton}">Next</Button>
             </StackPanel>
-            <Grid Grid.Row="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"></RowDefinition>
-                </Grid.RowDefinitions>
-                <ScrollViewer VerticalScrollBarVisibility="Auto" CanContentScroll="True">
-                    <ItemsControl ItemsSource="{Binding Players}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <materialDesign:Card Width="150" Margin="10">
-                                    <Grid>
-                                        <TextBlock Margin="10" Text="{Binding Nickname}" VerticalAlignment="Center" />
-                                        <Button VerticalAlignment="Stretch" HorizontalAlignment="Right"></Button>
-                                    </Grid>
-                                </materialDesign:Card>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <WrapPanel Orientation="Horizontal" />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                    </ItemsControl>
-                </ScrollViewer>
-            </Grid>
-        </Grid>
-    </Grid>
+        </materialDesign:TransitioningContent>
+
+        <ScrollViewer Margin="0 12 0 0">
+            <ItemsControl ItemsSource="{Binding Players}" VerticalAlignment="Top" Margin="0 4 0 0">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <materialDesign:TransitioningContent>
+                            <materialDesign:TransitioningContent.OpeningEffects>
+                                <materialDesign:TransitionEffect Kind="SlideInFromRight" Duration="0:0:0.4" />
+                                <materialDesign:TransitionEffect Kind="FadeIn" Duration="0:0:0.4" />
+                            </materialDesign:TransitioningContent.OpeningEffects>
+                            <materialDesign:Card Width="150" Margin="10">
+                                <Grid>
+                                    <TextBlock Margin="10" Text="{Binding Nickname}" VerticalAlignment="Center" />
+                                    <Button VerticalAlignment="Stretch" HorizontalAlignment="Right"></Button>
+                                </Grid>
+                            </materialDesign:Card>
+                        </materialDesign:TransitioningContent>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </ScrollViewer>
+    </DockPanel>
 </UserControl>
