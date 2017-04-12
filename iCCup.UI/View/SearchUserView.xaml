@@ -38,7 +38,7 @@
         </materialDesign:TransitioningContent>
         <DockPanel Margin="32 14 32 2" DockPanel.Dock="Top">
             <Separator Opacity="0" Width="16"/>
-            <TextBlock Width="110" TextAlignment="Center" Style="{StaticResource Caption}">Nickname</TextBlock>
+            <TextBlock Width="110" TextAlignment="Left" Style="{StaticResource Caption}">Nickname</TextBlock>
             <Separator Opacity="0" Width="16"/>
             <Separator Opacity="0" Width="40"/>
             <TextBlock Width="20" TextAlignment="Right" Style="{StaticResource Caption}">5x5</TextBlock>
@@ -80,20 +80,20 @@
                             <materialDesign:TransitionEffect Kind="SlideInFromTop" />
                             <materialDesign:TransitionEffect Kind="FadeIn" />
                         </materialDesign:TransitioningContent.OpeningEffects>
-                        <materialDesign:ColorZone Mode="PrimaryLight" CornerRadius="3" materialDesign:ShadowAssist.ShadowDepth="Depth1" Margin="2">
+                        <materialDesign:ColorZone Mode="Light" CornerRadius="3" materialDesign:ShadowAssist.ShadowDepth="Depth1" Margin="2">
                             <DockPanel Height="30">
                                 <TextBlock Text="{Binding Nickname}" Width="110" VerticalAlignment="Center" DockPanel.Dock="Left" Margin="16 0 16 0"
-                                           Style="{StaticResource MaterialDesignSubheadingTextBlock}" TextAlignment="Center" />
+                                           Style="{StaticResource MaterialDesignSubheadingTextBlock}" TextAlignment="Left" />
                                 <Separator Opacity="0" Width="70"/>
                                 <StackPanel Orientation="Horizontal">
-                                    <materialDesign:ColorZone Mode="PrimaryMid" VerticalAlignment="Center" Width="90" Height="26" CornerRadius="2">
+                                    <materialDesign:ColorZone Mode="PrimaryLight" VerticalAlignment="Center" Width="90" Height="26" CornerRadius="2">
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
                                             <TextBlock Text="{Binding Pts5V5}" Width="40" Margin="4,0,0,0" TextAlignment="Center" />
                                             <TextBlock Text="{Binding Rank5V5}" Width="40" Margin="0,0,4,0" TextAlignment="Center" />
                                         </StackPanel>
                                     </materialDesign:ColorZone>
                                     <Separator Opacity="0" Width="20"/>
-                                    <materialDesign:ColorZone Mode="PrimaryDark" VerticalAlignment="Center" Width="90" Height="26" CornerRadius="2">
+                                    <materialDesign:ColorZone Mode="Standard" VerticalAlignment="Center" Width="90" Height="26" CornerRadius="2">
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
                                             <TextBlock Text="{Binding Win5V5}" Width="40" Margin="4,0,0,0" TextAlignment="Center" />
                                             <TextBlock Text="{Binding Lose5V5}" Width="40" Margin="0,0,4,0" TextAlignment="Center" />
@@ -102,14 +102,14 @@
                                 </StackPanel>
                                 <Separator Opacity="0" Width="70"/>
                                 <StackPanel Orientation="Horizontal">
-                                    <materialDesign:ColorZone Mode="PrimaryMid" VerticalAlignment="Center" Width="90" Height="26" CornerRadius="2">
+                                    <materialDesign:ColorZone Mode="PrimaryLight" VerticalAlignment="Center" Width="90" Height="26" CornerRadius="2">
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
                                             <TextBlock Text="{Binding Pts3V3}" Width="40" Margin="4,0,0,0" TextAlignment="Center" />
                                             <TextBlock Text="{Binding Rank3V3}" Width="40" Margin="0,0,4,0" TextAlignment="Center" />
                                         </StackPanel>
                                     </materialDesign:ColorZone>
                                     <Separator Opacity="0" Width="20"/>
-                                    <materialDesign:ColorZone Mode="PrimaryDark" VerticalAlignment="Center" Width="90" Height="26" CornerRadius="2">
+                                    <materialDesign:ColorZone Mode="Standard" VerticalAlignment="Center" Width="90" Height="26" CornerRadius="2">
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
                                             <TextBlock Text="{Binding Win3V3}" Width="40" Margin="4,0,0,0" TextAlignment="Center" />
                                             <TextBlock Text="{Binding Lose3V3}" Width="40" Margin="0,0,4,0" TextAlignment="Center" />
