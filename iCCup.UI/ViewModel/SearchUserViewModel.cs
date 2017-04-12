@@ -88,7 +88,7 @@ namespace iCCup.UI.ViewModel
 
                 foreach (var player in searchResults.Item1)
                 {
-                    await Task.Delay(120, _ct);
+                    await Task.Delay(15, _ct);
                     DispatcherHelper.CheckBeginInvokeOnUI(() => Players.Add(player));
                 }
             }
@@ -123,7 +123,8 @@ namespace iCCup.UI.ViewModel
                 _playerName = value;
                 if (!string.Equals(_playerName, string.Empty))
                 {
-                    SearchPlayerCommand.Execute(true);
+                    if(_playerName.Length >= 3)
+                        //SearchPlayerCommand.Execute(true);
                     RaisePropertyChanged(() => Header);
                 }
                 RaisePropertyChanged(() => PlayerName);

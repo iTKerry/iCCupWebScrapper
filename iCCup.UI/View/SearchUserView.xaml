@@ -5,6 +5,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:local="clr-namespace:iCCup.UI.ViewModel"
     mc:Ignorable="d"
     DataContext="{Binding Source={StaticResource Locator}, Path=SearchUser}">
     <UserControl.Resources>
@@ -15,17 +16,17 @@
     <DockPanel>
         <materialDesign:TransitioningContent DockPanel.Dock="Top">
             <materialDesign:TransitioningContent.OpeningEffects>
-                <materialDesign:TransitionEffect Kind="SlideInFromTop" Duration="0:0:0.2" />
-                <materialDesign:TransitionEffect Kind="FadeIn" Duration="0:0:0.2" />
+                <materialDesign:TransitionEffect Kind="SlideInFromTop" Duration="0:0:0.5" />
+                <materialDesign:TransitionEffect Kind="FadeIn" Duration="0:0:0.5" />
             </materialDesign:TransitioningContent.OpeningEffects>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10">
                 <TextBox 
                     materialDesign:HintAssist.Hint="Search" 
                     Margin="10" Width="100" VerticalAlignment="Stretch" 
                     Text="{Binding PlayerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                    <!--<TextBox.InputBindings>
+                    <TextBox.InputBindings>
                         <KeyBinding Key="Enter" Command="{Binding SearchPlayerCommand}" />
-                    </TextBox.InputBindings>-->
+                    </TextBox.InputBindings>
                 </TextBox>
                 <Button 
                     VerticalAlignment="Stretch" Width="80" IsEnabled="{Binding AllowPrevPage}" 
@@ -36,14 +37,16 @@
             </StackPanel>
         </materialDesign:TransitioningContent>
 
-        <ScrollViewer Margin="10">
+        <!--<ScrollViewer Margin="10">
             <ItemsControl ItemsSource="{Binding Players}" VerticalAlignment="Top" Margin="0 4 0 0">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <materialDesign:TransitioningContent>
+                        <materialDesign:TransitioningContent OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplierExtension 0:0:0.1}"
+                                                                 Opacity="0"
+                                                                 RunHint="Loaded">
                             <materialDesign:TransitioningContent.OpeningEffects>
-                                <materialDesign:TransitionEffect Kind="SlideInFromRight" Duration="0:0:1" />
-                                <materialDesign:TransitionEffect Kind="FadeIn" Duration="0:0:1" />
+                                <materialDesign:TransitionEffect Kind="SlideInFromRight" Duration="0:0:2" />
+                                <materialDesign:TransitionEffect Kind="FadeIn" Duration="0:0:2" />
                             </materialDesign:TransitioningContent.OpeningEffects>
                             <materialDesign:Flipper Style="{StaticResource MaterialDesignCardFlipper}" >
                                 <materialDesign:Flipper.FrontContent>
@@ -88,58 +91,53 @@
                                         </Button>
                                     </Grid>
                                 </materialDesign:Flipper.FrontContent>
-                                <materialDesign:Flipper.BackContent>
-                                    <Grid Width="200">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                        </Grid.RowDefinitions>
-                                        <TextBlock HorizontalAlignment="Center" Margin="16 16 16 4" Style="{StaticResource MaterialDesignHeadlineTextBlock}" Text="{Binding Nickname}" />
-                                        <Rectangle Grid.Row="1" Width="190" Height="1" Margin="2" Stroke="{StaticResource AccentColorBrush}" />
-                                        <Grid Grid.Row="2">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                <TextBlock Text="{Binding Pts3V3}" Margin="10,10,2,10" Style="{StaticResource MaterialDesignTitleTextBlock}" />
-                                                <TextBlock Text="{Binding Rank3V3}" Margin="2,10,10,10" Style="{StaticResource MaterialDesignTitleTextBlock}" />
-                                            </StackPanel>
-                                            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                <TextBlock Text="{Binding Win3V3}" Margin="10,10,4,10" Foreground="SeaGreen" Style="{StaticResource MaterialDesignTitleTextBlock}" />
-                                                <TextBlock Text="{Binding Lose3V3}" Margin="4,10,10,10" Foreground="DarkRed" Style="{StaticResource MaterialDesignTitleTextBlock}" />
-                                            </StackPanel>
-                                        </Grid>
-                                        <Button 
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Center"
-                                                Grid.Row="3"
-                                                Style="{StaticResource MaterialDesignFlatButton}"
-                                                Command="{x:Static materialDesign:Flipper.FlipCommand}"
-                                                Margin="10">
-                                            View 5x5
-                                        </Button>
-                                        <Button
-                                                HorizontalAlignment="Right"
-                                                VerticalAlignment="Center"
-                                                Grid.Row="3"
-                                                Margin="10">
-                                            Details
-                                        </Button>
-                                    </Grid>
-                                </materialDesign:Flipper.BackContent>
                             </materialDesign:Flipper>
                         </materialDesign:TransitioningContent>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <WrapPanel Orientation="Horizontal" />
+                        <UniformGrid Columns="1" />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
             </ItemsControl>
-        </ScrollViewer>
+        </ScrollViewer>-->
+        <ListBox 
+            ItemsSource="{Binding Players}" 
+            HorizontalContentAlignment="Stretch" 
+            Margin="32 16 32 16"
+            ItemContainerStyle="{StaticResource ListBoxItemStyle}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <materialDesign:TransitioningContent 
+                        OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplierExtension 0:0:0.1}"
+                        Opacity="0"
+                        RunHint="Loaded">
+                        <materialDesign:TransitioningContent.OpeningEffects>
+                            <materialDesign:TransitionEffect Kind="SlideInFromLeft" />
+                            <materialDesign:TransitionEffect Kind="FadeIn" />
+                        </materialDesign:TransitioningContent.OpeningEffects>
+                        <materialDesign:ColorZone Mode="PrimaryLight" CornerRadius="3" materialDesign:ShadowAssist.ShadowDepth="Depth1" Margin="2">
+                            <DockPanel>
+                                <TextBlock Text="{Binding Nickname}" Width="150" VerticalAlignment="Center" DockPanel.Dock="Left" Margin="16 0 16 0"
+                                           Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:ColorZone Mode="Accent" Width="90" Height="30"  CornerRadius="2">
+                                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">
+                                            <Run Text="{Binding Pts5V5}" />
+                                            <Run Text="{Binding Rank5V5}" />
+                                        </TextBlock>
+                                    </materialDesign:ColorZone>
+                                    <TextBlock VerticalAlignment="Center" Margin="16 0 0 0">
+                                        <Run Text="{Binding Win5V5}" /> 
+                                        <Run Text="{Binding Lose5V5}" />
+                                    </TextBlock>
+                                </StackPanel>
+                            </DockPanel>
+                        </materialDesign:ColorZone>
+                    </materialDesign:TransitioningContent>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </DockPanel>
 </UserControl>
