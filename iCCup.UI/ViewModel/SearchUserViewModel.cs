@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -12,10 +14,13 @@ namespace iCCup.UI.ViewModel
 {
     public class SearchUserViewModel : ViewModelBase
     {
+        private CancellationTokenSource _ts;
+        private CancellationToken _ct;
+
         private readonly IScrapperService _scrapper;
 
         public RelayCommand SearchPlayerCommand =>
-            new RelayCommand(async () => await Task.Factory.StartNew(async () => await SearchPlayerTask()));
+            new RelayCommand(async () => await Task.Factory.StartNew(async () => await SearchPlayerTask(), _ct));
 
         public RelayCommand NextPageCommand =>
             new RelayCommand(async () => await SearchNavigate(true));
@@ -55,19 +60,7 @@ namespace iCCup.UI.ViewModel
         private async Task SearchPlayerTask()
         {
             var searchResults = await _scrapper.SearchPlayer(PlayerName ?? "");
-
-            DispatcherHelper.CheckBeginInvokeOnUI(() =>
-            {
-                Players.Clear();
-                NextPage = searchResults.Item2;
-                PrevPage = searchResults.Item3;
-            });
-
-            foreach (var player in searchResults.Item1)
-            {
-                await Task.Delay(70);
-                DispatcherHelper.CheckBeginInvokeOnUI(() => Players.Add(player));
-            }
+            await HandleSearchResult(searchResults);
         }
 
         private async Task SearchNavigate(bool ahead)
@@ -75,18 +68,34 @@ namespace iCCup.UI.ViewModel
             var searchResults = await _scrapper.SearchPlayer(ahead
                 ? new Uri(NextPage)
                 : new Uri(PrevPage));
+            await HandleSearchResult(searchResults);
+        }
 
-            DispatcherHelper.CheckBeginInvokeOnUI(() =>
-            {
-                Players.Clear();
-                NextPage = searchResults.Item2;
-                PrevPage = searchResults.Item3;
-            });
+        private async Task HandleSearchResult(Tuple<List<UserSearch>, string, string> searchResults)
+        {
+            _ts?.Cancel();
+            _ts = new CancellationTokenSource();
+            _ct = _ts.Token;
 
-            foreach (var player in searchResults.Item1)
+            try
             {
-                await Task.Delay(70);
-                DispatcherHelper.CheckBeginInvokeOnUI(() => Players.Add(player));
+                DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                {
+                    Players.Clear();
+                    NextPage = searchResults.Item2;
+                    PrevPage = searchResults.Item3;
+                });
+
+                foreach (var player in searchResults.Item1)
+                {
+                    await Task.Delay(120, _ct);
+                    DispatcherHelper.CheckBeginInvokeOnUI(() => Players.Add(player));
+                }
+            }
+            catch (TaskCanceledException)
+            {
+                if (_ct.IsCancellationRequested)
+                    Players.Clear();
             }
         }
 
@@ -114,6 +123,7 @@ namespace iCCup.UI.ViewModel
                 _playerName = value;
                 if (!string.Equals(_playerName, string.Empty))
                 {
+                    SearchPlayerCommand.Execute(true);
                     RaisePropertyChanged(() => Header);
                 }
                 RaisePropertyChanged(() => PlayerName);

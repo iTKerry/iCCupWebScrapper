@@ -15,17 +15,17 @@
     <DockPanel>
         <materialDesign:TransitioningContent DockPanel.Dock="Top">
             <materialDesign:TransitioningContent.OpeningEffects>
-                <materialDesign:TransitionEffect Kind="SlideInFromTop" Duration="0:0:0.5" />
-                <materialDesign:TransitionEffect Kind="FadeIn" Duration="0:0:0.5" />
+                <materialDesign:TransitionEffect Kind="SlideInFromTop" Duration="0:0:0.2" />
+                <materialDesign:TransitionEffect Kind="FadeIn" Duration="0:0:0.2" />
             </materialDesign:TransitioningContent.OpeningEffects>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10">
                 <TextBox 
                     materialDesign:HintAssist.Hint="Search" 
                     Margin="10" Width="100" VerticalAlignment="Stretch" 
                     Text="{Binding PlayerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                    <TextBox.InputBindings>
+                    <!--<TextBox.InputBindings>
                         <KeyBinding Key="Enter" Command="{Binding SearchPlayerCommand}" />
-                    </TextBox.InputBindings>
+                    </TextBox.InputBindings>-->
                 </TextBox>
                 <Button 
                     VerticalAlignment="Stretch" Width="80" IsEnabled="{Binding AllowPrevPage}" 
