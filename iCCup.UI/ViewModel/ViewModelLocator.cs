@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight.Threading;
 using iCCup.UI.Infrastructure.Contracts;
 using iCCup.UI.Infrastructure.Scrapper;
 using iCCup.UI.Infrastructure.Service;
+using iCCup.UI.ViewModel.Tab;
 using Microsoft.Practices.ServiceLocation;
 
 namespace iCCup.UI.ViewModel

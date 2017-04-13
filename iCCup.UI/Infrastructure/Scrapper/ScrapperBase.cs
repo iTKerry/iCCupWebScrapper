@@ -91,13 +91,13 @@ namespace iCCup.UI.Infrastructure.Scrapper
 
         #region GameProfile
 
-        public async Task<UserGameProfile> GetPlayerProfile(Uri url)
+        public async Task<UserGameProfile> GetPlayerProfile(Uri url, UserSearch userSearch)
         {
             DispatcherHelper.CheckBeginInvokeOnUI(() => _logger.AddInfoWithUrl("Navigation to game profile - ", url.ToString()));
 
             var page = await _browser.NavigateToPageAsync(url);
 
-            return new UserGameProfile();
+            return new UserGameProfile(userSearch);
         }
 
         #endregion

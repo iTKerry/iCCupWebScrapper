@@ -132,12 +132,21 @@
     <Compile Include="Infrastructure\Contracts\IMessangerService.cs" />
     <Compile Include="Infrastructure\Service\MessangerService.cs" />
     <Compile Include="Infrastructure\Service\LoggerService.cs" />
+    <Compile Include="Navigation\ISlideNavigationSubject.cs" />
+    <Compile Include="Navigation\ITidyable.cs" />
+    <Compile Include="Navigation\NavigationCommands.cs" />
+    <Compile Include="Navigation\SlideNavigator.cs" />
+    <Compile Include="Navigation\SlideNavigatorFrame.cs" />
     <Compile Include="Tabablz\HeaderViewModel.cs" />
     <Compile Include="Tabablz\NewTabFactory.cs" />
-    <Compile Include="ViewModel\SearchUserViewModel.cs" />
+    <Compile Include="ViewModel\Tab\SearchUserViewModel.cs" />
     <Compile Include="Tabablz\MainInterTabClient.cs" />
+    <Compile Include="ViewModel\Tab\TabViewModel.cs" />
     <Compile Include="View\SearchUserView.xaml.cs">
       <DependentUpon>SearchUserView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Tab\TabView.xaml.cs">
+      <DependentUpon>TabView.xaml</DependentUpon>
     </Compile>
     <Page Include="View\MainView.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -156,6 +165,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\SearchUserView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Tab\TabView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

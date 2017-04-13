@@ -10,7 +10,7 @@ using iCCup.DATA.Models;
 using iCCup.UI.Infrastructure.Contracts;
 using iCCup.UI.Tabablz;
 
-namespace iCCup.UI.ViewModel
+namespace iCCup.UI.ViewModel.Tab
 {
     public class SearchUserViewModel : ViewModelBase
     {
@@ -32,10 +32,10 @@ namespace iCCup.UI.ViewModel
         public RelayCommand GetPlayerProfileCommand =>
             new RelayCommand(() =>
             {
-                var profile = _scrapper.GetUserGameProfile(SelectedUserSearch.Url);
+                var profile = _scrapper.GetUserGameProfile(SelectedUserSearch);
             });
 
-        public SearchUserViewModel(IScrapperService scrapper, HeaderViewModel hvm, ILoggerService logger)
+        public SearchUserViewModel(IScrapperService scrapper, ILoggerService logger, HeaderViewModel hvm)
         {
             _scrapper = scrapper;
             _logger = logger;
