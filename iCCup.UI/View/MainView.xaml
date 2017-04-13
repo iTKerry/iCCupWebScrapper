@@ -22,7 +22,7 @@
     </controls:MetroWindow.Resources>
     <controls:MetroWindow.LeftWindowCommands>
         <controls:WindowCommands ShowSeparators="False">
-            <Button Command="{Binding ShowFlyoutCommand}">
+            <Button Command="{Binding ShowSettingsCommand}">
                 <Button.Content>
                     <iconPacks:PackIconFontAwesome
                         VerticalAlignment="Stretch"
@@ -30,19 +30,42 @@
                         Kind="Cog"/>
                 </Button.Content>
             </Button>
+            <Button x:Name="LogButton" Visibility="Collapsed" Command="{Binding ShowLogCommand}">
+                <Button.Content>
+                    <iconPacks:PackIconFontAwesome
+                        VerticalAlignment="Stretch"
+                        HorizontalAlignment="Stretch"
+                        Kind="Terminal"/>
+                </Button.Content>
+            </Button>
         </controls:WindowCommands>
     </controls:MetroWindow.LeftWindowCommands>
     <controls:MetroWindow.Flyouts>
         <controls:FlyoutsControl>
             <controls:Flyout
-                x:Name="Flyout"
                 Header="Settings" 
                 Width="250"
                 Position="Left"
                 Theme="Light"
                 IsModal="True"
-                IsOpen="{Binding ShowFlyout}">
+                IsOpen="{Binding ShowSettings}">
                 <!-- Content -->
+            </controls:Flyout>
+            <controls:Flyout
+                Header="Log" 
+                Height="350"
+                Position="Bottom"
+                Theme="Dark"
+                IsModal="False"
+                IsOpen="{Binding ShowLog}">
+                <RichTextBox 
+                    x:Name="LoggerBox" 
+                    Height="350" 
+                    HorizontalAlignment="Stretch" 
+                    IsReadOnly="True" 
+                    VerticalAlignment="Stretch" 
+                    VerticalScrollBarVisibility="Visible" 
+                    IsDocumentEnabled="True" />
             </controls:Flyout>
         </controls:FlyoutsControl>
     </controls:MetroWindow.Flyouts>

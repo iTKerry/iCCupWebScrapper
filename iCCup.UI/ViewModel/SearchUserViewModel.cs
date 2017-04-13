@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Threading;
-using iCCup.BL.Contracts;
 using iCCup.DATA.Models;
+using iCCup.UI.Infrastructure.Contracts;
 using iCCup.UI.Tabablz;
 
 namespace iCCup.UI.ViewModel
@@ -17,6 +17,7 @@ namespace iCCup.UI.ViewModel
         private CancellationTokenSource _ts;
         private CancellationToken _ct;
 
+        private readonly ILoggerService _logger;
         private readonly IScrapperService _scrapper;
 
         public RelayCommand SearchPlayerCommand =>
@@ -34,9 +35,11 @@ namespace iCCup.UI.ViewModel
                 var profile = _scrapper.GetUserGameProfile(SelectedUserSearch.Url);
             });
 
-        public SearchUserViewModel(IScrapperService scrapper, HeaderViewModel hvm)
+        public SearchUserViewModel(IScrapperService scrapper, HeaderViewModel hvm, ILoggerService logger)
         {
             _scrapper = scrapper;
+            _logger = logger;
+            _logger.AddInfo("New search tab initialized.");
 
             Hvm = hvm;
             Header = PlayerName ?? "Search";
@@ -95,7 +98,9 @@ namespace iCCup.UI.ViewModel
             catch (TaskCanceledException)
             {
                 if (_ct.IsCancellationRequested)
+                {
                     Players.Clear();
+                }
             }
         }
 

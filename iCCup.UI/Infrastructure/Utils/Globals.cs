@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace iCCup.BL.Utils
+namespace iCCup.UI.Infrastructure.Utils
 {
     public static class Globals
     {

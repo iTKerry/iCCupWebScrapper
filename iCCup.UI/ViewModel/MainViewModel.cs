@@ -2,7 +2,10 @@ using System.Collections.ObjectModel;
 using Dragablz;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
+using iCCup.DATA.Models;
 using iCCup.UI.Tabablz;
+using iCCup.UI.View;
 
 namespace iCCup.UI.ViewModel
 {
@@ -14,16 +17,21 @@ namespace iCCup.UI.ViewModel
             Items.Add(item);
             SelectedIndx = Items.IndexOf(item);
         });
-
-        public RelayCommand ShowFlyoutCommand => new RelayCommand(() => ShowFlyout = true);
+        
+        public RelayCommand ShowSettingsCommand => new RelayCommand(() => ShowSettings = true);
+        public RelayCommand ShowLogCommand => new RelayCommand(() => ShowLog = true);
 
         public MainViewModel()
         {
-            SelectedIndx = 0;
             Items = new ObservableCollection<HeaderedItemViewModel> {TabFactory.Factory.Invoke()};
+
+            Messenger.Default.Register<NotificationMessage<LogMessange>>(this,
+                async messange => await View.AddToLog(messange.Content));
         }
 
         public ObservableCollection<HeaderedItemViewModel> Items { get; }
+
+        public MainView View { get; set; }
 
         private int _selectedIndx;
         public int SelectedIndx
@@ -32,11 +40,18 @@ namespace iCCup.UI.ViewModel
             set { _selectedIndx = value; RaisePropertyChanged(() => SelectedIndx); }
         }
 
-        private bool _showFlyout;
-        public bool ShowFlyout
+        private bool _showSettings;
+        public bool ShowSettings
         {
-            get { return _showFlyout; }
-            set { _showFlyout = value; RaisePropertyChanged(() => ShowFlyout); }
+            get { return _showSettings; }
+            set { _showSettings = value; RaisePropertyChanged(() => ShowSettings); }
+        }
+
+        private bool _showLog;
+        public bool ShowLog
+        {
+            get { return _showLog; }
+            set { _showLog = value; RaisePropertyChanged(() => ShowLog); }
         }
     }
 }
