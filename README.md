@@ -1,5 +1,5 @@
 # iCCupWebScrapper
 
-![](ReadmeAssets/prev1.gif)
+![](ReadmeAssets/preview1.gif)
 
-![](ReadmeAssets/prev2.gif)
+![](ReadmeAssets/preview2.gif)
