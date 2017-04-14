@@ -8,26 +8,26 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Threading;
 using iCCup.DATA.Models;
 using iCCup.UI.Infrastructure.Contracts;
-using iCCup.UI.Tabablz;
+using iCCup.UI.Navigation;
 
 namespace iCCup.UI.ViewModel.Tab
 {
-    public class SearchUserViewModel : ViewModelBase
+    public partial class SearchUserViewModel : ViewModelBase, ITidyable
     {
         private CancellationTokenSource _ts;
         private CancellationToken _ct;
 
-        private readonly ILoggerService _logger;
         private readonly IScrapperService _scrapper;
+        private readonly IMessangerService _messanger;
 
         public RelayCommand SearchPlayerCommand =>
-            new RelayCommand(async () => await Task.Factory.StartNew(async () => await SearchPlayerTask(), _ct));
+            new RelayCommand(async () => await Task.Factory.StartNew(async () => await Search(), _ct));
 
         public RelayCommand NextPageCommand =>
-            new RelayCommand(async () => await SearchNavigate(true));
+            new RelayCommand(async () => await Search(isSearch: false));
 
         public RelayCommand PrevPageCommand =>
-            new RelayCommand(async () => await SearchNavigate(false));
+            new RelayCommand(async () => await Search(isSearch: false, navigateForward: false));
 
         public RelayCommand GetPlayerProfileCommand =>
             new RelayCommand(() =>
@@ -35,43 +35,22 @@ namespace iCCup.UI.ViewModel.Tab
                 var profile = _scrapper.GetUserGameProfile(SelectedUserSearch);
             });
 
-        public SearchUserViewModel(IScrapperService scrapper, ILoggerService logger, HeaderViewModel hvm)
+        public RelayCommand GoToProfileCommand =>
+            new RelayCommand(() => _messanger.NavigateMessage(new NavigateMessage {NavigateTo = NavigateTo.Profile}));
+
+        public SearchUserViewModel(IScrapperService scrapper, ILoggerService logger, IMessangerService messanger)
         {
             _scrapper = scrapper;
-            _logger = logger;
-            _logger.AddInfo("New search tab initialized.");
+            _messanger = messanger;
 
-            Hvm = hvm;
-            Header = PlayerName ?? "Search";
             Players = new ObservableCollection<UserSearch>();
-#if DEBUG
-            Players.Add(new UserSearch
-            {
-                Nickname = "iTKerry",
-                Pts5V5 = 3755,
-                Rank5V5 = "C-",
-                Win5V5 = 33,
-                Lose5V5 = 26,
-                Pts3V3 = 1000,
-                Rank3V3 = "D",
-                Win3V3 = 0,
-                Lose3V3 = 0
-            });
-#endif
         }
 
-        private async Task SearchPlayerTask()
+        private async Task Search(bool isSearch = true, bool navigateForward = true)
         {
-            var searchResults = await _scrapper.SearchPlayer(PlayerName ?? "");
-            await HandleSearchResult(searchResults);
-        }
-
-        private async Task SearchNavigate(bool ahead)
-        {
-            var searchResults = await _scrapper.SearchPlayer(ahead
-                ? new Uri(NextPage)
-                : new Uri(PrevPage));
-            await HandleSearchResult(searchResults);
+            await HandleSearchResult(isSearch
+                ? await _scrapper.SearchPlayer(PlayerName ?? "")
+                : await _scrapper.SearchPlayer(new Uri(navigateForward ? NextPage : PrevPage)));
         }
 
         private async Task HandleSearchResult(Tuple<List<UserSearch>, string, string> searchResults)
@@ -104,94 +83,28 @@ namespace iCCup.UI.ViewModel.Tab
             }
         }
 
-        #region Props
+        #region Navigation
 
-        private HeaderViewModel _hvm;
-        public HeaderViewModel Hvm
+        public void Show()
         {
-            get { return _hvm; }
-            set { _hvm = value; RaisePropertyChanged(() => Hvm);}
+
         }
 
-        public string Header
+        public void Tidy()
         {
-            get { return Hvm.Header; }
-            set { Hvm.Header = value; RaisePropertyChanged(() => Hvm); }
+            Players = new ObservableCollection<UserSearch>();
         }
 
-        private string _playerName;
-        public string PlayerName
+        private void Init()
         {
-            get { return _playerName; }
-            set
-            {
-                _playerName = value;
-                if (!string.Equals(_playerName, string.Empty))
-                {
-                    if(_playerName.Length >= 3)
-                        //SearchPlayerCommand.Execute(true);
-                    RaisePropertyChanged(() => Header);
-                }
-                RaisePropertyChanged(() => PlayerName);
-            }
-        }
+            IsBusy = true;
 
-        private UserSearch _selectedUserSearch = new UserSearch { Nickname = "Search" };
-        public UserSearch SelectedUserSearch
-        {
-            get { return _selectedUserSearch; }
-            set { _selectedUserSearch = value; RaisePropertyChanged(() => SelectedUserSearch); }
-        }
+            //
 
-        private ObservableCollection<UserSearch> _players;
-        public ObservableCollection<UserSearch> Players
-        {
-            get { return _players; }
-            set { _players = value; RaisePropertyChanged(() => Players); }
-        }
-
-        private string _nextPage;
-        public string NextPage
-        {
-            get { return _nextPage; }
-            set
-            {
-                AllowNextPage = !Equals(value, string.Empty);
-
-                _nextPage = value;
-                RaisePropertyChanged(() => NextPage);
-            }
-        }
-
-        // Currently used for disable button.
-        private Boolean _allowNextPage;
-        public Boolean AllowNextPage
-        {
-            get { return _allowNextPage; }
-            set { _allowNextPage = value; RaisePropertyChanged(() => AllowNextPage); }
-        }
-
-        private string _prevPage;
-        public string PrevPage
-        {
-            get { return _prevPage; }
-            set
-            {
-                AllowPrevPage = !Equals(value, string.Empty);
-
-                _prevPage = value;
-                RaisePropertyChanged(() => PrevPage);
-            }
-        }
-
-        // Currently used for disable button.
-        private Boolean _allowPrevPage;
-        public Boolean AllowPrevPage
-        {
-            get { return _allowPrevPage; }
-            set { _allowPrevPage = value; RaisePropertyChanged(() => AllowPrevPage); }
+            IsBusy = false;
         }
 
         #endregion
+
     }
 }

@@ -10,5 +10,10 @@ namespace iCCup.UI.Infrastructure.Service
         {
             Messenger.Default.Send(new NotificationMessage<LogMessange>(this, content, "Sending AddToLog messange"));
         }
+
+        public void NavigateMessage(NavigateMessage content)
+        {
+            Messenger.Default.Send(new NotificationMessage<NavigateMessage>(this, content, "Navigating"));
+        }
     }
 }

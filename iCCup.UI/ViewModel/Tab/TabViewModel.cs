@@ -1,11 +1,12 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Linq;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
+using GalaSoft.MvvmLight.Messaging;
+using iCCup.DATA.Models;
 using iCCup.UI.Infrastructure.Contracts;
 using iCCup.UI.Navigation;
 using iCCup.UI.Tabablz;
-using iCCup.UI.View.Tab;
-using NavigationCommands = iCCup.UI.Navigation.NavigationCommands;
 
 namespace iCCup.UI.ViewModel.Tab
 {
@@ -15,12 +16,35 @@ namespace iCCup.UI.ViewModel.Tab
         
         public TabViewModel()
         {
-            CommandManager.RegisterClassCommandBinding(typeof(TabView), new CommandBinding(NavigationCommands.GoBackCommand, GoBackExecuted));
-            CommandManager.RegisterClassCommandBinding(typeof(TabView), new CommandBinding(NavigationCommands.GoForwardCommand, GoForwardExecuted));
-
-            Slides = new object[] {SearchUserViewModel};
+            Slides = new object[] {SearchUserViewModel, GameProfileViewModel};
             _slideNavigator = new SlideNavigator(this, Slides);
             _slideNavigator.GoTo(0);
+
+            Messenger.Default.Register<NotificationMessage<NavigateMessage>>(this, Navigate);
+        }
+
+        private void Navigate(NotificationMessage<NavigateMessage> message)
+        {
+            switch (message.Content.NavigateTo)
+            {
+                case NavigateTo.Search:
+                    _slideNavigator.GoTo(IndexOfSlide<SearchUserViewModel>());
+                    break;
+                case NavigateTo.Profile:
+                    _slideNavigator.GoTo(IndexOfSlide<GameProfileViewModel>());
+                    break;
+                case NavigateTo.GameDetails:
+                    //TODO: GameDetails navigation here
+                    break;
+                case NavigateTo.Forward:
+                    _slideNavigator.GoForward();
+                    break;
+                case NavigateTo.Back:
+                    _slideNavigator.GoBack();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
         public object[] Slides { get; }
@@ -29,7 +53,23 @@ namespace iCCup.UI.ViewModel.Tab
             new SearchUserViewModel(
                 SimpleIoc.Default.GetInstance<IScrapperService>(),
                 SimpleIoc.Default.GetInstance<ILoggerService>(),
-                new HeaderViewModel("Header"));
+                SimpleIoc.Default.GetInstance<IMessangerService>());
+
+        public GameProfileViewModel GameProfileViewModel { get; } = 
+            new GameProfileViewModel(SimpleIoc.Default.GetInstance<IMessangerService>());
+
+        private HeaderViewModel _hvm;
+        public HeaderViewModel Hvm
+        {
+            get { return _hvm; }
+            set { _hvm = value; RaisePropertyChanged<HeaderViewModel>(() => Hvm); }
+        }
+
+        public string Header
+        {
+            get { return Hvm.Header; }
+            set { Hvm.Header = value; RaisePropertyChanged(() => Hvm); }
+        }
 
         private int _activeSlideIndex;
         public int ActiveSlideIndex
@@ -38,14 +78,9 @@ namespace iCCup.UI.ViewModel.Tab
             set { _activeSlideIndex = value; RaisePropertyChanged(() => ActiveSlideIndex); }
         }
 
-        private void GoBackExecuted(object sender, ExecutedRoutedEventArgs e)
+        private int IndexOfSlide<TSlide>()
         {
-            _slideNavigator.GoBack();
-        }
-
-        private void GoForwardExecuted(object sender, ExecutedRoutedEventArgs e)
-        {
-            _slideNavigator.GoForward();
+            return Slides.Select((o, i) => new { o, i }).First(a => a.o.GetType() == typeof(TSlide)).i;
         }
     }
 }

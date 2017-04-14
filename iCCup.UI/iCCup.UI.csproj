@@ -139,10 +139,15 @@
     <Compile Include="Navigation\SlideNavigatorFrame.cs" />
     <Compile Include="Tabablz\HeaderViewModel.cs" />
     <Compile Include="Tabablz\NewTabFactory.cs" />
+    <Compile Include="ViewModel\Tab\GameProfileViewModel.cs" />
     <Compile Include="ViewModel\Tab\SearchUserViewModel.cs" />
     <Compile Include="Tabablz\MainInterTabClient.cs" />
+    <Compile Include="ViewModel\Tab\SearchUserViewModel.Props.cs" />
     <Compile Include="ViewModel\Tab\TabViewModel.cs" />
-    <Compile Include="View\SearchUserView.xaml.cs">
+    <Compile Include="View\Tab\GameProfileView.xaml.cs">
+      <DependentUpon>GameProfileView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Tab\SearchUserView.xaml.cs">
       <DependentUpon>SearchUserView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Tab\TabView.xaml.cs">
@@ -164,7 +169,11 @@
       <DependentUpon>MainView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="View\SearchUserView.xaml">
+    <Page Include="View\Tab\GameProfileView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Tab\SearchUserView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

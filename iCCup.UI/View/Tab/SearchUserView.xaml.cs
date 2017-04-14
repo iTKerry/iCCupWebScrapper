@@ -1,4 +1,4 @@
-﻿namespace iCCup.UI.View
+﻿namespace iCCup.UI.View.Tab
 {
     public partial class SearchUserView
     {

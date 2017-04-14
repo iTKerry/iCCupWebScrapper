@@ -5,5 +5,7 @@ namespace iCCup.UI.Infrastructure.Contracts
     public interface IMessangerService
     {
         void AddToLog(LogMessange content);
+
+        void NavigateMessage(NavigateMessage content);
     }
 }
