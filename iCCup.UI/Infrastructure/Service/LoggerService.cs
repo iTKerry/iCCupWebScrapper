@@ -40,7 +40,11 @@ namespace iCCup.UI.Infrastructure.Service
 
         public void AddError(Exception ex, string text)
         {
-            throw new NotImplementedException();
+            var paragraph = new Paragraph();
+            paragraph.Inlines.Add(new Bold(new Run(DateTime.Now.ToLongTimeString() + ":") { Foreground = Brushes.DarkRed }));
+            paragraph.Inlines.Add(new Run($" {text}\n\n{ex.StackTrace}") {Foreground = Brushes.DarkRed});
+
+            _messangerService.AddToLog(new LogMessange { Content = paragraph });
         }
     }
 }
