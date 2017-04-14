@@ -18,6 +18,7 @@ namespace iCCup.UI.ViewModel.Tab
         private CancellationToken _ct;
 
         private readonly IScrapperService _scrapper;
+        private readonly ILoggerService _logger;
         private readonly IMessangerService _messanger;
 
         public RelayCommand SearchPlayerCommand =>
@@ -29,18 +30,18 @@ namespace iCCup.UI.ViewModel.Tab
         public RelayCommand PrevPageCommand =>
             new RelayCommand(async () => await Search(isSearch: false, navigateForward: false));
 
-        public RelayCommand GetPlayerProfileCommand =>
-            new RelayCommand(() =>
-            {
-                var profile = _scrapper.GetUserGameProfile(SelectedUserSearch);
-            });
-
-        public RelayCommand GoToProfileCommand =>
-            new RelayCommand(() => _messanger.NavigateMessage(new NavigateMessage {NavigateTo = NavigateTo.Profile}));
+        public RelayCommand<UserSearch> GoToProfileCommand =>
+            new RelayCommand<UserSearch>(userSearch =>
+                _messanger.NavigateMessage(new NavigateMessage
+                {
+                    NavigateTo = NavigateTo.Profile,
+                    Content = userSearch
+                }));
 
         public SearchUserViewModel(IScrapperService scrapper, ILoggerService logger, IMessangerService messanger)
         {
             _scrapper = scrapper;
+            _logger = logger;
             _messanger = messanger;
 
             Players = new ObservableCollection<UserSearch>();
@@ -82,29 +83,11 @@ namespace iCCup.UI.ViewModel.Tab
                 }
             }
         }
-
-        #region Navigation
-
-        public void Show()
-        {
-
-        }
-
+        
         public void Tidy()
         {
             Players = new ObservableCollection<UserSearch>();
+            _logger.AddInfo($"{this.GetType()} used Tidy.");
         }
-
-        private void Init()
-        {
-            IsBusy = true;
-
-            //
-
-            IsBusy = false;
-        }
-
-        #endregion
-
     }
 }

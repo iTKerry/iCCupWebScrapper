@@ -32,9 +32,6 @@
                 <Button 
                     VerticalAlignment="Stretch" Width="80" IsEnabled="{Binding AllowNextPage}" 
                     Command="{Binding NextPageCommand}" Style="{StaticResource MaterialDesignFlatButton}">Next</Button>
-                <Button 
-                    VerticalAlignment="Stretch" Width="80"
-                    Command="{Binding GoToProfileCommand}" Style="{StaticResource MaterialDesignFlatButton}">Next</Button>
             </StackPanel>
         </materialDesign:TransitioningContent>
         <DockPanel Margin="32 14 32 2" DockPanel.Dock="Top">
@@ -67,8 +64,9 @@
             <Separator Opacity="0" Width="5"/>
         </DockPanel>
         <ListBox 
-            ItemsSource="{Binding Players}" 
-            HorizontalContentAlignment="Stretch" 
+            ItemsSource="{Binding Players}"
+            SelectedItem="{Binding SelectedUserSearch}"
+            HorizontalContentAlignment="Stretch"
             Margin="32 2 32 16"
             ItemContainerStyle="{StaticResource ListBoxItemStyle}">
             <ListBox.ItemTemplate>

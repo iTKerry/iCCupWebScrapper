@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight;
+﻿using System.Threading.Tasks;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using iCCup.DATA.Models;
 using iCCup.UI.Infrastructure.Contracts;
@@ -17,5 +18,9 @@ namespace iCCup.UI.ViewModel.Tab
             _messanger = messanger;
         }
 
+        public async Task Show(UserSearch contentContent)
+        {
+
+        }
     }
 }

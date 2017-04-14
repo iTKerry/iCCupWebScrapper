@@ -31,7 +31,9 @@ namespace iCCup.UI.ViewModel.Tab
                     _slideNavigator.GoTo(IndexOfSlide<SearchUserViewModel>());
                     break;
                 case NavigateTo.Profile:
-                    _slideNavigator.GoTo(IndexOfSlide<GameProfileViewModel>());
+                    _slideNavigator.GoTo(
+                    IndexOfSlide<GameProfileViewModel>(),
+                        async () => await GameProfileViewModel.Show((UserSearch) message.Content.Content));
                     break;
                 case NavigateTo.GameDetails:
                     //TODO: GameDetails navigation here

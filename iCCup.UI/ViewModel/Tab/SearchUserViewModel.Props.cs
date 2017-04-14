@@ -12,11 +12,16 @@ namespace iCCup.UI.ViewModel.Tab
             set { _playerName = value; RaisePropertyChanged(() => PlayerName); }
         }
 
-        private UserSearch _selectedUserSearch = new UserSearch {Nickname = "Search"};
+        private UserSearch _selectedUserSearch;
         public UserSearch SelectedUserSearch
         {
             get { return _selectedUserSearch; }
-            set { _selectedUserSearch = value; RaisePropertyChanged(() => SelectedUserSearch); }
+            set
+            {
+                _selectedUserSearch = value;
+                RaisePropertyChanged(() => SelectedUserSearch);
+                GoToProfileCommand.Execute(SelectedUserSearch);
+            }
         }
 
         private ObservableCollection<UserSearch> _players;
