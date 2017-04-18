@@ -32,7 +32,15 @@
                         </StackPanel>
                         <StackPanel HorizontalAlignment="Right">
                             <StackPanel Orientation="Horizontal">
-                                <StackPanel Margin="5,0,5,0">
+                                <StackPanel Margin="6,0,6,0">
+                                    <TextBlock Text="{Binding UserGameProfile.Rank5V5}" HorizontalAlignment="Left" Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
+                                    <TextBlock Text="RANK" Foreground="DarkGray" Style="{StaticResource MaterialDesignCaptionTextBlock}" />
+                                </StackPanel>
+                                <StackPanel Margin="6,0,6,0">
+                                    <TextBlock Text="{Binding UserGameProfile.Pts5V5}" HorizontalAlignment="Left" Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
+                                    <TextBlock Text="PTS" Foreground="DarkGray" Style="{StaticResource MaterialDesignCaptionTextBlock}" />
+                                </StackPanel>
+                                <StackPanel Margin="6,0,6,0">
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="{Binding UserGameProfile.Win5V5}" Foreground="DarkGreen" Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
                                         <TextBlock Text="-" Margin="2,0,2,0" Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
@@ -40,11 +48,11 @@
                                         <TextBlock Text="-" Margin="2,0,2,0" Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
                                         <TextBlock Text="{Binding UserGameProfile.Leaves5V5}" Foreground="Gray" Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
                                     </StackPanel>
-                                    <TextBlock Text="Record" Style="{StaticResource MaterialDesignSubheadingTextBlock}"></TextBlock>
+                                    <TextBlock Text="RECORD" Foreground="DarkGray" Style="{StaticResource MaterialDesignCaptionTextBlock}"></TextBlock>
                                 </StackPanel>
-                                <StackPanel Margin="5,0,0,0">
+                                <StackPanel Margin="6,0,0,0">
                                     <TextBlock Text="{Binding UserGameProfile.Winrate5V5, StringFormat={}{0}%}" HorizontalAlignment="Left" Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
-                                    <TextBlock Text="Rate" Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
+                                    <TextBlock Text="WIN RATE" Foreground="DarkGray" Style="{StaticResource MaterialDesignCaptionTextBlock}" />
                                 </StackPanel>
                             </StackPanel>
                         </StackPanel>
