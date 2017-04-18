@@ -5,26 +5,73 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:dragablz="http://dragablz.net/winfx/xaml/dragablz"
     mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Dragablz;component/Themes/materialdesign.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <Style x:Key="NormalTabItemStyle" TargetType="{x:Type dragablz:DragablzItem}" BasedOn="{StaticResource MaterialDesignDragableTabItemStyle}">
+                <Setter Property="Height" Value="36" />
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <DockPanel>
-        <materialDesign:TransitioningContent DockPanel.Dock="Top" RunHint="Loaded">
+        <materialDesign:TransitioningContent RunHint="Loaded">
             <materialDesign:TransitioningContent.OpeningEffects>
                 <materialDesign:TransitionEffect Kind="SlideInFromTop" Duration="0:0:0.6" />
                 <materialDesign:TransitionEffect Kind="FadeIn" Duration="0:0:0.6" />
             </materialDesign:TransitioningContent.OpeningEffects>
-            <materialDesign:ColorZone Mode="PrimaryLight" Height="80" Width="852" Padding="8px" materialDesign:ShadowAssist.ShadowDepth="Depth1" HorizontalAlignment="Stretch">
-                <Grid>
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left">
-                        <Image Width="65" Height="65" Source="../../Assets/65x65.jpg" Stretch="Fill" VerticalAlignment="Top" />
-                        <TextBlock Text="{Binding UserGameProfile.Nickname}" Style="{StaticResource MaterialDesignHeadlineTextBlock}" Margin="4,-4,0,0" VerticalAlignment="Top" />
-                    </StackPanel>
-                    <StackPanel HorizontalAlignment="Right">
-                        <Button 
-                            VerticalAlignment="Stretch" Width="80"
-                            Command="{Binding GoBackCommand}" Style="{StaticResource MaterialDesignFlatButton}">Back</Button>
-                    </StackPanel>
+            <DockPanel>
+                <materialDesign:ColorZone DockPanel.Dock="Top" Mode="Standard" Height="80" Width="845" Padding="8" HorizontalAlignment="Stretch" materialDesign:ShadowAssist.ShadowDepth="Depth3">
+                    <Grid>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left">
+                            <Image Width="65" Height="65" Source="../../Assets/65x65.jpg" Stretch="Fill" VerticalAlignment="Top" />
+                            <TextBlock Text="{Binding UserGameProfile.Nickname}" Style="{StaticResource MaterialDesignHeadlineTextBlock}" Margin="4,-4,0,0" VerticalAlignment="Top" />
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Right">
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel Margin="5,0,5,0">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding UserGameProfile.Win5V5}" Foreground="DarkGreen" Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
+                                        <TextBlock Text="-" Margin="2,0,2,0" Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
+                                        <TextBlock Text="{Binding UserGameProfile.Lose5V5}" Foreground="DarkRed" Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
+                                        <TextBlock Text="-" Margin="2,0,2,0" Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
+                                        <TextBlock Text="{Binding UserGameProfile.Leaves5V5}" Foreground="Gray" Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
+                                    </StackPanel>
+                                    <TextBlock Text="Record" Style="{StaticResource MaterialDesignSubheadingTextBlock}"></TextBlock>
+                                </StackPanel>
+                                <StackPanel Margin="5,0,0,0">
+                                    <TextBlock Text="{Binding UserGameProfile.Winrate5V5, StringFormat={}{0}%}" HorizontalAlignment="Left" Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
+                                    <TextBlock Text="Rate" Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                </materialDesign:ColorZone>
+                <Grid DockPanel.Dock="Top">
+                    <Button VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,-20,20,0"
+                        Command="{Binding GoBackCommand}" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}">
+                        <materialDesign:PackIcon Kind="ArrowLeft" />
+                    </Button>
                 </Grid>
-            </materialDesign:ColorZone>
+                
+                <!--<dragablz:TabablzControl DockPanel.Dock="Top" ItemContainerStyle="{StaticResource NormalTabItemStyle}" Width="852" Background="{DynamicResource WhiteColorBrush}" BorderThickness="0" FixedHeaderCount="3">
+                    <dragablz:TabablzControl.InterTabController>
+                        <dragablz:InterTabController />
+                    </dragablz:TabablzControl.InterTabController>
+                    <TabItem Header="Overview">
+                        --><!--<TextBlock Margin="2" FontSize="24">This is the first</TextBlock>--><!--
+                    </TabItem>
+                    <TabItem Header="Matches">
+                        --><!--<TextBox Margin="2" FontSize="24">This is the second</TextBox>--><!--
+                    </TabItem>
+                    <TabItem Header="Records">
+                        --><!--<TextBlock Margin="2" FontSize="24">This is the third</TextBlock>--><!--
+                    </TabItem>
+                </dragablz:TabablzControl>-->
+            </DockPanel>
         </materialDesign:TransitioningContent>
     </DockPanel>
 </UserControl>

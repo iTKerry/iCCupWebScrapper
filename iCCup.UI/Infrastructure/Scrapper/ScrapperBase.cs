@@ -105,7 +105,22 @@ namespace iCCup.UI.Infrastructure.Scrapper
 
             var page = await _browser.NavigateToPageAsync(url);
 
-            return new UserGameProfile(userSearch);
+            var mainBoard = page.Html.CssSelect(".stata-body tr td").ToArray();
+
+            var userProfile = new UserGameProfile(userSearch)
+            {
+                RaitingPosition5V5 = mainBoard[1].InnerText.Replace("#", "").ToInteger(),
+                Couriers = mainBoard[7].InnerText.ToInteger(),
+                Neutrals = mainBoard[9].InnerText.ToInteger(),
+                Hours = mainBoard[11].InnerText.ToInteger(),
+                Winrate5V5 = mainBoard[13].InnerText.Replace("%", "").ToInteger(),
+                Leaves5V5 = mainBoard[15].InnerText.ToInteger(),
+                MaxWinstreak5V5 = mainBoard[19].InnerText.ToInteger(),
+                CurrentWinstreak5V5 = mainBoard[21].InnerText.ToInteger(),
+                GamesListUrl = mainBoard.CssSelect("a").First(a => a.GetAttributeValue("href").Contains("matchlist/")).GetAttributeValue("href")
+            };
+
+            return userProfile;
         }
 
         #endregion

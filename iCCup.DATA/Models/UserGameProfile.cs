@@ -3,6 +3,14 @@
     public class UserGameProfile : UserSearch
     {
         public string GamesListUrl { get; set; }
+        public int RaitingPosition5V5 { get; set; }
+        public int Couriers { get; set; }
+        public int Neutrals { get; set; }
+        public int Hours { get; set; }
+        public int Winrate5V5 { get; set; }
+        public int Leaves5V5 { get; set; }
+        public int MaxWinstreak5V5 { get; set; }
+        public int CurrentWinstreak5V5 { get; set; }
 
         public UserGameProfile(UserSearch search)
         {

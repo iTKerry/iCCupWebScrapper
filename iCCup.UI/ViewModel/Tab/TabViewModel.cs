@@ -15,7 +15,8 @@ namespace iCCup.UI.ViewModel.Tab
         
         public TabViewModel()
         {
-            GameProfileViewModel = new GameProfileViewModel(this);
+            GameProfileViewModel = new GameProfileViewModel(this,
+                SimpleIoc.Default.GetInstance<IScrapperService>());
             SearchUserViewModel = new SearchUserViewModel(this,
                 SimpleIoc.Default.GetInstance<IScrapperService>(),
                 SimpleIoc.Default.GetInstance<ILoggerService>());

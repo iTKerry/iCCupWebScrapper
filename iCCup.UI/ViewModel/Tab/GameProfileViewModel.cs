@@ -2,22 +2,27 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using iCCup.DATA.Models;
+using iCCup.UI.Infrastructure.Contracts;
 
 namespace iCCup.UI.ViewModel.Tab
 {
     public class GameProfileViewModel : ViewModelBase
     {
+        private readonly IScrapperService _scrapper;
+
         public RelayCommand GoBackCommand =>
             new RelayCommand(() => TabViewModel.Navigate(new NavigateMessage { NavigateTo = NavigateTo.Back }));
 
-        public GameProfileViewModel(TabViewModel tabViewModel)
+        public GameProfileViewModel(TabViewModel tabViewModel, IScrapperService scrapper)
         {
             TabViewModel = tabViewModel;
+            _scrapper = scrapper;
         }
 
-        public async Task Show(UserSearch contentContent)
+        public async Task Show(UserSearch user)
         {
-            UserGameProfile = new UserGameProfile(contentContent);
+            UserGameProfile = null;
+            UserGameProfile = await _scrapper.GetUserGameProfile(user);
         }
 
         private TabViewModel _tabViewModel;
