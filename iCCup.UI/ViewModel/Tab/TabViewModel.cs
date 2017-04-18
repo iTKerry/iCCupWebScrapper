@@ -15,11 +15,10 @@ namespace iCCup.UI.ViewModel.Tab
         
         public TabViewModel()
         {
-            GameProfileViewModel = new GameProfileViewModel(this, SimpleIoc.Default.GetInstance<IMessangerService>());
+            GameProfileViewModel = new GameProfileViewModel(this);
             SearchUserViewModel = new SearchUserViewModel(this,
                 SimpleIoc.Default.GetInstance<IScrapperService>(),
-                SimpleIoc.Default.GetInstance<ILoggerService>(),
-                SimpleIoc.Default.GetInstance<IMessangerService>());
+                SimpleIoc.Default.GetInstance<ILoggerService>());
 
             Slides = new object[] {SearchUserViewModel, GameProfileViewModel};
 

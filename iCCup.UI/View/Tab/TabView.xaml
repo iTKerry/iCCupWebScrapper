@@ -8,7 +8,7 @@
     xmlns:local="clr-namespace:iCCup.UI.ViewModel.Tab"
     xmlns:view="clr-namespace:iCCup.UI.View.Tab"
     mc:Ignorable="d" 
-    d:DesignHeight="300" d:DesignWidth="300"
+    Width="860"
     DataContext="{Binding Source={StaticResource Locator}, Path=TabViewModel}">
     <UserControl.Resources>
         <DataTemplate DataType="{x:Type local:SearchUserViewModel}">

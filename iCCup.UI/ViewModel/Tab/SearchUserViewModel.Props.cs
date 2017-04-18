@@ -5,6 +5,7 @@ namespace iCCup.UI.ViewModel.Tab
 {
     public partial class SearchUserViewModel
     {
+        private TabViewModel _tabViewModel;
         public TabViewModel TabViewModel
         {
             get { return _tabViewModel; }
@@ -22,11 +23,7 @@ namespace iCCup.UI.ViewModel.Tab
         public UserSearch SelectedUserSearch
         {
             get { return _selectedUserSearch; }
-            set
-            {
-                _selectedUserSearch = value;
-                RaisePropertyChanged(() => SelectedUserSearch);
-            }
+            set { _selectedUserSearch = value; RaisePropertyChanged(() => SelectedUserSearch); }
         }
 
         private ObservableCollection<UserSearch> _players;
@@ -77,13 +74,10 @@ namespace iCCup.UI.ViewModel.Tab
         }
 
         private bool _isBusy;
-        private TabViewModel _tabViewModel;
-
         public bool IsBusy
         {
             get { return _isBusy; }
             set { _isBusy = value; RaisePropertyChanged(() => IsBusy); }
         }
-
     }
 }

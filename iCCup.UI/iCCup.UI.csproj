@@ -212,7 +212,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Assets\65x65.jpg" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\iCCup.DATA\iCCup.DATA.csproj">
       <Project>{8a006446-160c-4686-b70f-9371b0d1693c}</Project>

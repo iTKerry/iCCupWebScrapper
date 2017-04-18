@@ -19,7 +19,6 @@ namespace iCCup.UI.ViewModel.Tab
 
         private readonly IScrapperService _scrapper;
         private readonly ILoggerService _logger;
-        private readonly IMessangerService _messanger;
 
         public RelayCommand SearchPlayerCommand =>
             new RelayCommand(async () => await Task.Factory.StartNew(async () => await Search(), _ct));
@@ -37,12 +36,11 @@ namespace iCCup.UI.ViewModel.Tab
                 Content = userSearch
             }));
 
-        public SearchUserViewModel(TabViewModel tabViewModel,IScrapperService scrapper, ILoggerService logger, IMessangerService messanger)
+        public SearchUserViewModel(TabViewModel tabViewModel,IScrapperService scrapper, ILoggerService logger)
         {
             TabViewModel = tabViewModel;
             _scrapper = scrapper;
             _logger = logger;
-            _messanger = messanger;
 
             Players = new ObservableCollection<UserSearch>();
 #if DEBUG
@@ -93,40 +91,30 @@ namespace iCCup.UI.ViewModel.Tab
             {
                 new UserSearch
                 {
-                    Nickname = "Test1",
-                    Pts5V5 = 1000,
-                    Win5V5 = 0,
-                    Lose5V5 = 0,
+                    Nickname = "Gyber",
+                    Pts5V5 = 10062,
+                    Win5V5 = 86,
+                    Lose5V5 = 69,
                     Pts3V3 = 1000,
                     Win3V3 = 0,
                     Lose3V3 = 0,
-                    Rank5V5 = "D",
-                    Rank3V3 = "D"
+                    Rank5V5 = "A-",
+                    Rank3V3 = "D",
+                    Url = "gamingprofile/Gyber..html"
                 },
                 new UserSearch
                 {
-                    Nickname = "Test2",
-                    Pts5V5 = 1000,
-                    Win5V5 = 0,
-                    Lose5V5 = 0,
+                    Nickname = "iTKerry",
+                    Pts5V5 = 3788,
+                    Win5V5 = 44,
+                    Lose5V5 = 30,
                     Pts3V3 = 1000,
                     Win3V3 = 0,
                     Lose3V3 = 0,
-                    Rank5V5 = "D",
-                    Rank3V3 = "D"
-                },
-                new UserSearch
-                {
-                    Nickname = "Test3",
-                    Pts5V5 = 1000,
-                    Win5V5 = 0,
-                    Lose5V5 = 0,
-                    Pts3V3 = 1000,
-                    Win3V3 = 0,
-                    Lose3V3 = 0,
-                    Rank5V5 = "D",
-                    Rank3V3 = "D"
-                },
+                    Rank5V5 = "C-",
+                    Rank3V3 = "D",
+                    Url = "gamingprofile/iTKerry.html"
+                }
             };
             testInit.ForEach(t => Players.Add(t));
         }

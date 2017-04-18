@@ -3,14 +3,28 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-    mc:Ignorable="d" >
-    <Grid>
-        <StackPanel>
-            <TextBlock Text="{Binding Nickname}"></TextBlock>
-            <Button 
-            VerticalAlignment="Stretch" Width="80"
-            Command="{Binding GoBackCommand}" Style="{StaticResource MaterialDesignFlatButton}">Back</Button>
-        </StackPanel>
-    </Grid>
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    mc:Ignorable="d">
+    <DockPanel>
+        <materialDesign:TransitioningContent DockPanel.Dock="Top" RunHint="Loaded">
+            <materialDesign:TransitioningContent.OpeningEffects>
+                <materialDesign:TransitionEffect Kind="SlideInFromTop" Duration="0:0:0.6" />
+                <materialDesign:TransitionEffect Kind="FadeIn" Duration="0:0:0.6" />
+            </materialDesign:TransitioningContent.OpeningEffects>
+            <materialDesign:ColorZone Mode="PrimaryLight" Height="80" Width="852" Padding="8px" materialDesign:ShadowAssist.ShadowDepth="Depth1" HorizontalAlignment="Stretch">
+                <Grid>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left">
+                        <Image Width="65" Height="65" Source="../../Assets/65x65.jpg" Stretch="Fill" VerticalAlignment="Top" />
+                        <TextBlock Text="{Binding UserGameProfile.Nickname}" Style="{StaticResource MaterialDesignHeadlineTextBlock}" Margin="4,-4,0,0" VerticalAlignment="Top" />
+                    </StackPanel>
+                    <StackPanel HorizontalAlignment="Right">
+                        <Button 
+                            VerticalAlignment="Stretch" Width="80"
+                            Command="{Binding GoBackCommand}" Style="{StaticResource MaterialDesignFlatButton}">Back</Button>
+                    </StackPanel>
+                </Grid>
+            </materialDesign:ColorZone>
+        </materialDesign:TransitioningContent>
+    </DockPanel>
 </UserControl>
