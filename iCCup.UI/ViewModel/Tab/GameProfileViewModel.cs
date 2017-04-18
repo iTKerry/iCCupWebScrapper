@@ -11,16 +11,31 @@ namespace iCCup.UI.ViewModel.Tab
         private readonly IMessangerService _messanger;
 
         public RelayCommand GoBackCommand =>
-            new RelayCommand(() => _messanger.NavigateMessage(new NavigateMessage { NavigateTo = NavigateTo.Back }));
+            new RelayCommand(() => TabViewModel.Navigate(new NavigateMessage { NavigateTo = NavigateTo.Back }));
 
-        public GameProfileViewModel(IMessangerService messanger)
+        public GameProfileViewModel(TabViewModel tabViewModel, IMessangerService messanger)
         {
+            TabViewModel = tabViewModel;
             _messanger = messanger;
         }
 
         public async Task Show(UserSearch contentContent)
         {
+            Nickname = contentContent.Nickname;
+        }
 
+        private TabViewModel _tabViewModel;
+        public TabViewModel TabViewModel
+        {
+            get { return _tabViewModel; }
+            set { _tabViewModel = value; RaisePropertyChanged(() => TabViewModel); }
+        }
+
+        private string _nickname;
+        public string Nickname
+        {
+            get { return _nickname; }
+            set { _nickname = value; RaisePropertyChanged(() => Nickname);}
         }
     }
 }

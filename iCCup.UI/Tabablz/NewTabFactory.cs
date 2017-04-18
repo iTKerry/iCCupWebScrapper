@@ -14,7 +14,7 @@ namespace iCCup.UI.Tabablz
             
             return new HeaderedItemViewModel
             {
-                Header = "",
+                Header = "Header",
                 Content = view
             };
         };

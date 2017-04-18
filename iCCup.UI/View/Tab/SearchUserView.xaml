@@ -63,7 +63,9 @@
             <TextBlock Width="40" TextAlignment="Center" Style="{StaticResource Caption}">Lose</TextBlock>
             <Separator Opacity="0" Width="5"/>
         </DockPanel>
-        <ListBox 
+        <ListBox
+            x:Name="SearchUserList"
+            PreviewMouseLeftButtonDown="SearchUserListItemClicked"
             ItemsSource="{Binding Players}"
             SelectedItem="{Binding SelectedUserSearch}"
             HorizontalContentAlignment="Stretch"

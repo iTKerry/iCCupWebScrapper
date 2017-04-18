@@ -5,6 +5,12 @@ namespace iCCup.UI.ViewModel.Tab
 {
     public partial class SearchUserViewModel
     {
+        public TabViewModel TabViewModel
+        {
+            get { return _tabViewModel; }
+            set { _tabViewModel = value; RaisePropertyChanged(() => TabViewModel);}
+        }
+
         private string _playerName;
         public string PlayerName
         {
@@ -20,7 +26,6 @@ namespace iCCup.UI.ViewModel.Tab
             {
                 _selectedUserSearch = value;
                 RaisePropertyChanged(() => SelectedUserSearch);
-                GoToProfileCommand.Execute(SelectedUserSearch);
             }
         }
 
@@ -72,6 +77,8 @@ namespace iCCup.UI.ViewModel.Tab
         }
 
         private bool _isBusy;
+        private TabViewModel _tabViewModel;
+
         public bool IsBusy
         {
             get { return _isBusy; }

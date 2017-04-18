@@ -31,20 +31,23 @@ namespace iCCup.UI.ViewModel.Tab
             new RelayCommand(async () => await Search(isSearch: false, navigateForward: false));
 
         public RelayCommand<UserSearch> GoToProfileCommand =>
-            new RelayCommand<UserSearch>(userSearch =>
-                _messanger.NavigateMessage(new NavigateMessage
-                {
-                    NavigateTo = NavigateTo.Profile,
-                    Content = userSearch
-                }));
+            new RelayCommand<UserSearch>(userSearch => TabViewModel.Navigate(new NavigateMessage
+            {
+                NavigateTo = NavigateTo.Profile,
+                Content = userSearch
+            }));
 
-        public SearchUserViewModel(IScrapperService scrapper, ILoggerService logger, IMessangerService messanger)
+        public SearchUserViewModel(TabViewModel tabViewModel,IScrapperService scrapper, ILoggerService logger, IMessangerService messanger)
         {
+            TabViewModel = tabViewModel;
             _scrapper = scrapper;
             _logger = logger;
             _messanger = messanger;
 
             Players = new ObservableCollection<UserSearch>();
+#if DEBUG
+            DebugInit();
+#endif
         }
 
         private async Task Search(bool isSearch = true, bool navigateForward = true)
@@ -83,10 +86,54 @@ namespace iCCup.UI.ViewModel.Tab
                 }
             }
         }
-        
+
+        private void DebugInit()
+        {
+            var testInit = new List<UserSearch>
+            {
+                new UserSearch
+                {
+                    Nickname = "Test1",
+                    Pts5V5 = 1000,
+                    Win5V5 = 0,
+                    Lose5V5 = 0,
+                    Pts3V3 = 1000,
+                    Win3V3 = 0,
+                    Lose3V3 = 0,
+                    Rank5V5 = "D",
+                    Rank3V3 = "D"
+                },
+                new UserSearch
+                {
+                    Nickname = "Test2",
+                    Pts5V5 = 1000,
+                    Win5V5 = 0,
+                    Lose5V5 = 0,
+                    Pts3V3 = 1000,
+                    Win3V3 = 0,
+                    Lose3V3 = 0,
+                    Rank5V5 = "D",
+                    Rank3V3 = "D"
+                },
+                new UserSearch
+                {
+                    Nickname = "Test3",
+                    Pts5V5 = 1000,
+                    Win5V5 = 0,
+                    Lose5V5 = 0,
+                    Pts3V3 = 1000,
+                    Win3V3 = 0,
+                    Lose3V3 = 0,
+                    Rank5V5 = "D",
+                    Rank3V3 = "D"
+                },
+            };
+            testInit.ForEach(t => Players.Add(t));
+        }
+
         public void Tidy()
         {
-            Players = new ObservableCollection<UserSearch>();
+            //Players = new ObservableCollection<UserSearch>();
             _logger.AddInfo($"{this.GetType()} used Tidy.");
         }
     }

@@ -2,7 +2,6 @@
 using System.Linq;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
-using GalaSoft.MvvmLight.Messaging;
 using iCCup.DATA.Models;
 using iCCup.UI.Infrastructure.Contracts;
 using iCCup.UI.Navigation;
@@ -16,24 +15,27 @@ namespace iCCup.UI.ViewModel.Tab
         
         public TabViewModel()
         {
+            GameProfileViewModel = new GameProfileViewModel(this, SimpleIoc.Default.GetInstance<IMessangerService>());
+            SearchUserViewModel = new SearchUserViewModel(this,
+                SimpleIoc.Default.GetInstance<IScrapperService>(),
+                SimpleIoc.Default.GetInstance<ILoggerService>(),
+                SimpleIoc.Default.GetInstance<IMessangerService>());
+
             Slides = new object[] {SearchUserViewModel, GameProfileViewModel};
+
             _slideNavigator = new SlideNavigator(this, Slides);
             _slideNavigator.GoTo(0);
-
-            Messenger.Default.Register<NotificationMessage<NavigateMessage>>(this, Navigate);
         }
 
-        private void Navigate(NotificationMessage<NavigateMessage> message)
+        public void Navigate(NavigateMessage message)
         {
-            switch (message.Content.NavigateTo)
+            switch (message.NavigateTo)
             {
                 case NavigateTo.Search:
                     _slideNavigator.GoTo(IndexOfSlide<SearchUserViewModel>());
                     break;
                 case NavigateTo.Profile:
-                    _slideNavigator.GoTo(
-                    IndexOfSlide<GameProfileViewModel>(),
-                        async () => await GameProfileViewModel.Show((UserSearch) message.Content.Content));
+                    _slideNavigator.GoTo(IndexOfSlide<GameProfileViewModel>(), async () => await GameProfileViewModel.Show((UserSearch)message.Content));
                     break;
                 case NavigateTo.GameDetails:
                     //TODO: GameDetails navigation here
@@ -51,27 +53,9 @@ namespace iCCup.UI.ViewModel.Tab
 
         public object[] Slides { get; }
 
-        public SearchUserViewModel SearchUserViewModel { get; } =
-            new SearchUserViewModel(
-                SimpleIoc.Default.GetInstance<IScrapperService>(),
-                SimpleIoc.Default.GetInstance<ILoggerService>(),
-                SimpleIoc.Default.GetInstance<IMessangerService>());
+        public SearchUserViewModel SearchUserViewModel { get; }
 
-        public GameProfileViewModel GameProfileViewModel { get; } = 
-            new GameProfileViewModel(SimpleIoc.Default.GetInstance<IMessangerService>());
-
-        private HeaderViewModel _hvm;
-        public HeaderViewModel Hvm
-        {
-            get { return _hvm; }
-            set { _hvm = value; RaisePropertyChanged<HeaderViewModel>(() => Hvm); }
-        }
-
-        public string Header
-        {
-            get { return Hvm.Header; }
-            set { Hvm.Header = value; RaisePropertyChanged(() => Hvm); }
-        }
+        public GameProfileViewModel GameProfileViewModel { get; }
 
         private int _activeSlideIndex;
         public int ActiveSlideIndex
