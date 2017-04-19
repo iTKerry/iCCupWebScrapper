@@ -1,15 +1,17 @@
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using Dragablz;
-using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using iCCup.DATA.Models;
+using iCCup.UI.Infrastructure.Utils;
 using iCCup.UI.Tabablz;
 using iCCup.UI.View;
+using System;
 
 namespace iCCup.UI.ViewModel
 {
-    public class MainViewModel : ViewModelBase
+    public class MainViewModel : INotifyPropertyChanged
     {
         public RelayCommand AddTabItemCommand => new RelayCommand(() =>
         {
@@ -36,22 +38,25 @@ namespace iCCup.UI.ViewModel
         private int _selectedIndx;
         public int SelectedIndx
         {
-            get { return _selectedIndx; }
-            set { _selectedIndx = value; RaisePropertyChanged(() => SelectedIndx); }
+            get => _selectedIndx;
+            set => this.MutateVerbose(ref _selectedIndx, value, RaisePropertyChanged());
         }
 
         private bool _showSettings;
         public bool ShowSettings
         {
-            get { return _showSettings; }
-            set { _showSettings = value; RaisePropertyChanged(() => ShowSettings); }
+            get => _showSettings;
+            set => this.MutateVerbose(ref _showSettings, value, RaisePropertyChanged());
         }
 
         private bool _showLog;
         public bool ShowLog
         {
-            get { return _showLog; }
-            set { _showLog = value; RaisePropertyChanged(() => ShowLog); }
+            get => _showLog;
+            set => this.MutateVerbose(ref _showLog, value, RaisePropertyChanged());
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private Action<PropertyChangedEventArgs> RaisePropertyChanged() => args => PropertyChanged?.Invoke(this, args);
     }
 }

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
-using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Threading;
 using iCCup.DATA.Models;
@@ -12,7 +12,7 @@ using iCCup.UI.Navigation;
 
 namespace iCCup.UI.ViewModel.Tab
 {
-    public partial class SearchUserViewModel : ViewModelBase, ITidyable
+    public partial class SearchUserViewModel : INotifyPropertyChanged, ITidyable
     {
         private CancellationTokenSource _ts;
         private CancellationToken _ct;
@@ -122,7 +122,10 @@ namespace iCCup.UI.ViewModel.Tab
         public void Tidy()
         {
             //Players = new ObservableCollection<UserSearch>();
-            _logger.AddInfo($"{this.GetType()} used Tidy.");
+            _logger.AddInfo($"{GetType()} used Tidy.");
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private Action<PropertyChangedEventArgs> RaisePropertyChanged() => args => PropertyChanged?.Invoke(this, args);
     }
 }

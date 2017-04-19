@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using iCCup.DATA.Models;
+using iCCup.UI.Infrastructure.Utils;
 
 namespace iCCup.UI.ViewModel.Tab
 {
@@ -8,76 +9,72 @@ namespace iCCup.UI.ViewModel.Tab
         private TabViewModel _tabViewModel;
         public TabViewModel TabViewModel
         {
-            get { return _tabViewModel; }
-            set { _tabViewModel = value; RaisePropertyChanged(() => TabViewModel);}
+            get => _tabViewModel;
+            set => this.MutateVerbose(ref _tabViewModel, value, RaisePropertyChanged());
         }
 
         private string _playerName;
         public string PlayerName
         {
-            get { return _playerName; }
-            set { _playerName = value; RaisePropertyChanged(() => PlayerName); }
+            get => _playerName;
+            set => this.MutateVerbose(ref _playerName, value, RaisePropertyChanged());
         }
 
         private UserSearch _selectedUserSearch;
         public UserSearch SelectedUserSearch
         {
-            get { return _selectedUserSearch; }
-            set { _selectedUserSearch = value; RaisePropertyChanged(() => SelectedUserSearch); }
+            get => _selectedUserSearch;
+            set => this.MutateVerbose(ref _selectedUserSearch, value, RaisePropertyChanged());
         }
 
         private ObservableCollection<UserSearch> _players;
         public ObservableCollection<UserSearch> Players
         {
-            get { return _players; }
-            set { _players = value; RaisePropertyChanged(() => Players); }
+            get => _players;
+            set => this.MutateVerbose(ref _players, value, RaisePropertyChanged());
         }
 
         private string _nextPage;
         public string NextPage
         {
-            get { return _nextPage; }
+            get => _nextPage;
             set
             {
                 AllowNextPage = !Equals(value, string.Empty);
-
-                _nextPage = value;
-                RaisePropertyChanged(() => NextPage);
+                this.MutateVerbose(ref _nextPage, value, RaisePropertyChanged());
             }
         }
 
         private bool _allowNextPage;
         public bool AllowNextPage
         {
-            get { return _allowNextPage; }
-            set { _allowNextPage = value; RaisePropertyChanged(() => AllowNextPage); }
+            get => _allowNextPage;
+            set => this.MutateVerbose(ref _allowNextPage, value, RaisePropertyChanged());
         }
 
         private string _prevPage;
         public string PrevPage
         {
-            get { return _prevPage; }
+            get => _prevPage;
             set
             {
                 AllowPrevPage = !Equals(value, string.Empty);
-
-                _prevPage = value;
-                RaisePropertyChanged(() => PrevPage);
+                this.MutateVerbose(ref _prevPage, value, RaisePropertyChanged());
             }
         }
 
         private bool _allowPrevPage;
         public bool AllowPrevPage
         {
-            get { return _allowPrevPage; }
-            set { _allowPrevPage = value; RaisePropertyChanged(() => AllowPrevPage); }
+            get => _allowPrevPage;
+            set => this.MutateVerbose(ref _allowPrevPage, value, RaisePropertyChanged());
         }
 
         private bool _isBusy;
         public bool IsBusy
         {
-            get { return _isBusy; }
-            set { _isBusy = value; RaisePropertyChanged(() => IsBusy); }
+            get => _isBusy;
+            set => this.MutateVerbose(ref _isBusy, value, RaisePropertyChanged());
         }
     }
 }

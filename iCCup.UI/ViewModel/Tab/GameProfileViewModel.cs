@@ -1,12 +1,15 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.ComponentModel;
+using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using iCCup.DATA.Models;
 using iCCup.UI.Infrastructure.Contracts;
+using iCCup.UI.Infrastructure.Utils;
 
 namespace iCCup.UI.ViewModel.Tab
 {
-    public class GameProfileViewModel : ViewModelBase
+    public class GameProfileViewModel : INotifyPropertyChanged
     {
         private readonly IScrapperService _scrapper;
 
@@ -28,15 +31,18 @@ namespace iCCup.UI.ViewModel.Tab
         private TabViewModel _tabViewModel;
         public TabViewModel TabViewModel
         {
-            get { return _tabViewModel; }
-            set { _tabViewModel = value; RaisePropertyChanged(() => TabViewModel); }
+            get => _tabViewModel;
+            set => this.MutateVerbose(ref _tabViewModel, value, RaisePropertyChanged());
         }
 
         private UserGameProfile _userGameProfile;
         public UserGameProfile UserGameProfile
         {
-            get { return _userGameProfile; }
-            set { _userGameProfile = value; RaisePropertyChanged(() => UserGameProfile);}
+            get => _userGameProfile;
+            set => this.MutateVerbose(ref _userGameProfile, value, RaisePropertyChanged());
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private Action<PropertyChangedEventArgs> RaisePropertyChanged() => args => PropertyChanged?.Invoke(this, args);
     }
 }

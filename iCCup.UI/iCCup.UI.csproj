@@ -137,6 +137,7 @@
     <Compile Include="Navigation\NavigationCommands.cs" />
     <Compile Include="Navigation\SlideNavigator.cs" />
     <Compile Include="Navigation\SlideNavigatorFrame.cs" />
+    <Compile Include="Properties\Annotations1.cs" />
     <Compile Include="Tabablz\HeaderViewModel.cs" />
     <Compile Include="Tabablz\NewTabFactory.cs" />
     <Compile Include="ViewModel\Tab\GameProfileViewModel.cs" />

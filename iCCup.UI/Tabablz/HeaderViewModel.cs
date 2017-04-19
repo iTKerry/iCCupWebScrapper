@@ -1,19 +1,27 @@
-﻿using GalaSoft.MvvmLight;
+﻿using System;
+using System.ComponentModel;
+using iCCup.UI.Infrastructure.Utils;
 
 namespace iCCup.UI.Tabablz
 {
-    public class HeaderViewModel : ViewModelBase
+    public class HeaderViewModel : INotifyPropertyChanged
     {
         public HeaderViewModel(string header)
         {
-            this.Header = header;
+            Header = header;
         }
 
         private string _header;
         public string Header
         {
-            get { return _header; }
-            set { _header = value; RaisePropertyChanged(() => Header); }
+            get => _header;
+            set => this.MutateVerbose(ref _header, value, RaisePropertyChanged());
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private Action<PropertyChangedEventArgs> RaisePropertyChanged()
+        {
+            return args => PropertyChanged?.Invoke(this, args);
         }
     }
 }

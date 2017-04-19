@@ -12,17 +12,11 @@ namespace iCCup.UI.Navigation
 
         public SlideNavigator(ISlideNavigationSubject slideNavigationSubject, object[] slides)
         {
-            if (slideNavigationSubject == null) throw new ArgumentNullException(nameof(slideNavigationSubject));
-            if (slides == null) throw new ArgumentNullException(nameof(slides));
-
-            _slideNavigationSubject = slideNavigationSubject;
-            _slides = slides;
+            _slideNavigationSubject = slideNavigationSubject ?? throw new ArgumentNullException(nameof(slideNavigationSubject));
+            _slides = slides ?? throw new ArgumentNullException(nameof(slides));
         }
 
-        public void GoTo(int slideIndex)
-        {
-            GoTo(slideIndex, () => { });
-        }
+        public void GoTo(int slideIndex) => GoTo(slideIndex, () => { });
 
         public void GoTo(int slideIndex, Action setupSlide)
         {
@@ -66,10 +60,7 @@ namespace iCCup.UI.Navigation
             GoTo(_currentPositionNode);
         }
 
-        private void GoTo(LinkedListNode<SlideNavigatorFrame> node)
-        {
+        private void GoTo(LinkedListNode<SlideNavigatorFrame> node) =>
             _slideNavigationSubject.ActiveSlideIndex = node.Value.SlideIndex;
-        }
-
     }
 }

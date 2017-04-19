@@ -24,11 +24,8 @@ namespace iCCup.UI.ViewModel
             SimpleIoc.Default.Register(() => scrapperBase);
 
             SimpleIoc.Default.Register<MainViewModel>();
-
         }
 
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
-
-        public TabViewModel TabViewModel => ServiceLocator.Current.GetInstance<TabViewModel>();
     }
 }
