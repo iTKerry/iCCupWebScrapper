@@ -6,6 +6,8 @@
 
         public string Nickname { get; set; }
 
+        public string ImageSource { get; set; }
+
         public int Win5V5 { get; set; }
         public int Lose5V5 { get; set; }
         public int Pts5V5 { get; set; }

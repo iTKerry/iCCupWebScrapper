@@ -43,9 +43,6 @@ namespace iCCup.UI.ViewModel.Tab
             _logger = logger;
 
             Players = new ObservableCollection<UserSearch>();
-#if DEBUG
-            DebugInit();
-#endif
         }
 
         private async Task Search(bool isSearch = true, bool navigateForward = true)
@@ -83,40 +80,6 @@ namespace iCCup.UI.ViewModel.Tab
                     Players.Clear();
                 }
             }
-        }
-
-        private void DebugInit()
-        {
-            var testInit = new List<UserSearch>
-            {
-                new UserSearch
-                {
-                    Nickname = "Gyber",
-                    Pts5V5 = 10062,
-                    Win5V5 = 86,
-                    Lose5V5 = 69,
-                    Pts3V3 = 1000,
-                    Win3V3 = 0,
-                    Lose3V3 = 0,
-                    Rank5V5 = "A-",
-                    Rank3V3 = "D",
-                    Url = "gamingprofile/Gyber..html"
-                },
-                new UserSearch
-                {
-                    Nickname = "iTKerry",
-                    Pts5V5 = 3788,
-                    Win5V5 = 44,
-                    Lose5V5 = 30,
-                    Pts3V3 = 1000,
-                    Win3V3 = 0,
-                    Lose3V3 = 0,
-                    Rank5V5 = "C-",
-                    Rank3V3 = "D",
-                    Url = "gamingprofile/iTKerry.html"
-                }
-            };
-            testInit.ForEach(t => Players.Add(t));
         }
 
         public void Tidy()

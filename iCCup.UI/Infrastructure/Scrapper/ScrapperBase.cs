@@ -75,6 +75,19 @@ namespace iCCup.UI.Infrastructure.Scrapper
                     Lose3V3 = stats[1][1]
                 }).ToList();
 
+            var images = page.Html.CssSelect(".search-photo")
+                .CssSelect("img")
+                .Where(i => i.GetAttributeValue("alt").Equals("avatar"))
+                .Select(node => node.GetAttributeValue("src"))
+                .ToArray();
+
+            var indx = 0;
+            result.ForEach(r =>
+            {
+                r.ImageSource = images[indx];
+                indx++;
+            });
+
             return (result, GetPagination(page, ".next a"), GetPagination(page, ".previous a"));
         }
 

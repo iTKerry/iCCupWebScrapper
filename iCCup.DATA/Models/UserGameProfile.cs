@@ -16,6 +16,7 @@
         {
             this.Url = search.Url;
             this.Nickname = search.Nickname;
+            this.ImageSource = search.ImageSource;
 
             this.Win5V5 = search.Win5V5;
             this.Lose5V5 = search.Lose5V5;

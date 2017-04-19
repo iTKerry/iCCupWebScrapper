@@ -23,7 +23,7 @@
                 <materialDesign:ColorZone DockPanel.Dock="Top" Mode="Standard" Height="80" Width="845" Padding="8" HorizontalAlignment="Stretch" materialDesign:ShadowAssist.ShadowDepth="Depth3">
                     <Grid>
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left">
-                            <Image Width="65" Height="65" Source="../../Assets/65x65.jpg" Stretch="Fill" VerticalAlignment="Top" />
+                            <Image Width="65" Height="65" Source="{Binding Avatar}" Stretch="Fill" VerticalAlignment="Top" />
                             <TextBlock Text="{Binding UserGameProfile.Nickname}" Style="{StaticResource MaterialDesignHeadlineTextBlock}" Margin="4,-4,0,0" VerticalAlignment="Top" />
                         </StackPanel>
                         <StackPanel HorizontalAlignment="Right">

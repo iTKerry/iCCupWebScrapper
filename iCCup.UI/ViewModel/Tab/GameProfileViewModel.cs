@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using iCCup.DATA.Models;
@@ -26,6 +27,18 @@ namespace iCCup.UI.ViewModel.Tab
         {
             UserGameProfile = null;
             UserGameProfile = await _scrapper.GetUserGameProfile(user);
+
+            Avatar = new BitmapImage();
+            Avatar.BeginInit();
+            Avatar.UriSource = new Uri($"http:{UserGameProfile.ImageSource}", UriKind.Absolute);
+            Avatar.EndInit();
+        }
+
+        private BitmapImage _avatar;
+        public BitmapImage Avatar
+        {
+            get => _avatar;
+            set => this.MutateVerbose(ref _avatar, value, RaisePropertyChanged());
         }
 
         private TabViewModel _tabViewModel;
