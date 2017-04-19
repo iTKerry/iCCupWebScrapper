@@ -82,11 +82,7 @@ namespace iCCup.UI.Infrastructure.Scrapper
                 .ToArray();
 
             var indx = 0;
-            result.ForEach(r =>
-            {
-                r.ImageSource = images[indx];
-                indx++;
-            });
+            result.ForEach(r => r.ImageSource = images[indx++]);
 
             return (result, GetPagination(page, ".next a"), GetPagination(page, ".previous a"));
         }
