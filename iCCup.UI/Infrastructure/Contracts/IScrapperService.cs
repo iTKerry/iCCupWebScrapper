@@ -7,8 +7,8 @@ namespace iCCup.UI.Infrastructure.Contracts
 {
     public interface IScrapperService
     {
-        Task<Tuple<List<UserSearch>, string, string>> SearchPlayer(string nickname);
-        Task<Tuple<List<UserSearch>, string, string>> SearchPlayer(Uri url);
+        Task<(List<UserSearch>, string, string)> SearchPlayer(string nickname);
+        Task<(List<UserSearch>, string, string)> SearchPlayer(Uri url);
 
         Task<UserGameProfile> GetUserGameProfile(UserSearch userSearch);
 

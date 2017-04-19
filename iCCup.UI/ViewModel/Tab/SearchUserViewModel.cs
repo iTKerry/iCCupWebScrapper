@@ -55,7 +55,7 @@ namespace iCCup.UI.ViewModel.Tab
                 : await _scrapper.SearchPlayer(new Uri(navigateForward ? NextPage : PrevPage)));
         }
 
-        private async Task HandleSearchResult(Tuple<List<UserSearch>, string, string> searchResults)
+        private async Task HandleSearchResult((List<UserSearch> list, string nextPageUrl, string prevPageUrl) result)
         {
             _ts?.Cancel();
             _ts = new CancellationTokenSource();
@@ -66,11 +66,11 @@ namespace iCCup.UI.ViewModel.Tab
                 DispatcherHelper.CheckBeginInvokeOnUI(() =>
                 {
                     Players.Clear();
-                    NextPage = searchResults.Item2;
-                    PrevPage = searchResults.Item3;
+                    NextPage = result.nextPageUrl;
+                    PrevPage = result.prevPageUrl;
                 });
 
-                foreach (var player in searchResults.Item1)
+                foreach (var player in result.list)
                 {
                     await Task.Delay(15, _ct);
                     DispatcherHelper.CheckBeginInvokeOnUI(() => Players.Add(player));
