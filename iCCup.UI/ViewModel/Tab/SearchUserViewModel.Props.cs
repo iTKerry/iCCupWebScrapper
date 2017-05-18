@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using iCCup.DATA.Models;
-using iCCup.UI.Infrastructure.Utils;
 
 namespace iCCup.UI.ViewModel.Tab
 {
@@ -10,28 +9,28 @@ namespace iCCup.UI.ViewModel.Tab
         public TabViewModel TabViewModel
         {
             get => _tabViewModel;
-            set => this.MutateVerbose(ref _tabViewModel, value, RaisePropertyChanged());
+            set => Set(() => TabViewModel, ref _tabViewModel, value);
         }
 
         private string _playerName;
         public string PlayerName
         {
             get => _playerName;
-            set => this.MutateVerbose(ref _playerName, value, RaisePropertyChanged());
+            set => Set(() => PlayerName, ref _playerName, value);
         }
 
         private UserSearch _selectedUserSearch;
         public UserSearch SelectedUserSearch
         {
             get => _selectedUserSearch;
-            set => this.MutateVerbose(ref _selectedUserSearch, value, RaisePropertyChanged());
+            set => Set(() => SelectedUserSearch, ref _selectedUserSearch, value);
         }
 
         private ObservableCollection<UserSearch> _players;
         public ObservableCollection<UserSearch> Players
         {
             get => _players;
-            set => this.MutateVerbose(ref _players, value, RaisePropertyChanged());
+            set => Set(() => Players, ref _players, value);
         }
 
         private string _nextPage;
@@ -41,7 +40,7 @@ namespace iCCup.UI.ViewModel.Tab
             set
             {
                 AllowNextPage = !Equals(value, string.Empty);
-                this.MutateVerbose(ref _nextPage, value, RaisePropertyChanged());
+                Set(() => NextPage, ref _nextPage, value);
             }
         }
 
@@ -49,7 +48,7 @@ namespace iCCup.UI.ViewModel.Tab
         public bool AllowNextPage
         {
             get => _allowNextPage;
-            set => this.MutateVerbose(ref _allowNextPage, value, RaisePropertyChanged());
+            set => Set(() => AllowNextPage, ref _allowNextPage, value);
         }
 
         private string _prevPage;
@@ -59,7 +58,7 @@ namespace iCCup.UI.ViewModel.Tab
             set
             {
                 AllowPrevPage = !Equals(value, string.Empty);
-                this.MutateVerbose(ref _prevPage, value, RaisePropertyChanged());
+                Set(() => PrevPage, ref _prevPage, value);
             }
         }
 
@@ -67,14 +66,14 @@ namespace iCCup.UI.ViewModel.Tab
         public bool AllowPrevPage
         {
             get => _allowPrevPage;
-            set => this.MutateVerbose(ref _allowPrevPage, value, RaisePropertyChanged());
+            set => Set(() => AllowPrevPage, ref _allowPrevPage, value);
         }
 
         private bool _isBusy;
         public bool IsBusy
         {
             get => _isBusy;
-            set => this.MutateVerbose(ref _isBusy, value, RaisePropertyChanged());
+            set => Set(() => IsBusy, ref _isBusy, value);
         }
     }
 }

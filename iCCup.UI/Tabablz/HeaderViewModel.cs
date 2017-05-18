@@ -1,10 +1,8 @@
-﻿using System;
-using System.ComponentModel;
-using iCCup.UI.Infrastructure.Utils;
+﻿using GalaSoft.MvvmLight;
 
 namespace iCCup.UI.Tabablz
 {
-    public class HeaderViewModel : INotifyPropertyChanged
+    public class HeaderViewModel : ViewModelBase
     {
         public HeaderViewModel(string header)
         {
@@ -15,13 +13,7 @@ namespace iCCup.UI.Tabablz
         public string Header
         {
             get => _header;
-            set => this.MutateVerbose(ref _header, value, RaisePropertyChanged());
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        private Action<PropertyChangedEventArgs> RaisePropertyChanged()
-        {
-            return args => PropertyChanged?.Invoke(this, args);
+            set => Set(() => Header, ref _header, value);
         }
     }
 }

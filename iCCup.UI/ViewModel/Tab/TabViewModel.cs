@@ -1,15 +1,14 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Linq;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using iCCup.DATA.Models;
 using iCCup.UI.Infrastructure.Contracts;
-using iCCup.UI.Infrastructure.Utils;
 using iCCup.UI.Navigation;
 
 namespace iCCup.UI.ViewModel.Tab
 {
-    public class TabViewModel : INotifyPropertyChanged, ISlideNavigationSubject
+    public class TabViewModel : ViewModelBase, ISlideNavigationSubject
     {
         private readonly SlideNavigator _slideNavigator;
         
@@ -61,15 +60,12 @@ namespace iCCup.UI.ViewModel.Tab
         public int ActiveSlideIndex
         {
             get => _activeSlideIndex;
-            set => this.MutateVerbose(ref _activeSlideIndex, value, RaisePropertyChanged());
+            set => Set(() => ActiveSlideIndex, ref _activeSlideIndex, value);
         }
 
         private int IndexOfSlide<TSlide>()
         {
             return Slides.Select((o, i) => new { o, i }).First(a => a.o.GetType() == typeof(TSlide)).i;
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        private Action<PropertyChangedEventArgs> RaisePropertyChanged() => args => PropertyChanged?.Invoke(this, args);
     }
 }

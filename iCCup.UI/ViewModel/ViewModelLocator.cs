@@ -3,7 +3,6 @@ using GalaSoft.MvvmLight.Threading;
 using iCCup.UI.Infrastructure.Contracts;
 using iCCup.UI.Infrastructure.Scrapper;
 using iCCup.UI.Infrastructure.Service;
-using iCCup.UI.ViewModel.Tab;
 using Microsoft.Practices.ServiceLocation;
 
 namespace iCCup.UI.ViewModel
@@ -21,6 +20,8 @@ namespace iCCup.UI.ViewModel
             SimpleIoc.Default.Register<ILoggerService, LoggerService>();
 
             var scrapperBase = new ScrapperBase(SimpleIoc.Default.GetInstance<ILoggerService>());
+
+            SimpleIoc.Default.Unregister<ScrapperBase>();
             SimpleIoc.Default.Register(() => scrapperBase);
 
             SimpleIoc.Default.Register<MainViewModel>();

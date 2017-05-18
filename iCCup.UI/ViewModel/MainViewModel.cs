@@ -8,10 +8,11 @@ using iCCup.UI.Infrastructure.Utils;
 using iCCup.UI.Tabablz;
 using iCCup.UI.View;
 using System;
+using GalaSoft.MvvmLight;
 
 namespace iCCup.UI.ViewModel
 {
-    public class MainViewModel : INotifyPropertyChanged
+    public class MainViewModel : ViewModelBase
     {
         public RelayCommand AddTabItemCommand => new RelayCommand(() =>
         {
@@ -39,24 +40,21 @@ namespace iCCup.UI.ViewModel
         public int SelectedIndx
         {
             get => _selectedIndx;
-            set => this.MutateVerbose(ref _selectedIndx, value, RaisePropertyChanged());
+            set => Set(() => SelectedIndx, ref _selectedIndx, value);
         }
 
         private bool _showSettings;
         public bool ShowSettings
         {
             get => _showSettings;
-            set => this.MutateVerbose(ref _showSettings, value, RaisePropertyChanged());
+            set => Set(() => ShowSettings, ref _showSettings, value);
         }
 
         private bool _showLog;
         public bool ShowLog
         {
             get => _showLog;
-            set => this.MutateVerbose(ref _showLog, value, RaisePropertyChanged());
+            set => Set(() => ShowLog, ref _showLog, value);
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        private Action<PropertyChangedEventArgs> RaisePropertyChanged() => args => PropertyChanged?.Invoke(this, args);
     }
 }

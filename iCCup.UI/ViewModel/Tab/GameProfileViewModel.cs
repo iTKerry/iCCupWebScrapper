@@ -1,16 +1,14 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using iCCup.DATA.Models;
 using iCCup.UI.Infrastructure.Contracts;
-using iCCup.UI.Infrastructure.Utils;
 
 namespace iCCup.UI.ViewModel.Tab
 {
-    public class GameProfileViewModel : INotifyPropertyChanged
+    public class GameProfileViewModel : ViewModelBase
     {
         private readonly IScrapperService _scrapper;
 
@@ -38,24 +36,21 @@ namespace iCCup.UI.ViewModel.Tab
         public BitmapImage Avatar
         {
             get => _avatar;
-            set => this.MutateVerbose(ref _avatar, value, RaisePropertyChanged());
+            set => Set(() => Avatar, ref _avatar, value);
         }
 
         private TabViewModel _tabViewModel;
         public TabViewModel TabViewModel
         {
             get => _tabViewModel;
-            set => this.MutateVerbose(ref _tabViewModel, value, RaisePropertyChanged());
+            set => Set(() => TabViewModel, ref _tabViewModel, value);
         }
 
         private UserGameProfile _userGameProfile;
         public UserGameProfile UserGameProfile
         {
             get => _userGameProfile;
-            set => this.MutateVerbose(ref _userGameProfile, value, RaisePropertyChanged());
+            set => Set(() => UserGameProfile, ref _userGameProfile, value);
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        private Action<PropertyChangedEventArgs> RaisePropertyChanged() => args => PropertyChanged?.Invoke(this, args);
     }
 }
