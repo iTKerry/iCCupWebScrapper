@@ -21,7 +21,7 @@
                 <materialDesign:TransitionEffect Kind="FadeIn" Duration="0:0:0.6" />
             </materialDesign:TransitioningContent.OpeningEffects>
             <DockPanel>
-                <materialDesign:ColorZone DockPanel.Dock="Top" Mode="Standard" Height="80" Width="845" Padding="8" HorizontalAlignment="Stretch" materialDesign:ShadowAssist.ShadowDepth="Depth3">
+                <materialDesign:ColorZone DockPanel.Dock="Top" Mode="Standard" Height="80" Width="845" Padding="8" HorizontalAlignment="Stretch" materialDesign:ShadowAssist.ShadowDepth="Depth2">
                     <Grid>
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left">
                             <Image Width="65" Height="65" Source="{Binding Avatar}" Stretch="Fill" VerticalAlignment="Top" />
