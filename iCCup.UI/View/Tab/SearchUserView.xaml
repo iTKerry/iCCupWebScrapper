@@ -12,117 +12,125 @@
             <Setter Property="Opacity" Value=".68"></Setter>
         </Style>
     </UserControl.Resources>
-    <DockPanel>
-        <materialDesign:TransitioningContent DockPanel.Dock="Top" RunHint="Loaded" Margin="32 10 32 10">
+    <Grid>
+        <materialDesign:TransitioningContent VerticalAlignment="Stretch" HorizontalAlignment="Stretch" RunHint="Loaded" Margin="32 10 32 10">
             <materialDesign:TransitioningContent.OpeningEffects>
                 <materialDesign:TransitionEffect Kind="SlideInFromTop" Duration="0:0:0.5" />
                 <materialDesign:TransitionEffect Kind="FadeIn" Duration="0:0:0.5" />
             </materialDesign:TransitioningContent.OpeningEffects>
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left">
-                <TextBox 
-                    materialDesign:HintAssist.Hint="Search" 
-                    Margin="0,0,10,0" Width="100" VerticalAlignment="Stretch" 
-                    Text="{Binding PlayerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                    <TextBox.InputBindings>
-                        <KeyBinding Key="Enter" Command="{Binding SearchPlayerCommand}" />
-                    </TextBox.InputBindings>
-                </TextBox>
-                <Button 
-                    VerticalAlignment="Stretch" Width="80" IsEnabled="{Binding AllowPrevPage}" 
-                    Command="{Binding PrevPageCommand}" Style="{StaticResource MaterialDesignFlatButton}">Prev</Button>
-                <Button 
-                    VerticalAlignment="Stretch" Width="80" IsEnabled="{Binding AllowNextPage}" 
-                    Command="{Binding NextPageCommand}" Style="{StaticResource MaterialDesignFlatButton}">Next</Button>
-            </StackPanel>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left">
+                    <TextBox 
+                        materialDesign:HintAssist.Hint="Search" 
+                        Margin="0,0,10,0" Width="100" VerticalAlignment="Stretch" 
+                        Text="{Binding PlayerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <TextBox.InputBindings>
+                            <KeyBinding Key="Enter" Command="{Binding SearchPlayerCommand}" />
+                        </TextBox.InputBindings>
+                    </TextBox>
+                    <Button 
+                        VerticalAlignment="Stretch" Width="80" IsEnabled="{Binding AllowPrevPage}" 
+                        Command="{Binding PrevPageCommand}" Style="{StaticResource MaterialDesignFlatButton}">Prev</Button>
+                    <Button 
+                        VerticalAlignment="Stretch" Width="80" IsEnabled="{Binding AllowNextPage}" 
+                        Command="{Binding NextPageCommand}" Style="{StaticResource MaterialDesignFlatButton}">Next</Button>
+                </StackPanel>
+                <DockPanel Grid.Row="1" Margin="0 14 0 2">
+                    <Separator Opacity="0" Width="16"/>
+                    <TextBlock Width="110" TextAlignment="Left" Style="{StaticResource Caption}">Nickname</TextBlock>
+                    <Separator Opacity="0" Width="16"/>
+                    <Separator Opacity="0" Width="40"/>
+                    <TextBlock Width="20" TextAlignment="Right" Style="{StaticResource Caption}">5x5</TextBlock>
+                    <Separator Opacity="0" Width="10"/>
+                    <Separator Opacity="0" Width="5"/>
+                    <TextBlock Width="40" TextAlignment="Center" Style="{StaticResource Caption}">PTS</TextBlock>
+                    <TextBlock Width="40" TextAlignment="Center" Style="{StaticResource Caption}">Rank</TextBlock>
+                    <Separator Opacity="0" Width="5"/>
+                    <Separator Opacity="0" Width="20"/>
+                    <Separator Opacity="0" Width="5"/>
+                    <TextBlock Width="40" TextAlignment="Center" Style="{StaticResource Caption}">Win</TextBlock>
+                    <TextBlock Width="40" TextAlignment="Center" Style="{StaticResource Caption}">Lose</TextBlock>
+                    <Separator Opacity="0" Width="5"/>
+                    <Separator Opacity="0" Width="40"/>
+                    <TextBlock Width="20" TextAlignment="Right" Style="{StaticResource Caption}">3x3</TextBlock>
+                    <Separator Opacity="0" Width="10"/>
+                    <Separator Opacity="0" Width="5"/>
+                    <TextBlock Width="40" TextAlignment="Center" Style="{StaticResource Caption}">PTS</TextBlock>
+                    <TextBlock Width="40" TextAlignment="Center" Style="{StaticResource Caption}">Rank</TextBlock>
+                    <Separator Opacity="0" Width="5"/>
+                    <Separator Opacity="0" Width="20"/>
+                    <Separator Opacity="0" Width="5"/>
+                    <TextBlock Width="40" TextAlignment="Center" Style="{StaticResource Caption}">Win</TextBlock>
+                    <TextBlock Width="40" TextAlignment="Center" Style="{StaticResource Caption}">Lose</TextBlock>
+                    <Separator Opacity="0" Width="5"/>
+                </DockPanel>
+                <ListBox
+                    x:Name="SearchUserList"
+                    Grid.Row="2"
+                    PreviewMouseLeftButtonDown="SearchUserListItemClicked"
+                    ItemsSource="{Binding Players}"
+                    SelectedItem="{Binding SelectedUserSearch}"
+                    HorizontalContentAlignment="Stretch"
+                    Margin="0 2 0 16"
+                    ItemContainerStyle="{StaticResource ListBoxItemStyle}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <materialDesign:TransitioningContent 
+                                OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplierExtension 0:0:0.1}"
+                                Opacity="0"
+                                RunHint="Loaded">
+                                <materialDesign:TransitioningContent.OpeningEffects>
+                                    <materialDesign:TransitionEffect Kind="SlideInFromTop" />
+                                    <materialDesign:TransitionEffect Kind="FadeIn" />
+                                </materialDesign:TransitioningContent.OpeningEffects>
+                                <materialDesign:ColorZone Mode="Light" CornerRadius="3" materialDesign:ShadowAssist.ShadowDepth="Depth1" Margin="2">
+                                    <DockPanel Height="30">
+                                        <TextBlock Text="{Binding Nickname}" Width="110" VerticalAlignment="Center" DockPanel.Dock="Left" Margin="16 0 16 0"
+                                                   Style="{StaticResource MaterialDesignSubheadingTextBlock}" TextAlignment="Left" />
+                                        <Separator Opacity="0" Width="70"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:ColorZone Mode="PrimaryLight" VerticalAlignment="Center" Width="90" Height="26" CornerRadius="2">
+                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                    <TextBlock Text="{Binding Pts5V5}" Width="40" Margin="4,0,0,0" TextAlignment="Center" />
+                                                    <TextBlock Text="{Binding Rank5V5}" Width="40" Margin="0,0,4,0" TextAlignment="Center" />
+                                                </StackPanel>
+                                            </materialDesign:ColorZone>
+                                            <Separator Opacity="0" Width="20"/>
+                                            <materialDesign:ColorZone Mode="Standard" VerticalAlignment="Center" Width="90" Height="26" CornerRadius="2">
+                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                    <TextBlock Text="{Binding Win5V5}" Width="40" Margin="4,0,0,0" TextAlignment="Center" />
+                                                    <TextBlock Text="{Binding Lose5V5}" Width="40" Margin="0,0,4,0" TextAlignment="Center" />
+                                                </StackPanel>
+                                            </materialDesign:ColorZone>
+                                        </StackPanel>
+                                        <Separator Opacity="0" Width="70"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:ColorZone Mode="PrimaryLight" VerticalAlignment="Center" Width="90" Height="26" CornerRadius="2">
+                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                    <TextBlock Text="{Binding Pts3V3}" Width="40" Margin="4,0,0,0" TextAlignment="Center" />
+                                                    <TextBlock Text="{Binding Rank3V3}" Width="40" Margin="0,0,4,0" TextAlignment="Center" />
+                                                </StackPanel>
+                                            </materialDesign:ColorZone>
+                                            <Separator Opacity="0" Width="20"/>
+                                            <materialDesign:ColorZone Mode="Standard" VerticalAlignment="Center" Width="90" Height="26" CornerRadius="2">
+                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                    <TextBlock Text="{Binding Win3V3}" Width="40" Margin="4,0,0,0" TextAlignment="Center" />
+                                                    <TextBlock Text="{Binding Lose3V3}" Width="40" Margin="0,0,4,0" TextAlignment="Center" />
+                                                </StackPanel>
+                                            </materialDesign:ColorZone>
+                                        </StackPanel>
+                                    </DockPanel>
+                                </materialDesign:ColorZone>
+                            </materialDesign:TransitioningContent>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
         </materialDesign:TransitioningContent>
-        <DockPanel Margin="32 14 32 2" DockPanel.Dock="Top">
-            <Separator Opacity="0" Width="16"/>
-            <TextBlock Width="110" TextAlignment="Left" Style="{StaticResource Caption}">Nickname</TextBlock>
-            <Separator Opacity="0" Width="16"/>
-            <Separator Opacity="0" Width="40"/>
-            <TextBlock Width="20" TextAlignment="Right" Style="{StaticResource Caption}">5x5</TextBlock>
-            <Separator Opacity="0" Width="10"/>
-            <Separator Opacity="0" Width="5"/>
-            <TextBlock Width="40" TextAlignment="Center" Style="{StaticResource Caption}">PTS</TextBlock>
-            <TextBlock Width="40" TextAlignment="Center" Style="{StaticResource Caption}">Rank</TextBlock>
-            <Separator Opacity="0" Width="5"/>
-            <Separator Opacity="0" Width="20"/>
-            <Separator Opacity="0" Width="5"/>
-            <TextBlock Width="40" TextAlignment="Center" Style="{StaticResource Caption}">Win</TextBlock>
-            <TextBlock Width="40" TextAlignment="Center" Style="{StaticResource Caption}">Lose</TextBlock>
-            <Separator Opacity="0" Width="5"/>
-            <Separator Opacity="0" Width="40"/>
-            <TextBlock Width="20" TextAlignment="Right" Style="{StaticResource Caption}">3x3</TextBlock>
-            <Separator Opacity="0" Width="10"/>
-            <Separator Opacity="0" Width="5"/>
-            <TextBlock Width="40" TextAlignment="Center" Style="{StaticResource Caption}">PTS</TextBlock>
-            <TextBlock Width="40" TextAlignment="Center" Style="{StaticResource Caption}">Rank</TextBlock>
-            <Separator Opacity="0" Width="5"/>
-            <Separator Opacity="0" Width="20"/>
-            <Separator Opacity="0" Width="5"/>
-            <TextBlock Width="40" TextAlignment="Center" Style="{StaticResource Caption}">Win</TextBlock>
-            <TextBlock Width="40" TextAlignment="Center" Style="{StaticResource Caption}">Lose</TextBlock>
-            <Separator Opacity="0" Width="5"/>
-        </DockPanel>
-        <ListBox
-            x:Name="SearchUserList"
-            PreviewMouseLeftButtonDown="SearchUserListItemClicked"
-            ItemsSource="{Binding Players}"
-            SelectedItem="{Binding SelectedUserSearch}"
-            HorizontalContentAlignment="Stretch"
-            Margin="32 2 32 16"
-            ItemContainerStyle="{StaticResource ListBoxItemStyle}">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <materialDesign:TransitioningContent 
-                        OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplierExtension 0:0:0.1}"
-                        Opacity="0"
-                        RunHint="Loaded">
-                        <materialDesign:TransitioningContent.OpeningEffects>
-                            <materialDesign:TransitionEffect Kind="SlideInFromTop" />
-                            <materialDesign:TransitionEffect Kind="FadeIn" />
-                        </materialDesign:TransitioningContent.OpeningEffects>
-                        <materialDesign:ColorZone Mode="Light" CornerRadius="3" materialDesign:ShadowAssist.ShadowDepth="Depth1" Margin="2">
-                            <DockPanel Height="30">
-                                <TextBlock Text="{Binding Nickname}" Width="110" VerticalAlignment="Center" DockPanel.Dock="Left" Margin="16 0 16 0"
-                                           Style="{StaticResource MaterialDesignSubheadingTextBlock}" TextAlignment="Left" />
-                                <Separator Opacity="0" Width="70"/>
-                                <StackPanel Orientation="Horizontal">
-                                    <materialDesign:ColorZone Mode="PrimaryLight" VerticalAlignment="Center" Width="90" Height="26" CornerRadius="2">
-                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                            <TextBlock Text="{Binding Pts5V5}" Width="40" Margin="4,0,0,0" TextAlignment="Center" />
-                                            <TextBlock Text="{Binding Rank5V5}" Width="40" Margin="0,0,4,0" TextAlignment="Center" />
-                                        </StackPanel>
-                                    </materialDesign:ColorZone>
-                                    <Separator Opacity="0" Width="20"/>
-                                    <materialDesign:ColorZone Mode="Standard" VerticalAlignment="Center" Width="90" Height="26" CornerRadius="2">
-                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                            <TextBlock Text="{Binding Win5V5}" Width="40" Margin="4,0,0,0" TextAlignment="Center" />
-                                            <TextBlock Text="{Binding Lose5V5}" Width="40" Margin="0,0,4,0" TextAlignment="Center" />
-                                        </StackPanel>
-                                    </materialDesign:ColorZone>
-                                </StackPanel>
-                                <Separator Opacity="0" Width="70"/>
-                                <StackPanel Orientation="Horizontal">
-                                    <materialDesign:ColorZone Mode="PrimaryLight" VerticalAlignment="Center" Width="90" Height="26" CornerRadius="2">
-                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                            <TextBlock Text="{Binding Pts3V3}" Width="40" Margin="4,0,0,0" TextAlignment="Center" />
-                                            <TextBlock Text="{Binding Rank3V3}" Width="40" Margin="0,0,4,0" TextAlignment="Center" />
-                                        </StackPanel>
-                                    </materialDesign:ColorZone>
-                                    <Separator Opacity="0" Width="20"/>
-                                    <materialDesign:ColorZone Mode="Standard" VerticalAlignment="Center" Width="90" Height="26" CornerRadius="2">
-                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                            <TextBlock Text="{Binding Win3V3}" Width="40" Margin="4,0,0,0" TextAlignment="Center" />
-                                            <TextBlock Text="{Binding Lose3V3}" Width="40" Margin="0,0,4,0" TextAlignment="Center" />
-                                        </StackPanel>
-                                    </materialDesign:ColorZone>
-                                </StackPanel>
-                            </DockPanel>
-                        </materialDesign:ColorZone>
-                    </materialDesign:TransitioningContent>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-    </DockPanel>
+    </Grid>
 </UserControl>
