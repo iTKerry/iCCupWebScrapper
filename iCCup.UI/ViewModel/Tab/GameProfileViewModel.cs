@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Threading;
 using iCCup.DATA.Models;
 using iCCup.UI.Infrastructure.Contracts;
 
@@ -26,10 +27,18 @@ namespace iCCup.UI.ViewModel.Tab
             UserGameProfile = null;
             UserGameProfile = await _scrapper.GetUserGameProfile(user);
 
-            Avatar = new BitmapImage();
-            Avatar.BeginInit();
-            Avatar.UriSource = new Uri($"http:{UserGameProfile.ImageSource}", UriKind.Absolute);
-            Avatar.EndInit();
+            await Task.Factory.StartNew(GetAvatar);
+        }
+
+        private void GetAvatar()
+        {
+            DispatcherHelper.CheckBeginInvokeOnUI(() =>
+            {
+                Avatar = new BitmapImage();
+                Avatar.BeginInit();
+                Avatar.UriSource = new Uri($"http:{UserGameProfile.ImageSource}", UriKind.Absolute);
+                Avatar.EndInit();
+            });
         }
 
         private BitmapImage _avatar;
