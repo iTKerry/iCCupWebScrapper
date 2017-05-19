@@ -117,7 +117,38 @@ namespace iCCup.UI.Infrastructure.Scrapper
                 GamesListUrl = mainBoard.CssSelect("a").First(a => a.GetAttributeValue("href").Contains("matchlist/")).GetAttributeValue("href")
             };
 
+            await GetPersonalGameDetails(userProfile);
+
             return userProfile;
+        }
+
+        private async Task GetPersonalGameDetails(UserGameProfile gameProfile)
+        {
+            var page = await _browser.NavigateToPageAsync(new Uri($"{Globals.iCCupUrl}dota/{gameProfile.GamesListUrl}"));
+
+            var urls = page.Html.CssSelect(".game-details").Select(a => a.GetAttributeValue("href")).ToList();
+
+            var matches = urls.Select(url => GetMatchDetails(url, gameProfile.Nickname).Result).ToList();
+        }
+
+        private async Task<GameDetailsPersonal> GetMatchDetails(string matchUrl, string nickname)
+        {
+            var page = await _browser.NavigateToPageAsync(new Uri($"{Globals.iCCupUrl}dota/{matchUrl}"));
+
+            var sections = page.Html.CssSelect(".t-corp2").ToArray();
+            var date = sections[0].ChildNodes.CssSelect(".field2").First().InnerText;
+            var gameName = sections[1].ChildNodes.CssSelect(".field2").First().InnerText;
+            var time = sections[2].ChildNodes.CssSelect(".field2").First().InnerText;
+
+            var section = sections.First(s => s.ChildNodes.CssSelect(".field2")
+                .Any(node => node.InnerText == nickname));
+
+            return new GameDetailsPersonal
+            {
+                DateTime = date,
+                GameName = gameName,
+                GameTime = time
+            };
         }
 
         #endregion
