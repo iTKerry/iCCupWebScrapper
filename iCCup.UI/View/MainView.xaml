@@ -77,6 +77,7 @@
             NewItemFactory="{x:Static tabablz:TabFactory.Factory}"
             ShowDefaultCloseButton="True"
             HeaderMemberPath="Header"
+            Background="{StaticResource MaterialDesignPaper}"
             SelectedIndex="{Binding SelectedIndx}">
             <dragablz:TabablzControl.HeaderPrefixContent>
                 <Image Source="../Assets/logotype.png" Width="30" Height="40"></Image>

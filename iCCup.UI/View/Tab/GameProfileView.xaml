@@ -6,12 +6,18 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:tab="clr-namespace:iCCup.UI.ViewModel.Tab"
-    mc:Ignorable="d" d:DataContext="{d:DesignInstance tab:GameProfileViewModel}">
+    xmlns:dragablz="http://dragablz.net/winfx/xaml/dragablz"
+    mc:Ignorable="d" d:DataContext="{d:DesignInstance tab:GameProfileViewModel}"
+    Background="{StaticResource MaterialDesignPaper}">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/Dragablz;component/Themes/materialdesign.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <Style x:Key="AlternativeTabControlStyle" TargetType="dragablz:TabablzControl" BasedOn="{StaticResource MaterialDesignAlternateTabablzControlStyle}">
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="FixedHeaderCount" Value="3" />
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
     <DockPanel>
@@ -21,7 +27,7 @@
                 <materialDesign:TransitionEffect Kind="FadeIn" Duration="0:0:0.6" />
             </materialDesign:TransitioningContent.OpeningEffects>
             <DockPanel>
-                <materialDesign:ColorZone DockPanel.Dock="Top" Mode="Standard" Height="80" Width="845" Padding="8" HorizontalAlignment="Stretch" materialDesign:ShadowAssist.ShadowDepth="Depth2">
+                <materialDesign:ColorZone DockPanel.Dock="Top" Mode="Standard" Height="80" Width="845" Padding="8" HorizontalAlignment="Stretch" materialDesign:ShadowAssist.ShadowDepth="Depth0">
                     <Grid>
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left">
                             <Image Width="65" Height="65" Source="{Binding Avatar}" Stretch="Fill" VerticalAlignment="Top" />
@@ -56,26 +62,29 @@
                     </Grid>
                 </materialDesign:ColorZone>
                 <Grid DockPanel.Dock="Top">
-                    <Button VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,-20,20,0"
-                        Command="{Binding GoBackCommand}" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}">
-                        <materialDesign:PackIcon Kind="ArrowLeft" />
+                    <dragablz:TabablzControl 
+                        Style="{StaticResource AlternativeTabControlStyle}" 
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch">
+                        <dragablz:TabablzControl.InterTabController>
+                            <dragablz:InterTabController />
+                        </dragablz:TabablzControl.InterTabController>
+                        <TabItem Header="Overview">
+                            <TextBlock Margin="2" FontSize="24">This is the first</TextBlock>
+                        </TabItem>
+                        <TabItem Header="Matches">
+                            <TextBlock Margin="2" FontSize="24">This is the second</TextBlock>
+                        </TabItem>
+                        <TabItem Header="Records">
+                            <TextBlock Margin="2" FontSize="24">This is the third</TextBlock>
+                        </TabItem>
+                    </dragablz:TabablzControl>
+                    <Button VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,3,10,0"
+                            Command="{Binding GoBackCommand}" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}"
+                            materialDesign:ShadowAssist.ShadowDepth="Depth1">
+                        <materialDesign:PackIcon Kind="ArrowLeft" Height="20" Width="20" />
                     </Button>
                 </Grid>
-                
-                <!--<dragablz:TabablzControl DockPanel.Dock="Top" ItemContainerStyle="{StaticResource NormalTabItemStyle}" Width="852" Background="{DynamicResource WhiteColorBrush}" BorderThickness="0" FixedHeaderCount="3">
-                    <dragablz:TabablzControl.InterTabController>
-                        <dragablz:InterTabController />
-                    </dragablz:TabablzControl.InterTabController>
-                    <TabItem Header="Overview">
-                        --><!--<TextBlock Margin="2" FontSize="24">This is the first</TextBlock>--><!--
-                    </TabItem>
-                    <TabItem Header="Matches">
-                        --><!--<TextBox Margin="2" FontSize="24">This is the second</TextBox>--><!--
-                    </TabItem>
-                    <TabItem Header="Records">
-                        --><!--<TextBlock Margin="2" FontSize="24">This is the third</TextBlock>--><!--
-                    </TabItem>
-                </dragablz:TabablzControl>-->
             </DockPanel>
         </materialDesign:TransitioningContent>
     </DockPanel>

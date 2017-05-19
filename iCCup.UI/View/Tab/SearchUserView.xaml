@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:tab="clr-namespace:iCCup.UI.ViewModel.Tab"
+    Background="{StaticResource MaterialDesignPaper}"
     mc:Ignorable="d" d:DataContext="{d:DesignInstance tab:SearchUserViewModel}">
     <UserControl.Resources>
         <Style TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignCaptionTextBlock}" x:Key="Caption">
