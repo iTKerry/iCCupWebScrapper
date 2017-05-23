@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 using GalaSoft.MvvmLight.Threading;
 using iCCup.DATA.Models;
 using iCCup.UI.Infrastructure.Contracts;
@@ -124,31 +125,27 @@ namespace iCCup.UI.Infrastructure.Scrapper
 
         private async Task GetPersonalGameDetails(UserGameProfile gameProfile)
         {
+            var games = new List<GameDetailsPersonal>();
             var page = await _browser.NavigateToPageAsync(new Uri($"{Globals.iCCupUrl}dota/{gameProfile.GamesListUrl}"));
-
             var urls = page.Html.CssSelect(".game-details").Select(a => a.GetAttributeValue("href")).ToList();
 
-            var matches = urls.Select(url => GetMatchDetails(url, gameProfile.Nickname).Result).ToList();
-        }
-
-        private async Task<GameDetailsPersonal> GetMatchDetails(string matchUrl, string nickname)
-        {
-            var page = await _browser.NavigateToPageAsync(new Uri($"{Globals.iCCupUrl}dota/{matchUrl}"));
-
-            var sections = page.Html.CssSelect(".t-corp2").ToArray();
-            var date = sections[0].ChildNodes.CssSelect(".field2").First().InnerText;
-            var gameName = sections[1].ChildNodes.CssSelect(".field2").First().InnerText;
-            var time = sections[2].ChildNodes.CssSelect(".field2").First().InnerText;
-
-            var section = sections.First(s => s.ChildNodes.CssSelect(".field2")
-                .Any(node => node.InnerText == nickname));
-
-            return new GameDetailsPersonal
+            foreach (var matchUrl in urls)
             {
-                DateTime = date,
-                GameName = gameName,
-                GameTime = time
-            };
+                var gamePage = await _browser.NavigateToPageAsync(new Uri($"{Globals.iCCupUrl}dota/{matchUrl}"));
+                var sections = gamePage.Html.CssSelect(".t-corp2").ToArray();
+                var date = sections[0].CssSelect(".field2").First().InnerText;
+                var gameName = sections[1].CssSelect(".field2").First().InnerText;
+                var time = sections[2].CssSelect(".field2").First().InnerText;
+
+                var section = sections.First(n => n.CssSelect(".field2").Any(node => node.ChildNodes.Any(cn => cn.InnerText == gameProfile.Nickname)));
+
+                games.Add(new GameDetailsPersonal
+                {
+                    DateTime = date,
+                    GameName = gameName,
+                    GameTime = time
+                });
+            }
         }
 
         #endregion
