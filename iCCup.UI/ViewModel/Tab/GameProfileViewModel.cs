@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using GalaSoft.MvvmLight;
@@ -31,6 +32,7 @@ namespace iCCup.UI.ViewModel.Tab
 
             MatchList = null;
             MatchList = (await _scrapper.GetPersonalGameDetails(UserGameProfile)).ToObservableCollection();
+            MatchListHome = MatchList.Take(5).ToObservableCollection();
             await Task.Factory.StartNew(GetAvatar);
         }
 
@@ -45,6 +47,13 @@ namespace iCCup.UI.ViewModel.Tab
         {
             get => _matchList;
             set => Set(() => MatchList, ref _matchList, value);
+        }
+
+        private ObservableCollection<GameDetailsPersonal> _matchListHome;
+        public ObservableCollection<GameDetailsPersonal> MatchListHome
+        {
+            get => _matchListHome;
+            set => Set(() => MatchListHome, ref _matchListHome, value);
         }
 
         private BitmapImage _avatar;

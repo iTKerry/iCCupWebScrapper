@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Windows.Media.Imaging;
 
 namespace iCCup.DATA.Models
@@ -25,6 +25,16 @@ namespace iCCup.DATA.Models
 
         public BitmapImage Hero { get; set; } //+
         public string HeroName { get; set; } //+
-        public BitmapImage[] Items { get; set; } //+
+        public List<Item> Items { get; set; } //+
+    }
+
+    public class Item
+    {
+        public BitmapImage Image { get; set; }
+
+        public Item(BitmapImage image)
+        {
+            this.Image = image;
+        }
     }
 }

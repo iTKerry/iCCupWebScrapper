@@ -164,7 +164,7 @@ namespace iCCup.UI.Infrastructure.Scrapper
                     GameSide = gameSide,
                     Hero = hero,
                     HeroName = heroName,
-                    Items = items,
+                    Items = MapItems(items),
                     Pts = pts,
                     MatchResult = matchResult
                 });
@@ -213,9 +213,10 @@ namespace iCCup.UI.Infrastructure.Scrapper
 
         #endregion
 
-        private void PushToLogWithUrl(string url)
-        {
-            DispatcherHelper.CheckBeginInvokeOnUI(() => _logger.AddInfoWithUrl("Navigate to webpage - ", url));
-        }
+        private void PushToLogWithUrl(string url) 
+            => DispatcherHelper.CheckBeginInvokeOnUI(() => _logger.AddInfoWithUrl("Navigate to webpage - ", url));
+
+        private static List<Item> MapItems(IEnumerable<BitmapImage> items) 
+            => items.Select(i => new Item(i)).ToList();
     }
 }

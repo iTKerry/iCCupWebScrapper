@@ -70,14 +70,39 @@
                             <dragablz:InterTabController />
                         </dragablz:TabablzControl.InterTabController>
                         <TabItem Header="Overview">
-                            <TextBlock Margin="2" FontSize="24">This is the first</TextBlock>
+                            <ListView ItemsSource="{Binding MatchListHome}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Grid Width="43" Height="30" Margin="20,5,20,5">
+                                                <Image Width="43" Height="48" Stretch="UniformToFill" VerticalAlignment="Center" Source="{Binding Hero}" />
+                                            </Grid>
+                                            <TextBlock Text="{Binding HeroName}" Width="147" Height="30" Padding="0,5,0,5" TextAlignment="Left" VerticalAlignment="Center" />
+                                            <ItemsControl ItemsSource="{Binding Items}" Height="30" Margin="20,5,20,5">
+                                                <ItemsControl.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <WrapPanel Orientation="Horizontal" />
+                                                    </ItemsPanelTemplate>
+                                                </ItemsControl.ItemsPanel>
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Image Width="30" Height="30" Stretch="UniformToFill" VerticalAlignment="Center" Source="{Binding Image}" />
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
                         </TabItem>
                         <TabItem Header="Matches">
                             <ListView ItemsSource="{Binding MatchList}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
-                                            <Image Source="{Binding Hero}"></Image>
+                                            <Grid Width="43" Height="30">
+                                                <Image Width="43" Height="48" Stretch="UniformToFill" VerticalAlignment="Center" Source="{Binding Hero}" />
+                                            </Grid>
                                             <TextBlock Text="{Binding HeroName}"></TextBlock>
                                         </StackPanel>
                                     </DataTemplate>
