@@ -75,6 +75,7 @@
                 True="Collapsed" 
                 False="Visible" />
             <converters:MatchDateTimeConverter x:Key="MatchDateTimeConverter"/>
+            <converters:MatchResultTextConverter x:Key="MatchResultTextConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
