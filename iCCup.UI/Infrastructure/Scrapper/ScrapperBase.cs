@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Documents;
 using GalaSoft.MvvmLight.Threading;
 using iCCup.DATA.Models;
 using iCCup.UI.Infrastructure.Contracts;
@@ -32,15 +31,14 @@ namespace iCCup.UI.Infrastructure.Scrapper
         public async Task<(List<UserSearch>, string, string)> SearchPlayer(string nickname)
         {
             var url = string.Format(Globals.iCCupUrl + Globals.Search, nickname);
-
-            DispatcherHelper.CheckBeginInvokeOnUI(() => _logger.AddInfoWithUrl("Navigate to webpage - ", url));
+            PushToLogWithUrl(url);
 
             return await Search(new Uri(url));
         }
 
         public async Task<(List<UserSearch>, string, string)> SearchPlayer(Uri url)
         {
-            DispatcherHelper.CheckBeginInvokeOnUI(() => _logger.AddInfoWithUrl("Redirect to webpage - ", url.ToString()));
+            PushToLogWithUrl(url.ToString());
 
             return await Search(url);
         }
@@ -60,7 +58,7 @@ namespace iCCup.UI.Infrastructure.Scrapper
                 playerTab.CssSelect(".search-info .left")
                     .Select(node => node.InnerText)
                     .Where(t => t.Contains('-'))
-                    .Select(s => s.Split('-').Select(str => str.ToInteger()).ToArray())
+                    .Select(s => s.Split('-').Select(str => str.AsInt()).ToArray())
                     .ToArray()
                 select new UserSearch
                 {
@@ -99,7 +97,7 @@ namespace iCCup.UI.Infrastructure.Scrapper
 
         public async Task<UserGameProfile> GetPlayerProfile(Uri url, UserSearch userSearch)
         {
-            DispatcherHelper.CheckBeginInvokeOnUI(() => _logger.AddInfoWithUrl("Navigation to game profile - ", url.ToString()));
+            PushToLogWithUrl(url.ToString());
 
             var page = await _browser.NavigateToPageAsync(url);
 
@@ -107,14 +105,14 @@ namespace iCCup.UI.Infrastructure.Scrapper
 
             var userProfile = new UserGameProfile(userSearch)
             {
-                RaitingPosition5V5 = mainBoard[1].InnerText.Replace("#", "").ToInteger(),
-                Couriers = mainBoard[7].InnerText.ToInteger(),
-                Neutrals = mainBoard[9].InnerText.ToInteger(),
-                Hours = mainBoard[11].InnerText.ToInteger(),
-                Winrate5V5 = mainBoard[13].InnerText.Replace("%", "").ToInteger(),
-                Leaves5V5 = mainBoard[15].InnerText.ToInteger(),
-                MaxWinstreak5V5 = mainBoard[19].InnerText.ToInteger(),
-                CurrentWinstreak5V5 = mainBoard[21].InnerText.ToInteger(),
+                RaitingPosition5V5 = mainBoard[1].InnerText.Replace("#", "").AsInt(),
+                Couriers = mainBoard[7].InnerText.AsInt(),
+                Neutrals = mainBoard[9].InnerText.AsInt(),
+                Hours = mainBoard[11].InnerText.AsInt(),
+                Winrate5V5 = mainBoard[13].InnerText.Replace("%", "").AsInt(),
+                Leaves5V5 = mainBoard[15].InnerText.AsInt(),
+                MaxWinstreak5V5 = mainBoard[19].InnerText.AsInt(),
+                CurrentWinstreak5V5 = mainBoard[21].InnerText.AsInt(),
                 GamesListUrl = mainBoard.CssSelect("a").First(a => a.GetAttributeValue("href").Contains("matchlist/")).GetAttributeValue("href")
             };
 
@@ -125,29 +123,55 @@ namespace iCCup.UI.Infrastructure.Scrapper
 
         private async Task GetPersonalGameDetails(UserGameProfile gameProfile)
         {
+            PushToLogWithUrl(gameProfile.GamesListUrl);
+
             var games = new List<GameDetailsPersonal>();
             var page = await _browser.NavigateToPageAsync(new Uri($"{Globals.iCCupUrl}dota/{gameProfile.GamesListUrl}"));
-            var urls = page.Html.CssSelect(".game-details").Select(a => a.GetAttributeValue("href")).ToList();
+            var urls = page.Html.CssSelect(".game-details").Select(a => a.GetAttributeValue("href")).ToArray();
 
             foreach (var matchUrl in urls)
             {
+                PushToLogWithUrl(matchUrl);
+
                 var gamePage = await _browser.NavigateToPageAsync(new Uri($"{Globals.iCCupUrl}dota/{matchUrl}"));
-                var sections = gamePage.Html.CssSelect(".t-corp2").ToArray();
+                var sections = gamePage.Html.CssSelect(".t-corp2").ToList();
                 var date = sections[0].CssSelect(".field2").First().InnerText;
                 var gameName = sections[1].CssSelect(".field2").First().InnerText;
                 var time = sections[2].CssSelect(".field2").First().InnerText;
 
-                var section = sections.First(n => n.CssSelect(".field2").Any(node => node.ChildNodes.Any(cn => cn.InnerText == gameProfile.Nickname)));
+                var statsTable = sections
+                    .Where(n => n.CssSelect(".field2")
+                        .Any(sn => sn.ChildNodes
+                            .Any(ssn => ssn.InnerText == gameProfile.Nickname)))
+                    .Select(r => r.CssSelect(".field2").Select(rt => rt.InnerText).ToArray())
+                    .First();
 
                 games.Add(new GameDetailsPersonal
                 {
                     DateTime = date,
                     GameName = gameName,
-                    GameTime = time
+                    GameTime = time,
+                    Kills = statsTable[1].AsInt(),
+                    Deaths = statsTable[2].AsInt(),
+                    Assists = statsTable[3].AsInt(),
+                    CreepStats = statsTable[4].AsInt(),
+                    GoldLeft = statsTable[5].AsInt(),
+                    TowersDestroyed = statsTable[6].AsInt(),
+                    GameSide = sections
+                                   .FindIndex(n => n.CssSelect(".field2")
+                                       .Any(sn => sn.ChildNodes
+                                           .Any(ssn => ssn.InnerText == gameProfile.Nickname))) < 10
+                        ? GameSide.Sentinel
+                        : GameSide.Scourge
                 });
             }
         }
 
         #endregion
+
+        private void PushToLogWithUrl(string url)
+        {
+            DispatcherHelper.CheckBeginInvokeOnUI(() => _logger.AddInfoWithUrl("Navigate to webpage - ", url));
+        }
     }
 }
