@@ -24,17 +24,4 @@ namespace iCCup.DATA.Models
         public string Hero { get; set; }
         public List<string> Items { get; set; }
     }
-
-    public enum GameSide
-    {
-        Sentinel,
-        Scourge
-    }
-
-    public enum MatchResult
-    {
-        Win,
-        Lose,
-        Leave
-    }
 }

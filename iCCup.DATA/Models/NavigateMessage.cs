@@ -6,13 +6,4 @@
 
         public object Content { get; set; }
     }
-
-    public enum NavigateTo
-    {
-        Search,
-        Profile,
-        GameDetails,
-        Forward,
-        Back
-    }
 }
