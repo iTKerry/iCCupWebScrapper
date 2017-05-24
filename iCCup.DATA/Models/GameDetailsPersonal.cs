@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
 
 namespace iCCup.DATA.Models
 {
     public class GameDetailsPersonal
     {
+        public string MatchUrl { get; set; } //+
         public string GameName { get; set; } //+
         public string DateTime { get; set; } //+
         public string GameTime { get; set; } //+
@@ -16,12 +17,12 @@ namespace iCCup.DATA.Models
         public int TowersDestroyed { get; set; } //+
         public int GoldLeft { get; set; } //+
 
-        public MatchResult MatchResult { get; set; }
+        public MatchResult MatchResult { get; set; } //+
         public GameSide GameSide { get; set; } //+
-        public int Pts { get; set; }
+        public int Pts { get; set; } //+
         public int? BonusPts { get; set; }
 
-        public string Hero { get; set; }
-        public List<string> Items { get; set; }
+        public string Hero { get; set; } //+
+        public String[] Items { get; set; } //+
     }
 }

@@ -10,7 +10,8 @@
     {
         Win,
         Lose,
-        Leave
+        Leave,
+        Restart
     }
 
     public enum NavigateTo

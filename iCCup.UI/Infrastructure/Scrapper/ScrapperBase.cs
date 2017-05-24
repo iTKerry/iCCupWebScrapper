@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight.Threading;
+using HtmlAgilityPack;
 using iCCup.DATA.Models;
 using iCCup.UI.Infrastructure.Contracts;
 using iCCup.UI.Infrastructure.Utils;
@@ -126,45 +128,81 @@ namespace iCCup.UI.Infrastructure.Scrapper
             PushToLogWithUrl(gameProfile.GamesListUrl);
 
             var games = new List<GameDetailsPersonal>();
-            var page = await _browser.NavigateToPageAsync(new Uri($"{Globals.iCCupUrl}dota/{gameProfile.GamesListUrl}"));
-            var urls = page.Html.CssSelect(".game-details").Select(a => a.GetAttributeValue("href")).ToArray();
+            var urls =
+                (await _browser.NavigateToPageAsync(new Uri($"{Globals.iCCupUrl}dota/{gameProfile.GamesListUrl}")))
+                .Html.CssSelect(".game-details").Select(a => a.GetAttributeValue("href")).ToArray();
 
+            await GetPersonalGamesDetails(gameProfile, urls, games);
+        }
+
+        private async Task GetPersonalGamesDetails(UserGameProfile gameProfile, string[] urls, List<GameDetailsPersonal> games)
+        {
             foreach (var matchUrl in urls)
             {
                 PushToLogWithUrl(matchUrl);
 
-                var gamePage = await _browser.NavigateToPageAsync(new Uri($"{Globals.iCCupUrl}dota/{matchUrl}"));
-                var sections = gamePage.Html.CssSelect(".t-corp2").ToList();
-                var date = sections[0].CssSelect(".field2").First().InnerText;
-                var gameName = sections[1].CssSelect(".field2").First().InnerText;
-                var time = sections[2].CssSelect(".field2").First().InnerText;
+                var matchPage = await _browser.NavigateToPageAsync(new Uri($"{Globals.iCCupUrl}dota/{matchUrl}"));
+                var box = matchPage.Html.CssSelect(".block-info").First(node => node.InnerText.Contains(gameProfile.Nickname));
+                var tableRows = matchPage.Html.CssSelect(".t-corp2").ToList();
 
-                var statsTable = sections
-                    .Where(n => n.CssSelect(".field2")
-                        .Any(sn => sn.ChildNodes
-                            .Any(ssn => ssn.InnerText == gameProfile.Nickname)))
-                    .Select(r => r.CssSelect(".field2").Select(rt => rt.InnerText).ToArray())
-                    .First();
+                GetTableDetails(gameProfile, tableRows, out string gameName, out string time, out string date, out string[] mainRow);
+                GetBoxDetails(gameProfile, box, tableRows, out GameSide gameSide, out string hero, out string[] items, out int pts, out MatchResult matchResult);
 
                 games.Add(new GameDetailsPersonal
                 {
+                    MatchUrl = matchUrl,
                     DateTime = date,
                     GameName = gameName,
                     GameTime = time,
-                    Kills = statsTable[1].AsInt(),
-                    Deaths = statsTable[2].AsInt(),
-                    Assists = statsTable[3].AsInt(),
-                    CreepStats = statsTable[4].AsInt(),
-                    GoldLeft = statsTable[5].AsInt(),
-                    TowersDestroyed = statsTable[6].AsInt(),
-                    GameSide = sections
-                                   .FindIndex(n => n.CssSelect(".field2")
-                                       .Any(sn => sn.ChildNodes
-                                           .Any(ssn => ssn.InnerText == gameProfile.Nickname))) < 10
-                        ? GameSide.Sentinel
-                        : GameSide.Scourge
+                    Kills = mainRow[1].AsInt(),
+                    Deaths = mainRow[2].AsInt(),
+                    Assists = mainRow[3].AsInt(),
+                    CreepStats = mainRow[4].AsInt(),
+                    GoldLeft = mainRow[5].AsInt(),
+                    TowersDestroyed = mainRow[6].AsInt(),
+                    GameSide = gameSide,
+                    Hero = hero,
+                    Items = items,
+                    Pts = pts,
+                    MatchResult = matchResult
                 });
             }
+        }
+
+        private static void GetTableDetails(UserGameProfile gameProfile, List<HtmlNode> tableRows, 
+            out string gameName, out string time, out string date, out string[] mainRow)
+        {
+            date = tableRows[0].CssSelect(".field2").First().InnerText;
+            gameName = tableRows[1].CssSelect(".field2").First().InnerText;
+            time = tableRows[2].CssSelect(".field2").First().InnerText;
+            mainRow = tableRows
+                .Where(n => n.CssSelect(".field2")
+                    .Any(sn => sn.ChildNodes
+                        .Any(ssn => ssn.InnerText == gameProfile.Nickname)))
+                .Select(r => r.CssSelect(".field2").Select(rt => rt.InnerText).ToArray())
+                .First();
+        }
+
+        private static void GetBoxDetails(UserGameProfile gameProfile, HtmlNode box, List<HtmlNode> tableRows,
+            out GameSide gameSide, out string hero, out string[] items, out int pts, out MatchResult matchResult)
+        {
+            gameSide = tableRows.FindIndex(n => n.CssSelect(".field2")
+                           .Any(sn => sn.ChildNodes.Any(ssn => ssn.InnerText == gameProfile.Nickname))) < 10
+                ? GameSide.Sentinel
+                : GameSide.Scourge;
+            hero = Regex.Match(box.CssSelect(".avatar-info").First().GetAttributeValue("style"), @"'(.+?)'").Value;
+            items = box.CssSelect(".details-items").First().ChildNodes
+                .Select(node => node.GetAttributeValue("src")).Where(r => !string.IsNullOrWhiteSpace(r)).ToArray();
+
+            var pointsBox = box.CssSelect(".details-points").First();
+            pts = int.Parse(pointsBox.InnerText.Trim().Replace("+", String.Empty));
+            matchResult = pointsBox.InnerHtml.Contains("darkgreen")
+                ? MatchResult.Win
+                : pts == 0
+                    ? MatchResult.Restart
+                    : box.GetAttributeValue("class").Contains("gameLeaver")
+                        ? MatchResult.Leave
+                        : MatchResult.Lose;
         }
 
         #endregion
