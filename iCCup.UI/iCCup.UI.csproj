@@ -123,6 +123,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\MatchDateTimeConverter.cs" />
+    <Compile Include="Converters\MatchResultTextConverter.cs" />
     <Compile Include="Infrastructure\Contracts\ILoggerService.cs" />
     <Compile Include="Infrastructure\Contracts\IScrapperService.cs" />
     <Compile Include="Infrastructure\Scrapper\ScrapperBase.cs" />

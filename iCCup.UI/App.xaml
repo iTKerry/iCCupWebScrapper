@@ -74,6 +74,7 @@
                 x:Key="BooleanToVisibilityConverter" 
                 True="Collapsed" 
                 False="Visible" />
+            <converters:MatchDateTimeConverter x:Key="MatchDateTimeConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

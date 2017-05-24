@@ -77,7 +77,11 @@
                                             <Grid Width="43" Height="30" Margin="20,5,20,5">
                                                 <Image Width="43" Height="48" Stretch="UniformToFill" VerticalAlignment="Center" Source="{Binding Hero}" />
                                             </Grid>
-                                            <TextBlock Text="{Binding HeroName}" Width="147" Height="30" Padding="0,5,0,5" TextAlignment="Left" VerticalAlignment="Center" />
+                                            <TextBlock Text="{Binding HeroName}" Width="147" Height="30" Padding="0,5,20,5" TextAlignment="Left" VerticalAlignment="Center" />
+                                            <StackPanel Margin="20,0,20,0">
+                                                <TextBlock Text="{Binding MatchResult}" />
+                                                <TextBlock Text="{Binding DateTime, Converter={StaticResource MatchDateTimeConverter}}" />
+                                            </StackPanel>
                                             <ItemsControl ItemsSource="{Binding Items}" Height="30" Margin="20,5,20,5">
                                                 <ItemsControl.ItemsPanel>
                                                     <ItemsPanelTemplate>
