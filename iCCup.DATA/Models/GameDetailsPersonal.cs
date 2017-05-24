@@ -23,6 +23,7 @@ namespace iCCup.DATA.Models
         public int? BonusPts { get; set; }
 
         public string Hero { get; set; } //+
+        public string HeroName { get; set; } //+
         public String[] Items { get; set; } //+
     }
 }

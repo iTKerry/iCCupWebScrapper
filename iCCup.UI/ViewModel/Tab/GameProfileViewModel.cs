@@ -6,6 +6,7 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Threading;
 using iCCup.DATA.Models;
 using iCCup.UI.Infrastructure.Contracts;
+using iCCup.UI.Infrastructure.Utils;
 
 namespace iCCup.UI.ViewModel.Tab
 {
@@ -32,13 +33,8 @@ namespace iCCup.UI.ViewModel.Tab
 
         private void GetAvatar()
         {
-            DispatcherHelper.CheckBeginInvokeOnUI(() =>
-            {
-                Avatar = new BitmapImage();
-                Avatar.BeginInit();
-                Avatar.UriSource = new Uri($"http:{UserGameProfile.ImageSource}", UriKind.Absolute);
-                Avatar.EndInit();
-            });
+            DispatcherHelper.CheckBeginInvokeOnUI(() 
+                => Avatar = new Uri($"http:{UserGameProfile.ImageSource}", UriKind.Absolute).DownloadImage());
         }
 
         private BitmapImage _avatar;

@@ -118,12 +118,10 @@ namespace iCCup.UI.Infrastructure.Scrapper
                 GamesListUrl = mainBoard.CssSelect("a").First(a => a.GetAttributeValue("href").Contains("matchlist/")).GetAttributeValue("href")
             };
 
-            await GetPersonalGameDetails(userProfile);
-
             return userProfile;
         }
 
-        private async Task GetPersonalGameDetails(UserGameProfile gameProfile)
+        public async Task<List<GameDetailsPersonal>> GetPersonalGameDetails(UserGameProfile gameProfile)
         {
             PushToLogWithUrl(gameProfile.GamesListUrl);
 
@@ -133,6 +131,8 @@ namespace iCCup.UI.Infrastructure.Scrapper
                 .Html.CssSelect(".game-details").Select(a => a.GetAttributeValue("href")).ToArray();
 
             await GetPersonalGamesDetails(gameProfile, urls, games);
+
+            return games;
         }
 
         private async Task GetPersonalGamesDetails(UserGameProfile gameProfile, string[] urls, List<GameDetailsPersonal> games)
@@ -146,7 +146,7 @@ namespace iCCup.UI.Infrastructure.Scrapper
                 var tableRows = matchPage.Html.CssSelect(".t-corp2").ToList();
 
                 GetTableDetails(gameProfile, tableRows, out string gameName, out string time, out string date, out string[] mainRow);
-                GetBoxDetails(gameProfile, box, tableRows, out GameSide gameSide, out string hero, out string[] items, out int pts, out MatchResult matchResult);
+                GetBoxDetails(gameProfile, box, tableRows, out GameSide gameSide, out string hero, out string heroName, out string[] items, out int pts, out MatchResult matchResult);
 
                 games.Add(new GameDetailsPersonal
                 {
@@ -162,6 +162,7 @@ namespace iCCup.UI.Infrastructure.Scrapper
                     TowersDestroyed = mainRow[6].AsInt(),
                     GameSide = gameSide,
                     Hero = hero,
+                    HeroName = heroName,
                     Items = items,
                     Pts = pts,
                     MatchResult = matchResult
@@ -184,13 +185,14 @@ namespace iCCup.UI.Infrastructure.Scrapper
         }
 
         private static void GetBoxDetails(UserGameProfile gameProfile, HtmlNode box, List<HtmlNode> tableRows,
-            out GameSide gameSide, out string hero, out string[] items, out int pts, out MatchResult matchResult)
+            out GameSide gameSide, out string hero, out string heroName, out string[] items, out int pts, out MatchResult matchResult)
         {
             gameSide = tableRows.FindIndex(n => n.CssSelect(".field2")
                            .Any(sn => sn.ChildNodes.Any(ssn => ssn.InnerText == gameProfile.Nickname))) < 10
                 ? GameSide.Sentinel
                 : GameSide.Scourge;
             hero = Regex.Match(box.CssSelect(".avatar-info").First().GetAttributeValue("style"), @"'(.+?)'").Value;
+            heroName = Regex.Match(box.CssSelect(".avatar-info").First().GetAttributeValue("style"), @"([A-Z])\w+").Value;
             items = box.CssSelect(".details-items").First().ChildNodes
                 .Select(node => node.GetAttributeValue("src")).Where(r => !string.IsNullOrWhiteSpace(r)).ToArray();
 
