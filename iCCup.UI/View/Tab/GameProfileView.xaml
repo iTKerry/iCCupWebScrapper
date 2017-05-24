@@ -73,7 +73,16 @@
                             <TextBlock Margin="2" FontSize="24">This is the first</TextBlock>
                         </TabItem>
                         <TabItem Header="Matches">
-                            <TextBlock Margin="2" FontSize="24">This is the second</TextBlock>
+                            <ListView ItemsSource="{Binding MatchList}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Source="{Binding Hero}"></Image>
+                                            <TextBlock Text="{Binding HeroName}"></TextBlock>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
                         </TabItem>
                         <TabItem Header="Records">
                             <TextBlock Margin="2" FontSize="24">This is the third</TextBlock>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using GalaSoft.MvvmLight;
@@ -28,6 +29,8 @@ namespace iCCup.UI.ViewModel.Tab
             UserGameProfile = null;
             UserGameProfile = await _scrapper.GetUserGameProfile(user);
 
+            MatchList = null;
+            MatchList = (await _scrapper.GetPersonalGameDetails(UserGameProfile)).ToObservableCollection();
             await Task.Factory.StartNew(GetAvatar);
         }
 
@@ -35,6 +38,13 @@ namespace iCCup.UI.ViewModel.Tab
         {
             DispatcherHelper.CheckBeginInvokeOnUI(() 
                 => Avatar = new Uri($"http:{UserGameProfile.ImageSource}", UriKind.Absolute).DownloadImage());
+        }
+
+        private ObservableCollection<GameDetailsPersonal> _matchList;
+        public ObservableCollection<GameDetailsPersonal> MatchList
+        {
+            get => _matchList;
+            set => Set(() => MatchList, ref _matchList, value);
         }
 
         private BitmapImage _avatar;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
 using GalaSoft.MvvmLight.Threading;
 using HtmlAgilityPack;
 using iCCup.DATA.Models;
@@ -146,7 +147,7 @@ namespace iCCup.UI.Infrastructure.Scrapper
                 var tableRows = matchPage.Html.CssSelect(".t-corp2").ToList();
 
                 GetTableDetails(gameProfile, tableRows, out string gameName, out string time, out string date, out string[] mainRow);
-                GetBoxDetails(gameProfile, box, tableRows, out GameSide gameSide, out string hero, out string heroName, out string[] items, out int pts, out MatchResult matchResult);
+                GetBoxDetails(gameProfile, box, tableRows, out GameSide gameSide, out BitmapImage hero, out string heroName, out BitmapImage[] items, out int pts, out MatchResult matchResult);
 
                 games.Add(new GameDetailsPersonal
                 {
@@ -185,16 +186,19 @@ namespace iCCup.UI.Infrastructure.Scrapper
         }
 
         private static void GetBoxDetails(UserGameProfile gameProfile, HtmlNode box, List<HtmlNode> tableRows,
-            out GameSide gameSide, out string hero, out string heroName, out string[] items, out int pts, out MatchResult matchResult)
+            out GameSide gameSide, out BitmapImage hero, out string heroName, out BitmapImage[] items, out int pts, out MatchResult matchResult)
         {
             gameSide = tableRows.FindIndex(n => n.CssSelect(".field2")
                            .Any(sn => sn.ChildNodes.Any(ssn => ssn.InnerText == gameProfile.Nickname))) < 10
                 ? GameSide.Sentinel
                 : GameSide.Scourge;
-            hero = Regex.Match(box.CssSelect(".avatar-info").First().GetAttributeValue("style"), @"'(.+?)'").Value;
+            hero = new Uri(
+                $"{Globals.iCCupUrl.TrimEnd('/')}{Regex.Match(box.CssSelect(".avatar-info").First().GetAttributeValue("style"), @"'(.+?)'").Value.Replace("\'", String.Empty)}",
+                UriKind.Absolute).DownloadImage();
             heroName = Regex.Match(box.CssSelect(".avatar-info").First().GetAttributeValue("style"), @"([A-Z])\w+").Value;
             items = box.CssSelect(".details-items").First().ChildNodes
-                .Select(node => node.GetAttributeValue("src")).Where(r => !string.IsNullOrWhiteSpace(r)).ToArray();
+                .Select(node => node.GetAttributeValue("src")).Where(r => !string.IsNullOrWhiteSpace(r))
+                .Select(str => new Uri($"{Globals.iCCupUrl}{str}", UriKind.Absolute)).DownloadImages();
 
             var pointsBox = box.CssSelect(".details-points").First();
             pts = int.Parse(pointsBox.InnerText.Trim().Replace("+", String.Empty));

@@ -12,20 +12,19 @@ namespace iCCup.UI.Infrastructure.Service
     {
         private readonly ScrapperBase _scrapper;
 
-        public ScrapperService(ScrapperBase scrapper)
-        {
-            _scrapper = scrapper;
-        }
+        public ScrapperService(ScrapperBase scrapper) 
+            => _scrapper = scrapper;
 
-        public Task<(List<UserSearch>, string, string)> SearchPlayer(string url) =>_scrapper.SearchPlayer(url);
+        public Task<(List<UserSearch>, string, string)> SearchPlayer(string url) 
+            =>_scrapper.SearchPlayer(url);
 
-        public Task<(List<UserSearch>, string, string)> SearchPlayer(Uri url) => _scrapper.SearchPlayer(url);
+        public Task<(List<UserSearch>, string, string)> SearchPlayer(Uri url) 
+            => _scrapper.SearchPlayer(url);
 
         public Task<UserGameProfile> GetUserGameProfile(UserSearch userSearch) => 
             _scrapper.GetPlayerProfile(new Uri($"{Globals.iCCupUrl}{userSearch.Url}"), userSearch);
 
-        public List<UserGame> GetUserGameList(string url) => throw new NotImplementedException();
-
-        public GameDetails GetGameDetails(string url) => throw new NotImplementedException();
+        public Task<List<GameDetailsPersonal>> GetPersonalGameDetails(UserGameProfile gameProfile)
+            => _scrapper.GetPersonalGameDetails(gameProfile);
     }
 }

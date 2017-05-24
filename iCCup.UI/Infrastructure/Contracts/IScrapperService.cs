@@ -12,8 +12,6 @@ namespace iCCup.UI.Infrastructure.Contracts
 
         Task<UserGameProfile> GetUserGameProfile(UserSearch userSearch);
 
-        List<UserGame> GetUserGameList(string url);
-
-        GameDetails GetGameDetails(string url);
+        Task<List<GameDetailsPersonal>> GetPersonalGameDetails(UserGameProfile gameProfile);
     }
 }
