@@ -112,6 +112,11 @@
                                                 <TextBlock Text="{Binding MatchResult, Converter={StaticResource MatchResultTextConverter}}" />
                                                 <TextBlock Text="{Binding DateTime, Converter={StaticResource MatchDateTimeConverter}}" />
                                             </StackPanel>
+                                            <StackPanel Margin="20,0,20,0">
+                                                <TextBlock Text="{Binding GameName, Converter={StaticResource MatchNameToModeConverter}}" />
+                                                <TextBlock Text="{Binding GameName, Converter={StaticResource MatchNameConverter}}" />
+                                            </StackPanel>
+                                            <TextBlock Text="{Binding GameTime}" Height="30" Padding="20,5,20,5" TextAlignment="Left" VerticalAlignment="Center" />
                                             <ItemsControl ItemsSource="{Binding Items}" Height="30" Margin="20,5,20,5">
                                                 <ItemsControl.ItemsPanel>
                                                     <ItemsPanelTemplate>

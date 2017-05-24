@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Globalization;
+using System.Text.RegularExpressions;
 using System.Windows.Data;
 
 namespace iCCup.UI.Converters
 {
-    public class MatchDateTimeConverter : IValueConverter
+    public class MatchNameToModeConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var str = value as string ?? String.Empty;
-            return !str.Contains("today")
-                ? str.Substring(0, str.LastIndexOf('@') + 1).Replace(" @", String.Empty)
-                : str.Substring(str.LastIndexOf('@')).Replace("@ ", String.Empty);
+            return Regex.Match(str, @"\ (.*?)\ ").Value.Trim();
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

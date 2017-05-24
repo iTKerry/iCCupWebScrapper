@@ -176,7 +176,11 @@ namespace iCCup.UI.Infrastructure.Scrapper
         {
             date = tableRows[0].CssSelect(".field2").First().InnerText;
             gameName = tableRows[1].CssSelect(".field2").First().InnerText;
-            time = tableRows[2].CssSelect(".field2").First().InnerText;
+            time = tableRows[2].CssSelect(".field2").First().InnerText
+                .Replace("h", String.Empty)
+                .Replace("m", String.Empty)
+                .Replace("s", String.Empty)
+                .Trim();
             mainRow = tableRows
                 .Where(n => n.CssSelect(".field2")
                     .Any(sn => sn.ChildNodes

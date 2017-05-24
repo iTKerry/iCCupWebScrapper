@@ -76,6 +76,8 @@
                 False="Visible" />
             <converters:MatchDateTimeConverter x:Key="MatchDateTimeConverter"/>
             <converters:MatchResultTextConverter x:Key="MatchResultTextConverter"/>
+            <converters:MatchNameToModeConverter x:Key="MatchNameToModeConverter"/>
+            <converters:MatchNameConverter x:Key="MatchNameConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
