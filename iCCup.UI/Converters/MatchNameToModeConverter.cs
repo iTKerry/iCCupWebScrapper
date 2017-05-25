@@ -10,7 +10,7 @@ namespace iCCup.UI.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var str = value as string ?? String.Empty;
-            return Regex.Match(str, @"\ (.*?)\ ").Value.Trim();
+            return Regex.Match(str, @"\ (.*?)\ ").Value.Trim().ToUpper();
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
