@@ -21,6 +21,13 @@
             <Style TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignCaptionTextBlock}" x:Key="Caption">
                 <Setter Property="Opacity" Value=".68"></Setter>
             </Style>
+            <Style x:Key="AlternatingListViewItemStyle" TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource MaterialDesignListBoxItem}">
+                <Style.Triggers>
+                    <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                        <Setter Property="Background" Value="{StaticResource MaterialDesignPaper}"></Setter>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
     <DockPanel>
@@ -36,7 +43,7 @@
                             <Image Width="65" Height="65" Source="{Binding Avatar}" Stretch="Fill" VerticalAlignment="Top" />
                             <TextBlock Text="{Binding UserGameProfile.Nickname}" Style="{StaticResource MaterialDesignHeadlineTextBlock}" Margin="4,-4,0,0" VerticalAlignment="Top" />
                         </StackPanel>
-                        <StackPanel HorizontalAlignment="Right">
+                        <StackPanel HorizontalAlignment="Right" Margin="0,0,15,0">
                             <StackPanel Orientation="Horizontal">
                                 <StackPanel Margin="6,0,6,0">
                                     <TextBlock Text="{Binding UserGameProfile.Rank5V5}" HorizontalAlignment="Left" Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
@@ -125,7 +132,11 @@
                                     <TextBlock DockPanel.Dock="Left" Width="180" Style="{StaticResource Caption}">Items</TextBlock>
                                     <Separator DockPanel.Dock="Left" Opacity="0" Width="20"/>
                                 </DockPanel>
-                                <ListView Grid.Row="1" ItemsSource="{Binding MatchList}">
+                                <ListView Grid.Row="1" 
+                                          ItemsSource="{Binding MatchList}" 
+                                          SelectionMode="Single" 
+                                          ItemContainerStyle="{StaticResource AlternatingListViewItemStyle}" 
+                                          AlternationCount="2">
                                     <ListView.ItemTemplate>
                                         <DataTemplate>
                                             <DockPanel>
