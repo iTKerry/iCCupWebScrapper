@@ -46,7 +46,7 @@
   <ItemGroup>
     <Compile Include="Models\Enums.cs" />
     <Compile Include="Models\GameDetails.cs" />
-    <Compile Include="Models\GameDetailsPersonal.cs" />
+    <Compile Include="Models\PersonalGameDetails.cs" />
     <Compile Include="Models\LogMessange.cs" />
     <Compile Include="Models\NavigateMessage.cs" />
     <Compile Include="Models\UserGame.cs" />

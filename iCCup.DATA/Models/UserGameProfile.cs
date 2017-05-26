@@ -2,7 +2,8 @@
 {
     public class UserGameProfile : UserSearch
     {
-        public string GamesListUrl { get; set; }
+        public string MatchListUrl { get; set; }
+        public string[] MatchUrls { get; set; }
         public int RaitingPosition5V5 { get; set; }
         public int Couriers { get; set; }
         public int Neutrals { get; set; }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using GalaSoft.MvvmLight;
@@ -30,27 +31,37 @@ namespace iCCup.UI.ViewModel.Tab
             UserGameProfile = null;
             UserGameProfile = await _scrapper.GetUserGameProfile(user);
 
-            MatchList = null;
-            MatchList = (await _scrapper.GetPersonalGameDetails(UserGameProfile)).ToObservableCollection();
-            MatchListHome = MatchList.Take(5).ToObservableCollection();
+            MatchList = new ObservableCollection<PersonalGameDetails>();
+            MatchListHome = new ObservableCollection<PersonalGameDetails>();
+            
             await Task.Factory.StartNew(GetAvatar);
+            await Task.Factory.StartNew(GetMatches);
         }
 
-        private void GetAvatar()
-        {
+        private void GetMatches() =>
+            DispatcherHelper.CheckBeginInvokeOnUI(async () =>
+            {
+                foreach (var url in UserGameProfile.MatchUrls)
+                {
+                    MatchList.Add(await _scrapper.GetPersonalGameDetails(UserGameProfile.Nickname, url));
+                    if (MatchListHome.Count < 5)
+                        MatchListHome.Add(MatchList.Last());
+                }
+            });
+
+        private void GetAvatar() =>
             DispatcherHelper.CheckBeginInvokeOnUI(() 
                 => Avatar = new Uri($"http:{UserGameProfile.ImageSource}", UriKind.Absolute).DownloadImage());
-        }
 
-        private ObservableCollection<GameDetailsPersonal> _matchList;
-        public ObservableCollection<GameDetailsPersonal> MatchList
+        private ObservableCollection<PersonalGameDetails> _matchList;
+        public ObservableCollection<PersonalGameDetails> MatchList
         {
             get => _matchList;
             set => Set(() => MatchList, ref _matchList, value);
         }
 
-        private ObservableCollection<GameDetailsPersonal> _matchListHome;
-        public ObservableCollection<GameDetailsPersonal> MatchListHome
+        private ObservableCollection<PersonalGameDetails> _matchListHome;
+        public ObservableCollection<PersonalGameDetails> MatchListHome
         {
             get => _matchListHome;
             set => Set(() => MatchListHome, ref _matchListHome, value);

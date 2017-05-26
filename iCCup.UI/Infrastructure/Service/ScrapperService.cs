@@ -24,7 +24,7 @@ namespace iCCup.UI.Infrastructure.Service
         public Task<UserGameProfile> GetUserGameProfile(UserSearch userSearch) => 
             _scrapper.GetPlayerProfile(new Uri($"{Globals.iCCupUrl}{userSearch.Url}"), userSearch);
 
-        public Task<List<GameDetailsPersonal>> GetPersonalGameDetails(UserGameProfile gameProfile)
-            => _scrapper.GetPersonalGameDetails(gameProfile);
+        public Task<PersonalGameDetails> GetPersonalGameDetails(string nickname, string matchUrl)
+            => _scrapper.GetPersonalGameDetails(nickname, matchUrl);
     }
 }

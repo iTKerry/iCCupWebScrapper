@@ -3,7 +3,7 @@ using System.Windows.Media.Imaging;
 
 namespace iCCup.DATA.Models
 {
-    public class GameDetailsPersonal
+    public class PersonalGameDetails
     {
         public string MatchUrl { get; set; } //+
         public string GameName { get; set; } //+

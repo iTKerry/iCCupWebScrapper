@@ -83,28 +83,34 @@
                             <ListView ItemsSource="{Binding MatchListHome}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Grid Width="43" Height="30" Margin="20,5,20,5">
-                                                <Image Width="43" Height="48" Stretch="UniformToFill" VerticalAlignment="Center" Source="{Binding Hero}" />
-                                            </Grid>
-                                            <TextBlock Text="{Binding HeroName}" Width="147" Height="30" Padding="0,5,20,5" TextAlignment="Left" VerticalAlignment="Center" />
-                                            <StackPanel Margin="20,0,20,0">
-                                                <TextBlock Text="{Binding MatchResult, Converter={StaticResource MatchResultTextConverter}}" />
-                                                <TextBlock Text="{Binding DateTime, Converter={StaticResource MatchDateTimeConverter}}" />
+                                        <materialDesign:TransitioningContent RunHint="Loaded">
+                                            <materialDesign:TransitioningContent.OpeningEffects>
+                                                <materialDesign:TransitionEffect Kind="SlideInFromTop" Duration="0:0:1" />
+                                                <materialDesign:TransitionEffect Kind="FadeIn" Duration="0:0:1" />
+                                            </materialDesign:TransitioningContent.OpeningEffects>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Grid Width="43" Height="30" Margin="20,5,20,5">
+                                                    <Image Width="43" Height="48" Stretch="UniformToFill" VerticalAlignment="Center" Source="{Binding Hero}" />
+                                                </Grid>
+                                                <TextBlock Text="{Binding HeroName}" Width="147" Height="30" Padding="0,5,20,5" TextAlignment="Left" VerticalAlignment="Center" />
+                                                <StackPanel Margin="20,0,20,0">
+                                                    <TextBlock Text="{Binding MatchResult, Converter={StaticResource MatchResultTextConverter}}" />
+                                                    <TextBlock Text="{Binding DateTime, Converter={StaticResource MatchDateTimeConverter}}" />
+                                                </StackPanel>
+                                                <ItemsControl ItemsSource="{Binding Items}" Height="30" Margin="20,5,20,5">
+                                                    <ItemsControl.ItemsPanel>
+                                                        <ItemsPanelTemplate>
+                                                            <WrapPanel Orientation="Horizontal" />
+                                                        </ItemsPanelTemplate>
+                                                    </ItemsControl.ItemsPanel>
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Image Width="30" Height="30" Stretch="UniformToFill" VerticalAlignment="Center" Source="{Binding Image}" />
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
                                             </StackPanel>
-                                            <ItemsControl ItemsSource="{Binding Items}" Height="30" Margin="20,5,20,5">
-                                                <ItemsControl.ItemsPanel>
-                                                    <ItemsPanelTemplate>
-                                                        <WrapPanel Orientation="Horizontal" />
-                                                    </ItemsPanelTemplate>
-                                                </ItemsControl.ItemsPanel>
-                                                <ItemsControl.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <Image Width="30" Height="30" Stretch="UniformToFill" VerticalAlignment="Center" Source="{Binding Image}" />
-                                                    </DataTemplate>
-                                                </ItemsControl.ItemTemplate>
-                                            </ItemsControl>
-                                        </StackPanel>
+                                        </materialDesign:TransitioningContent>
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
                             </ListView>

@@ -105,6 +105,7 @@ namespace iCCup.UI.Infrastructure.Scrapper
             var page = await _browser.NavigateToPageAsync(url);
 
             var mainBoard = page.Html.CssSelect(".stata-body tr td").ToArray();
+            var gamesListUrl = mainBoard.CssSelect("a").First(a => a.GetAttributeValue("href").Contains("matchlist/")).GetAttributeValue("href");
 
             var userProfile = new UserGameProfile(userSearch)
             {
@@ -116,62 +117,48 @@ namespace iCCup.UI.Infrastructure.Scrapper
                 Leaves5V5 = mainBoard[15].InnerText.AsInt(),
                 MaxWinstreak5V5 = mainBoard[19].InnerText.AsInt(),
                 CurrentWinstreak5V5 = mainBoard[21].InnerText.AsInt(),
-                GamesListUrl = mainBoard.CssSelect("a").First(a => a.GetAttributeValue("href").Contains("matchlist/")).GetAttributeValue("href")
+                MatchListUrl = gamesListUrl,
+                MatchUrls =
+                    (await _browser.NavigateToPageAsync(new Uri($"{Globals.iCCupUrl}dota/{gamesListUrl}")))
+                    .Html.CssSelect(".game-details").Select(a => a.GetAttributeValue("href")).ToArray()
             };
 
             return userProfile;
         }
 
-        public async Task<List<GameDetailsPersonal>> GetPersonalGameDetails(UserGameProfile gameProfile)
+        public async Task<PersonalGameDetails> GetPersonalGameDetails(string nickname, string matchUrl)
         {
-            PushToLogWithUrl(gameProfile.GamesListUrl);
+            PushToLogWithUrl(matchUrl);
 
-            var games = new List<GameDetailsPersonal>();
-            var urls =
-                (await _browser.NavigateToPageAsync(new Uri($"{Globals.iCCupUrl}dota/{gameProfile.GamesListUrl}")))
-                .Html.CssSelect(".game-details").Select(a => a.GetAttributeValue("href")).ToArray();
+            var matchPage = await _browser.NavigateToPageAsync(new Uri($"{Globals.iCCupUrl}dota/{matchUrl}"));
+            var box = matchPage.Html.CssSelect(".block-info").First(node => node.InnerText.Contains(nickname));
+            var tableRows = matchPage.Html.CssSelect(".t-corp2").ToList();
 
-            await GetPersonalGamesDetails(gameProfile, urls, games);
+            GetTableDetails(nickname, tableRows, out string gameName, out string time, out string date, out string[] mainRow);
+            GetBoxDetails(nickname, box, tableRows, out GameSide gameSide, out BitmapImage hero, out string heroName, out BitmapImage[] items, out int pts, out MatchResult matchResult);
 
-            return games;
-        }
-
-        private async Task GetPersonalGamesDetails(UserGameProfile gameProfile, string[] urls, List<GameDetailsPersonal> games)
-        {
-            foreach (var matchUrl in urls)
+            return new PersonalGameDetails
             {
-                PushToLogWithUrl(matchUrl);
-
-                var matchPage = await _browser.NavigateToPageAsync(new Uri($"{Globals.iCCupUrl}dota/{matchUrl}"));
-                var box = matchPage.Html.CssSelect(".block-info").First(node => node.InnerText.Contains(gameProfile.Nickname));
-                var tableRows = matchPage.Html.CssSelect(".t-corp2").ToList();
-
-                GetTableDetails(gameProfile, tableRows, out string gameName, out string time, out string date, out string[] mainRow);
-                GetBoxDetails(gameProfile, box, tableRows, out GameSide gameSide, out BitmapImage hero, out string heroName, out BitmapImage[] items, out int pts, out MatchResult matchResult);
-
-                games.Add(new GameDetailsPersonal
-                {
-                    MatchUrl = matchUrl,
-                    DateTime = date,
-                    GameName = gameName,
-                    GameTime = time,
-                    Kills = mainRow[1].AsInt(),
-                    Deaths = mainRow[2].AsInt(),
-                    Assists = mainRow[3].AsInt(),
-                    CreepStats = mainRow[4].AsInt(),
-                    GoldLeft = mainRow[5].AsInt(),
-                    TowersDestroyed = mainRow[6].AsInt(),
-                    GameSide = gameSide,
-                    Hero = hero,
-                    HeroName = heroName,
-                    Items = MapItems(items),
-                    Pts = pts,
-                    MatchResult = matchResult
-                });
-            }
+                MatchUrl = matchUrl,
+                DateTime = date,
+                GameName = gameName,
+                GameTime = time,
+                Kills = mainRow[1].AsInt(),
+                Deaths = mainRow[2].AsInt(),
+                Assists = mainRow[3].AsInt(),
+                CreepStats = mainRow[4].AsInt(),
+                GoldLeft = mainRow[5].AsInt(),
+                TowersDestroyed = mainRow[6].AsInt(),
+                GameSide = gameSide,
+                Hero = hero,
+                HeroName = heroName,
+                Items = MapItems(items),
+                Pts = pts,
+                MatchResult = matchResult
+            };
         }
-
-        private static void GetTableDetails(UserGameProfile gameProfile, List<HtmlNode> tableRows, 
+        
+        private static void GetTableDetails(string nickname, List<HtmlNode> tableRows, 
             out string gameName, out string time, out string date, out string[] mainRow)
         {
             date = tableRows[0].CssSelect(".field2").First().InnerText;
@@ -184,16 +171,16 @@ namespace iCCup.UI.Infrastructure.Scrapper
             mainRow = tableRows
                 .Where(n => n.CssSelect(".field2")
                     .Any(sn => sn.ChildNodes
-                        .Any(ssn => ssn.InnerText == gameProfile.Nickname)))
+                        .Any(ssn => ssn.InnerText == nickname)))
                 .Select(r => r.CssSelect(".field2").Select(rt => rt.InnerText).ToArray())
                 .First();
         }
 
-        private static void GetBoxDetails(UserGameProfile gameProfile, HtmlNode box, List<HtmlNode> tableRows,
+        private static void GetBoxDetails(string nickname, HtmlNode box, List<HtmlNode> tableRows,
             out GameSide gameSide, out BitmapImage hero, out string heroName, out BitmapImage[] items, out int pts, out MatchResult matchResult)
         {
             gameSide = tableRows.FindIndex(n => n.CssSelect(".field2")
-                           .Any(sn => sn.ChildNodes.Any(ssn => ssn.InnerText == gameProfile.Nickname))) < 10
+                           .Any(sn => sn.ChildNodes.Any(ssn => ssn.InnerText == nickname))) < 10
                 ? GameSide.Sentinel
                 : GameSide.Scourge;
             hero = new Uri(
