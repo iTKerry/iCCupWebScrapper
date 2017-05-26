@@ -85,66 +85,9 @@
                                     <DataTemplate>
                                         <materialDesign:TransitioningContent RunHint="Loaded">
                                             <materialDesign:TransitioningContent.OpeningEffects>
-                                                <materialDesign:TransitionEffect Kind="SlideInFromTop" Duration="0:0:1" />
-                                                <materialDesign:TransitionEffect Kind="FadeIn" Duration="0:0:1" />
+                                                <materialDesign:TransitionEffect Kind="SlideInFromTop" Duration="0:0:5" />
+                                                <materialDesign:TransitionEffect Kind="FadeIn" Duration="0:0:5" />
                                             </materialDesign:TransitioningContent.OpeningEffects>
-                                            <StackPanel Orientation="Horizontal">
-                                                <Grid Width="43" Height="30" Margin="20,5,20,5">
-                                                    <Image Width="43" Height="48" Stretch="UniformToFill" VerticalAlignment="Center" Source="{Binding Hero}" />
-                                                </Grid>
-                                                <TextBlock Text="{Binding HeroName}" Width="147" Height="30" Padding="0,5,20,5" TextAlignment="Left" VerticalAlignment="Center" />
-                                                <StackPanel Margin="20,0,20,0">
-                                                    <TextBlock Text="{Binding MatchResult, Converter={StaticResource MatchResultTextConverter}}" />
-                                                    <TextBlock Text="{Binding DateTime, Converter={StaticResource MatchDateTimeConverter}}" />
-                                                </StackPanel>
-                                                <ItemsControl ItemsSource="{Binding Items}" Height="30" Margin="20,5,20,5">
-                                                    <ItemsControl.ItemsPanel>
-                                                        <ItemsPanelTemplate>
-                                                            <WrapPanel Orientation="Horizontal" />
-                                                        </ItemsPanelTemplate>
-                                                    </ItemsControl.ItemsPanel>
-                                                    <ItemsControl.ItemTemplate>
-                                                        <DataTemplate>
-                                                            <Image Width="30" Height="30" Stretch="UniformToFill" VerticalAlignment="Center" Source="{Binding Image}" />
-                                                        </DataTemplate>
-                                                    </ItemsControl.ItemTemplate>
-                                                </ItemsControl>
-                                            </StackPanel>
-                                        </materialDesign:TransitioningContent>
-                                    </DataTemplate>
-                                </ListView.ItemTemplate>
-                            </ListView>
-                        </TabItem>
-                        <TabItem Header="Matches">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="*" />
-                                </Grid.RowDefinitions>
-                                <DockPanel Grid.Row="0" Margin="0,15,0,10">
-                                    <Separator DockPanel.Dock="Left" Opacity="0" Width="28"/>
-                                    <TextBlock DockPanel.Dock="Left" Width="40" Style="{StaticResource Caption}">Hero</TextBlock>
-                                    <Separator DockPanel.Dock="Left" Opacity="0" Width="20"/>
-                                    <Separator DockPanel.Dock="Left" Opacity="0" Width="100"/>
-                                    <Separator DockPanel.Dock="Left" Opacity="0" Width="20"/>
-                                    <TextBlock DockPanel.Dock="Left" Width="110" Style="{StaticResource Caption}">Result</TextBlock>
-                                    <Separator DockPanel.Dock="Left" Opacity="0" Width="20"/>
-                                    <TextBlock DockPanel.Dock="Left" Width="100" Style="{StaticResource Caption}">Type</TextBlock>
-                                    <Separator DockPanel.Dock="Left" Opacity="0" Width="20"/>
-                                    <TextBlock DockPanel.Dock="Left" Width="60" Style="{StaticResource Caption}">Duration</TextBlock>
-                                    <Separator DockPanel.Dock="Left" Opacity="0" Width="20"/>
-                                    <TextBlock DockPanel.Dock="Left" Width="60" Style="{StaticResource Caption}">KDA</TextBlock>
-                                    <Separator DockPanel.Dock="Left" Opacity="0" Width="20"/>
-                                    <TextBlock DockPanel.Dock="Left" Width="180" Style="{StaticResource Caption}">Items</TextBlock>
-                                    <Separator DockPanel.Dock="Left" Opacity="0" Width="20"/>
-                                </DockPanel>
-                                <ListView Grid.Row="1" 
-                                          ItemsSource="{Binding MatchList}" 
-                                          SelectionMode="Single" 
-                                          ItemContainerStyle="{StaticResource AlternatingListViewItemStyle}" 
-                                          AlternationCount="2">
-                                    <ListView.ItemTemplate>
-                                        <DataTemplate>
                                             <DockPanel>
                                                 <Separator Opacity="0" Width="20"/>
                                                 <Grid DockPanel.Dock="Left" Width="40" Height="30" Margin="0,5,0,5">
@@ -186,6 +129,88 @@
                                                     </ItemsControl.ItemTemplate>
                                                 </ItemsControl>
                                             </DockPanel>
+                                        </materialDesign:TransitioningContent>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </TabItem>
+                        <TabItem Header="Matches">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <DockPanel Grid.Row="0" Margin="0,15,0,10">
+                                    <Separator DockPanel.Dock="Left" Opacity="0" Width="28"/>
+                                    <TextBlock DockPanel.Dock="Left" Width="40" Style="{StaticResource Caption}">Hero</TextBlock>
+                                    <Separator DockPanel.Dock="Left" Opacity="0" Width="20"/>
+                                    <Separator DockPanel.Dock="Left" Opacity="0" Width="100"/>
+                                    <Separator DockPanel.Dock="Left" Opacity="0" Width="20"/>
+                                    <TextBlock DockPanel.Dock="Left" Width="110" Style="{StaticResource Caption}">Result</TextBlock>
+                                    <Separator DockPanel.Dock="Left" Opacity="0" Width="20"/>
+                                    <TextBlock DockPanel.Dock="Left" Width="100" Style="{StaticResource Caption}">Type</TextBlock>
+                                    <Separator DockPanel.Dock="Left" Opacity="0" Width="20"/>
+                                    <TextBlock DockPanel.Dock="Left" Width="60" Style="{StaticResource Caption}">Duration</TextBlock>
+                                    <Separator DockPanel.Dock="Left" Opacity="0" Width="20"/>
+                                    <TextBlock DockPanel.Dock="Left" Width="60" Style="{StaticResource Caption}">KDA</TextBlock>
+                                    <Separator DockPanel.Dock="Left" Opacity="0" Width="20"/>
+                                    <TextBlock DockPanel.Dock="Left" Width="180" Style="{StaticResource Caption}">Items</TextBlock>
+                                    <Separator DockPanel.Dock="Left" Opacity="0" Width="20"/>
+                                </DockPanel>
+                                <ListView Grid.Row="1" 
+                                          ItemsSource="{Binding MatchList}" 
+                                          SelectionMode="Single" 
+                                          ItemContainerStyle="{StaticResource AlternatingListViewItemStyle}" 
+                                          AlternationCount="2">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <materialDesign:TransitioningContent RunHint="Loaded">
+                                                <materialDesign:TransitioningContent.OpeningEffects>
+                                                    <materialDesign:TransitionEffect Kind="SlideInFromTop" Duration="0:0:5" />
+                                                    <materialDesign:TransitionEffect Kind="FadeIn" Duration="0:0:5" />
+                                                </materialDesign:TransitioningContent.OpeningEffects>
+                                                <DockPanel>
+                                                    <Separator Opacity="0" Width="20"/>
+                                                    <Grid DockPanel.Dock="Left" Width="40" Height="30" Margin="0,5,0,5">
+                                                        <Image Width="43" Height="48" Stretch="UniformToFill" VerticalAlignment="Center" Source="{Binding Hero}" />
+                                                    </Grid>
+                                                    <Separator Opacity="0" Width="20"/>
+                                                    <TextBlock DockPanel.Dock="Left" Text="{Binding HeroName}" Width="100" TextAlignment="Left" VerticalAlignment="Center" />
+                                                    <Separator Opacity="0" Width="20"/>
+                                                    <StackPanel Width="110">
+                                                        <TextBlock Text="{Binding MatchResult, Converter={StaticResource MatchResultTextConverter}}" />
+                                                        <TextBlock Text="{Binding DateTime, Converter={StaticResource MatchDateTimeConverter}}" />
+                                                    </StackPanel>
+                                                    <Separator Opacity="0" Width="20"/>
+                                                    <StackPanel DockPanel.Dock="Left" Width="100">
+                                                        <TextBlock Text="{Binding GameName, Converter={StaticResource MatchNameToModeConverter}}" />
+                                                        <TextBlock Text="{Binding GameName, Converter={StaticResource MatchNameConverter}}" />
+                                                    </StackPanel>
+                                                    <Separator Opacity="0" Width="20"/>
+                                                    <TextBlock DockPanel.Dock="Left" Text="{Binding GameTime}" Width="60" TextAlignment="Left" VerticalAlignment="Center" />
+                                                    <Separator Opacity="0" Width="20"/>
+                                                    <StackPanel DockPanel.Dock="Left" Width="60" Orientation="Horizontal" VerticalAlignment="Center">
+                                                        <TextBlock Text="{Binding Kills}" TextAlignment="Left" VerticalAlignment="Center" />
+                                                        <TextBlock TextAlignment="Left" VerticalAlignment="Center">/</TextBlock>
+                                                        <TextBlock Text="{Binding Deaths}" TextAlignment="Left" VerticalAlignment="Center" />
+                                                        <TextBlock TextAlignment="Left" VerticalAlignment="Center">/</TextBlock>
+                                                        <TextBlock Text="{Binding Assists}" TextAlignment="Left" VerticalAlignment="Center" />
+                                                    </StackPanel>
+                                                    <Separator DockPanel.Dock="Left" Opacity="0" Width="20"/>
+                                                    <ItemsControl DockPanel.Dock="Left" ItemsSource="{Binding Items}" Width="180" Height="30" Margin="0,5,0,5">
+                                                        <ItemsControl.ItemsPanel>
+                                                            <ItemsPanelTemplate>
+                                                                <WrapPanel Orientation="Horizontal" />
+                                                            </ItemsPanelTemplate>
+                                                        </ItemsControl.ItemsPanel>
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Image Width="30" Height="30" Stretch="UniformToFill" VerticalAlignment="Center" Source="{Binding Image}" />
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
+                                                </DockPanel>
+                                            </materialDesign:TransitioningContent>
                                         </DataTemplate>
                                     </ListView.ItemTemplate>
                                 </ListView>

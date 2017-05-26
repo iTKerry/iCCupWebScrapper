@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using GalaSoft.MvvmLight;
@@ -18,7 +19,7 @@ namespace iCCup.UI.ViewModel.Tab
         private readonly IScrapperService _scrapper;
 
         public RelayCommand GoBackCommand =>
-            new RelayCommand(() => TabViewModel.Navigate(new NavigateMessage { NavigateTo = NavigateTo.Back }));
+            new RelayCommand(() => TabViewModel.Navigate(new NavigateMessage {NavigateTo = NavigateTo.Back}));
 
         public GameProfileViewModel(TabViewModel tabViewModel, IScrapperService scrapper)
         {
@@ -33,21 +34,22 @@ namespace iCCup.UI.ViewModel.Tab
 
             MatchList = new ObservableCollection<PersonalGameDetails>();
             MatchListHome = new ObservableCollection<PersonalGameDetails>();
-            
+
             await Task.Factory.StartNew(GetAvatar);
             await Task.Factory.StartNew(GetMatches);
         }
 
-        private void GetMatches() =>
-            DispatcherHelper.CheckBeginInvokeOnUI(async () =>
+        private void GetMatches()
+        {
+            foreach (var url in UserGameProfile.MatchUrls)
             {
-                foreach (var url in UserGameProfile.MatchUrls)
-                {
-                    MatchList.Add(await _scrapper.GetPersonalGameDetails(UserGameProfile.Nickname, url));
-                    if (MatchListHome.Count < 5)
-                        MatchListHome.Add(MatchList.Last());
-                }
-            });
+                DispatcherHelper.CheckBeginInvokeOnUI(async () 
+                    => MatchList.Add(await _scrapper.GetPersonalGameDetails(UserGameProfile.Nickname, url)));
+                if (MatchListHome.Count < 5 && MatchList.Any()) DispatcherHelper.CheckBeginInvokeOnUI(()
+                    => MatchListHome.Add(MatchList.Last()));
+                Thread.Sleep(TimeSpan.FromSeconds(1));
+            }
+        }
 
         private void GetAvatar() =>
             DispatcherHelper.CheckBeginInvokeOnUI(() 
